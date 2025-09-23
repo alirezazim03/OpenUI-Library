@@ -1,11 +1,8 @@
 {
-  "buildCommand": "cd ../.. && pnpm build",
-  "installCommand": "cd ../.. && pnpm install",
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install",
+  "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
-  "builds": [
-    {
-      "src": "apps/web/package.json",
-      "use": "@vercel/next"
-    }
-  ]
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
+  "nodeVersion": "18.x"
 }
