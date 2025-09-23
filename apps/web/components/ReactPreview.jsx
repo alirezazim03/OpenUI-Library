@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 const ReactPreview = ({ componentFiles, componentName }) => {
   const [RenderedComponent, setRenderedComponent] = useState(null)
@@ -85,9 +86,9 @@ const ReactPreview = ({ componentFiles, componentName }) => {
               <div className="flex justify-between items-center h-16">
                 {/* Logo */}
                 <div className="flex items-center">
-                  <a href="/" className="text-2xl font-bold text-indigo-600">
+                  <Link href="/" className="text-2xl font-bold text-indigo-600">
                     ShopLogo
-                  </a>
+                  </Link>
                 </div>
 
                 {/* Search Bar */}
@@ -366,9 +367,9 @@ const ReactPreview = ({ componentFiles, componentName }) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-center h-16">
                 <div className="flex items-center">
-                  <a href="/" className="text-2xl font-bold text-indigo-600">
+                  <Link href="/" className="text-2xl font-bold text-indigo-600">
                     ShopLogo
-                  </a>
+                  </Link>
                 </div>
                 <div className="hidden md:flex flex-1 max-w-md mx-8">
                   <div className="w-full">
