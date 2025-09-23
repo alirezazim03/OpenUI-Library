@@ -30,9 +30,6 @@ const ReactPreview = ({ componentFiles, componentName }) => {
 
         const Component = createComponentFromCode(componentCode, componentName)
 
-        console.log('Component name:', componentName)
-        console.log('Component created:', Component)
-
         if (!Component || typeof Component !== 'function') {
           throw new Error('Could not extract React component')
         }
@@ -346,9 +343,11 @@ const ReactPreview = ({ componentFiles, componentName }) => {
 
   if (RenderedComponent) {
     return (
-      <div className="bg-white border rounded-lg p-4 min-h-64">
-        <RenderedComponent />
-        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded text-sm text-green-800">
+      <div className="p-8 min-h-80">
+        <div className="w-full">
+          <RenderedComponent />
+        </div>
+        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
           <strong>Interactive Preview:</strong> This is a fully functional
           recreation of the {componentName} component with working state and
           interactions.
