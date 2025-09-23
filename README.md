@@ -171,12 +171,3 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 - The open-source community
 - Inspiration from other UI libraries
 
-## 📞 Support
-
-- 🐛 [Report bugs](https://github.com/YOUR_HANDLE/open-ui-library/issues/new?template=bug_report.yml)
-- 💡 [Request features](https://github.com/YOUR_HANDLE/open-ui-library/issues/new?template=component_proposal.yml)
-- 💬 [Join discussions](https://github.com/YOUR_HANDLE/open-ui-library/discussions)
-
----
-
-Made with ❤️ by the open-source community
