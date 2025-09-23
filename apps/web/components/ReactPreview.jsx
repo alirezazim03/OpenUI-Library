@@ -30,6 +30,9 @@ const ReactPreview = ({ componentFiles, componentName }) => {
 
         const Component = createComponentFromCode(componentCode, componentName)
 
+        console.log('Component name:', componentName)
+        console.log('Component created:', Component)
+
         if (!Component || typeof Component !== 'function') {
           throw new Error('Could not extract React component')
         }
@@ -63,7 +66,15 @@ const ReactPreview = ({ componentFiles, componentName }) => {
 
   const createComponentFromCode = (code, componentName) => {
     // Analyze the component code to create an intelligent mock
-    if (componentName.includes('navbar') || componentName.includes('nav')) {
+    // Check for navbar patterns in component name or the actual code
+    const isNavbarComponent =
+      componentName.includes('navbar') ||
+      componentName.includes('nav') ||
+      code.includes('navbar') ||
+      code.includes('nav className') ||
+      code.includes('<nav')
+
+    if (isNavbarComponent) {
       return ({ cartItems = 0, onSearch }) => {
         const [searchQuery, setSearchQuery] = useState('')
         const [isMenuOpen, setIsMenuOpen] = useState(false)
