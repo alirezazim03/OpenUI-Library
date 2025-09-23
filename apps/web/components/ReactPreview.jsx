@@ -44,10 +44,10 @@ const ReactPreview = ({ componentFiles, componentName }) => {
             </div>
           )
         }
+        ComponentWrapper.displayName = 'ComponentWrapper'
 
         setRenderedComponent(() => ComponentWrapper)
       } catch (err) {
-        console.error('Error loading component:', err)
         setError(err.message)
       } finally {
         setLoading(false)
@@ -56,10 +56,6 @@ const ReactPreview = ({ componentFiles, componentName }) => {
 
     loadComponent()
   }, [componentFiles, componentName])
-
-  const getComponentNameFromFilename = filename => {
-    return filename.replace(/\.[^/.]+$/, '') // Remove extension
-  }
 
   const createComponentFromCode = (code, componentName) => {
     // Analyze the component code to create an intelligent mock
@@ -72,7 +68,7 @@ const ReactPreview = ({ componentFiles, componentName }) => {
       code.includes('<nav')
 
     if (isNavbarComponent) {
-      return ({ cartItems = 0, onSearch }) => {
+      const NavbarComponent = ({ cartItems = 0, onSearch }) => {
         const [searchQuery, setSearchQuery] = useState('')
         const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -267,10 +263,12 @@ const ReactPreview = ({ componentFiles, componentName }) => {
           </nav>
         )
       }
+      NavbarComponent.displayName = 'NavbarComponent'
+      return NavbarComponent
     }
 
     // Default component for other types
-    return () => (
+    const DefaultComponent = () => (
       <div className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg text-center">
         <div className="text-gray-600">
           <div className="text-lg font-semibold mb-2">{componentName}</div>
@@ -281,6 +279,8 @@ const ReactPreview = ({ componentFiles, componentName }) => {
         </div>
       </div>
     )
+    DefaultComponent.displayName = 'DefaultComponent'
+    return DefaultComponent
   }
 
   const getDefaultProps = componentName => {
@@ -288,12 +288,12 @@ const ReactPreview = ({ componentFiles, componentName }) => {
 
     if (componentName.includes('navbar') || componentName.includes('nav')) {
       props.cartItems = 3
-      props.onSearch = query => console.log('Search:', query)
+      props.onSearch = () => {} // Empty function for demo purposes
     }
 
     if (componentName.includes('button')) {
       props.children = 'Sample Button'
-      props.onClick = () => console.log('Button clicked')
+      props.onClick = () => {} // Empty function for demo purposes
     }
 
     if (componentName.includes('card')) {
