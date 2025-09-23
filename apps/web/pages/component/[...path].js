@@ -1,13 +1,54 @@
 import Link from 'next/link'
-import { getComponentsData, getComponentByPath } from '../../lib/components'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
-export default function ComponentPage({ component }) {
-  if (!component) {
+export default function ComponentPage() {
+  const router = useRouter()
+  const { path } = router.query
+  const [component, setComponent] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    if (!path) return
+
+    const componentPath = Array.isArray(path) ? path.join('/') : path
+
+    fetch(`/api/component/${componentPath}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.component) {
+          setComponent(data.component)
+        } else {
+          setError('Component not found')
+        }
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Failed to load component:', err)
+        setError('Failed to load component')
+        setLoading(false)
+      })
+  }, [path])
+
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Component not found
+            Loading component...
+          </h1>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !component) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            {error || 'Component not found'}
           </h1>
           <Link href="/" className="text-blue-600 hover:text-blue-800">
             ← Back to home
@@ -159,13 +200,4 @@ export default function ComponentPage({ component }) {
   )
 }
 
-export async function getServerSideProps({ params }) {
-  const componentPath = params.path.join('/')
-  const component = getComponentByPath(componentPath)
-
-  return {
-    props: {
-      component,
-    },
-  }
-}
+// No getServerSideProps needed - using client-side fetching

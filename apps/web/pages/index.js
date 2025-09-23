@@ -1,7 +1,23 @@
 import Link from 'next/link'
-import { getComponentsData } from '../lib/components'
+import { useEffect, useState } from 'react'
 
-export default function Home({ components }) {
+export default function Home() {
+  const [components, setComponents] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/components')
+      .then(res => res.json())
+      .then(data => {
+        setComponents(data.components || [])
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Failed to load components:', err)
+        setLoading(false)
+      })
+  }, [])
+
   const groupedComponents = components.reduce((acc, component) => {
     if (!acc[component.category]) {
       acc[component.category] = []
@@ -23,7 +39,13 @@ export default function Home({ components }) {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          {Object.keys(groupedComponents).length === 0 ? (
+          {loading ? (
+            <div className="text-center py-12">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Loading components...
+              </h2>
+            </div>
+          ) : Object.keys(groupedComponents).length === 0 ? (
             <div className="text-center py-12">
               <h2 className="text-xl font-semibold text-gray-900 mb-2">
                 No components found
@@ -99,14 +121,4 @@ export default function Home({ components }) {
   )
 }
 
-export async function getServerSideProps() {
-  console.log('getServerSideProps called from:', process.cwd())
-  const components = getComponentsData()
-  console.log('Components found in getServerSideProps:', components.length)
-
-  return {
-    props: {
-      components,
-    },
-  }
-}
+// No getServerSideProps needed - using client-side fetching
