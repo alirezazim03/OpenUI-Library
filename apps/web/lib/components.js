@@ -3,8 +3,6 @@ const path = require('path')
 const glob = require('glob')
 
 function getComponentsData() {
-  console.log('getComponentsData: __dirname =', __dirname)
-  console.log('getComponentsData: process.cwd() =', process.cwd())
 
   // Determine the correct path to components directory
   let componentsDir = path.resolve(process.cwd(), '../../components')
@@ -17,28 +15,17 @@ function getComponentsData() {
     path.resolve(process.cwd(), 'components'), // If running from project root
   ]
 
-  console.log('Trying paths:', possiblePaths)
-
   for (const possiblePath of possiblePaths) {
-    console.log(
-      'Checking path:',
-      possiblePath,
-      'exists:',
-      fs.existsSync(possiblePath)
-    )
     if (fs.existsSync(possiblePath)) {
       componentsDir = possiblePath
-      console.log('Using components directory:', componentsDir)
       break
     }
   }
 
   const pattern = path.join(componentsDir, '**', 'component.json')
-  console.log('Glob pattern:', pattern)
 
   try {
     const files = glob.sync(pattern)
-    console.log('Glob found files:', files)
     const components = []
 
     for (const file of files) {
@@ -59,6 +46,7 @@ function getComponentsData() {
           name: pathParts[2],
         })
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(
           `Error reading component metadata from ${file}:`,
           error.message
@@ -68,6 +56,7 @@ function getComponentsData() {
 
     return components
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error reading components:', error.message)
     return []
   }
@@ -116,6 +105,7 @@ function getComponentByPath(componentPath) {
       files: componentFiles,
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(`Error reading component ${componentPath}:`, error.message)
     return null
   }

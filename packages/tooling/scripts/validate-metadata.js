@@ -17,6 +17,7 @@ function validateMetadata() {
     const files = glob.sync(pattern)
 
     if (files.length === 0) {
+      // eslint-disable-next-line no-console
       console.log('No component.json files found')
       return true
     }
@@ -24,6 +25,7 @@ function validateMetadata() {
     let hasErrors = false
 
     for (const file of files) {
+      // eslint-disable-next-line no-console
       console.log(`Validating ${file}...`)
 
       try {
@@ -33,13 +35,17 @@ function validateMetadata() {
         const isValid = validate(metadata)
 
         if (!isValid) {
+          // eslint-disable-next-line no-console
           console.error(`❌ Validation failed for ${file}:`)
+          // eslint-disable-next-line no-console
           console.error(validate.errors)
           hasErrors = true
         } else {
+          // eslint-disable-next-line no-console
           console.log(`✅ ${file} is valid`)
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`❌ Error processing ${file}:`, error.message)
         hasErrors = true
       }
@@ -47,6 +53,7 @@ function validateMetadata() {
 
     return !hasErrors
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error during validation:', error.message)
     return false
   }
