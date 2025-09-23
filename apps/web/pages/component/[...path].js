@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import ReactPreview from '../../components/ReactPreview'
 
 export default function ComponentPage() {
   const router = useRouter()
@@ -61,6 +62,7 @@ export default function ComponentPage() {
 
   const isHtmlTailwind =
     component.framework === 'html' || component.framework === 'tailwind'
+  const isReact = component.framework === 'react'
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -103,6 +105,11 @@ export default function ComponentPage() {
                     title={`${component.name} preview`}
                   />
                 </div>
+              ) : isReact ? (
+                <ReactPreview
+                  componentFiles={component.files}
+                  componentName={component.name}
+                />
               ) : (
                 <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                   <p className="text-gray-600">
