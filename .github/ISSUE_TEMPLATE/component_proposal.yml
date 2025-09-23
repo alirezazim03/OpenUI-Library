@@ -1,0 +1,92 @@
+name: Component Proposal
+description: Propose a new component for the library
+title: "[COMPONENT]: "
+labels: ["enhancement", "component-proposal"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a new component! Please fill out the details below.
+
+  - type: input
+    id: component-name
+    attributes:
+      label: Component Name
+      description: What should this component be called?
+      placeholder: e.g., dropdown-menu
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Which category does this component belong to?
+      options:
+        - navbar
+        - footer
+        - button
+        - form
+        - card
+        - hero
+        - section
+    validations:
+      required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      description: What framework/technology will this component use?
+      options:
+        - react
+        - vue
+        - tailwind
+        - html
+        - svelte
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe what this component does and its key features
+      placeholder: A detailed description of the component's functionality
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: What are the main use cases for this component?
+      placeholder: |
+        - Use case 1
+        - Use case 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: design-mockup
+    attributes:
+      label: Design/Mockup
+      description: Do you have any design mockups or references? (attach images or provide links)
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation
+      description: Are you planning to implement this component yourself?
+      options:
+        - label: I plan to implement this component
+        - label: I need help with implementation
+        - label: I'm just suggesting the idea
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Additional Notes
+      description: Any other details or considerations?

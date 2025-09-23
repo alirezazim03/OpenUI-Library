@@ -1,0 +1,10 @@
+{
+  "name": "simple-center",
+  "category": "navbar",
+  "framework": "tailwind",
+  "tags": ["responsive", "simple", "centered"],
+  "author": "OpenUI Library",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A clean, centered navigation bar with logo and menu items"
+}
