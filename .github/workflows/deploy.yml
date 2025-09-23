@@ -1,11 +1,11 @@
-name: Deploy to Vercel
+name: Validate
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,15 +25,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Validate component metadata
+        run: pnpm validate:metadata
+
       - name: Build web app
         run: pnpm -C apps/web build
-
-      - name: Deploy to Vercel
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./apps/web
-          vercel-args: '--prod'
