@@ -1,0 +1,10 @@
+{
+  "name": "@open-ui-library/tooling",
+  "version": "1.0.0",
+  "description": "Development tools and scripts for the UI library",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^10.3.10",
+    "ajv": "^8.12.0"
+  }
+}

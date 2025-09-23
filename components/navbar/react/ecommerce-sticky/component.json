@@ -1,0 +1,22 @@
+{
+  "name": "ecommerce-sticky",
+  "category": "navbar",
+  "framework": "react",
+  "tags": ["ecommerce", "sticky", "shopping-cart", "search"],
+  "author": "OpenUI Library",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A sticky navigation bar designed for ecommerce with search and cart functionality",
+  "props": [
+    {
+      "name": "cartItems",
+      "type": "number",
+      "description": "Number of items in the shopping cart"
+    },
+    {
+      "name": "onSearch",
+      "type": "function",
+      "description": "Callback function when search is performed"
+    }
+  ]
+}

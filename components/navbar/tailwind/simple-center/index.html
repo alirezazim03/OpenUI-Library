@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Center Navbar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="#" class="text-xl font-bold text-gray-800">
+                        Logo
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-gray-800 transition duration-300">
+                        Home
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-gray-800 transition duration-300">
+                        About
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-gray-800 transition duration-300">
+                        Services
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-gray-800 transition duration-300">
+                        Contact
+                    </a>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-600 hover:text-gray-800 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

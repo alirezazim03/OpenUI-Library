@@ -1,0 +1,35 @@
+{
+  "name": "open-ui-library",
+  "version": "1.0.0",
+  "description": "A community-driven, open-source library of reusable UI components",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm -C apps/web dev",
+    "build": "pnpm -C apps/web build",
+    "lint": "eslint .",
+    "validate:metadata": "node packages/tooling/scripts/validate-metadata.js",
+    "validate": "pnpm lint && pnpm validate:metadata && pnpm -C apps/web build"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.0.0",
+    "prettier": "^3.0.0"
+  },
+  "packageManager": "pnpm@8.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_HANDLE/open-ui-library.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ui-components",
+    "react",
+    "tailwind",
+    "open-source",
+    "design-system"
+  ]
+}
