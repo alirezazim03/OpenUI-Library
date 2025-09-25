@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd apps/web && pnpm build",
+  "buildCommand": "pnpm -C apps/web build",
   "outputDirectory": "apps/web/.next",
   "installCommand": "pnpm install"
 }
