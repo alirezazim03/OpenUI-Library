@@ -1,0 +1,139 @@
+name: Website Update
+description: Propose updates, improvements, or new features for the website
+title: '[WEBSITE]: '
+labels: ['website', 'enhancement']
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a website update! Please provide details about the changes you'd like to see.
+
+  - type: dropdown
+    id: update-type
+    attributes:
+      label: Update Type
+      description: What type of website update is this?
+      options:
+        - UI/UX Improvement
+        - New Feature
+        - Logic/Functionality Update
+        - Performance Enhancement
+        - Accessibility Improvement
+        - Bug Fix
+        - Design System Update
+        - Content Update
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area of Website
+      description: Which area of the website does this update affect?
+      multiple: true
+      options:
+        - Homepage
+        - Component Gallery
+        - Component Preview
+        - Navigation
+        - Search/Filter
+        - Documentation
+        - API Endpoints
+        - Responsive Design
+        - Overall Layout
+        - Footer
+        - Error Pages
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a clear and detailed description of the proposed update
+      placeholder: Describe what you want to change or improve on the website
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current Behavior
+      description: How does the website currently work in this area?
+      placeholder: Describe the current state/behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-behavior
+    attributes:
+      label: Proposed Behavior
+      description: How should the website work after this update?
+      placeholder: Describe the desired outcome and user experience
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this update?
+      options:
+        - Low - Nice to have
+        - Medium - Should be done soon
+        - High - Important for user experience
+        - Critical - Blocking users or broken functionality
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-benefit
+    attributes:
+      label: User Benefit
+      description: How will this update benefit users or improve their experience?
+      placeholder: Explain the value this brings to website visitors
+    validations:
+      required: true
+
+  - type: textarea
+    id: design-references
+    attributes:
+      label: Design References
+      description: Do you have any design mockups, wireframes, or reference examples? (attach images or provide links)
+      placeholder: |
+        - Figma link: 
+        - Reference website: 
+        - Mockup images: (attach files)
+
+  - type: checkboxes
+    id: technical-considerations
+    attributes:
+      label: Technical Considerations
+      description: Are there any technical aspects to consider?
+      options:
+        - label: This may require database changes
+        - label: This affects mobile responsiveness
+        - label: This impacts SEO
+        - label: This requires accessibility considerations
+        - label: This affects page load performance
+        - label: This requires new dependencies/packages
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation
+      description: Are you planning to work on this update yourself?
+      options:
+        - label: I plan to implement this update
+        - label: I need help with implementation
+        - label: I'm just suggesting the idea
+        - label: This requires design work first
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other details, constraints, or considerations?
+      placeholder: Include any other relevant information about this website update
