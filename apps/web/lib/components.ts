@@ -1,8 +1,9 @@
-const fs = require('fs')
-const path = require('path')
-const glob = require('glob')
+import fs from 'fs'
+import path from 'path'
+import glob from 'glob'
+import { ComponentMetadata, ComponentWithFiles } from '../types'
 
-function getComponentsData() {
+export function getComponentsData(): ComponentMetadata[] {
   // Determine the correct path to components directory
   let componentsDir = path.resolve(process.cwd(), '../../components')
 
@@ -25,7 +26,7 @@ function getComponentsData() {
 
   try {
     const files = glob.sync(pattern)
-    const components = []
+    const components: ComponentMetadata[] = []
 
     for (const file of files) {
       try {
@@ -48,7 +49,7 @@ function getComponentsData() {
         // eslint-disable-next-line no-console
         console.error(
           `Error reading component metadata from ${file}:`,
-          error.message
+          (error as Error).message
         )
       }
     }
@@ -56,12 +57,14 @@ function getComponentsData() {
     return components
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error reading components:', error.message)
+    console.error('Error reading components:', (error as Error).message)
     return []
   }
 }
 
-function getComponentByPath(componentPath) {
+export function getComponentByPath(
+  componentPath: string
+): ComponentWithFiles | null {
   let componentsDir = path.resolve(process.cwd(), '../../components')
 
   // Fallback paths to try
@@ -89,7 +92,7 @@ function getComponentByPath(componentPath) {
     const componentDir = path.join(componentsDir, componentPath)
     const files = fs.readdirSync(componentDir)
 
-    const componentFiles = {}
+    const componentFiles: Record<string, string> = {}
     for (const file of files) {
       if (file !== 'component.json') {
         const filePath = path.join(componentDir, file)
@@ -105,12 +108,12 @@ function getComponentByPath(componentPath) {
     }
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(`Error reading component ${componentPath}:`, error.message)
+    console.error(
+      `Error reading component ${componentPath}:`,
+      (error as Error).message
+    )
     return null
   }
 }
 
-module.exports = {
-  getComponentsData,
-  getComponentByPath,
-}
+// Functions already exported above

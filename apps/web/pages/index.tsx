@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import type { ComponentMetadata } from '../types'
 
 export default function Home() {
-  const [components, setComponents] = useState([])
+  const [components, setComponents] = useState<ComponentMetadata[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function Home() {
       })
   }, [])
 
-  const groupedComponents = components.reduce((acc, component) => {
+  const groupedComponents = components.reduce((acc: Record<string, ComponentMetadata[]>, component) => {
     if (!acc[component.category]) {
       acc[component.category] = []
     }
@@ -64,7 +65,7 @@ export default function Home() {
                       {category}
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {categoryComponents.map(component => (
+                      {categoryComponents.map((component: ComponentMetadata) => (
                         <Link
                           key={component.path}
                           href={`/component/${encodeURIComponent(component.path)}`}
@@ -84,7 +85,7 @@ export default function Home() {
                             </div>
                             {component.tags && component.tags.length > 0 && (
                               <div className="flex flex-wrap gap-1 mb-3">
-                                {component.tags.map(tag => (
+                                {component.tags.map((tag: string) => (
                                   <span
                                     key={tag}
                                     className="inline-flex items-center px-2 py-1 rounded text-xs bg-gray-100 text-gray-800"

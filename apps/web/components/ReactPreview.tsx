@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import type { ReactPreviewProps } from '../types'
 
-const ReactPreview = ({ componentFiles, componentName }) => {
-  const [RenderedComponent, setRenderedComponent] = useState(null)
-  const [error, setError] = useState(null)
+const ReactPreview: React.FC<ReactPreviewProps> = ({
+  componentFiles,
+  componentName,
+}) => {
+  const [RenderedComponent, setRenderedComponent] =
+    useState<React.ComponentType | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -49,7 +54,7 @@ const ReactPreview = ({ componentFiles, componentName }) => {
 
         setRenderedComponent(() => ComponentWrapper)
       } catch (err) {
-        setError(err.message)
+        setError((err as Error).message)
       } finally {
         setLoading(false)
       }
@@ -58,7 +63,10 @@ const ReactPreview = ({ componentFiles, componentName }) => {
     loadComponent()
   }, [componentFiles, componentName])
 
-  const createComponentFromCode = (code, componentName) => {
+  const createComponentFromCode = (
+    code: string,
+    componentName: string
+  ): React.ComponentType<any> => {
     // Analyze the component code to create an intelligent mock
     // Check for navbar patterns in component name or the actual code
     const isNavbarComponent =
@@ -69,11 +77,17 @@ const ReactPreview = ({ componentFiles, componentName }) => {
       code.includes('<nav')
 
     if (isNavbarComponent) {
-      const NavbarComponent = ({ cartItems = 0, onSearch }) => {
+      const NavbarComponent = ({
+        cartItems = 0,
+        onSearch,
+      }: {
+        cartItems?: number
+        onSearch?: (_query: string) => void
+      }) => {
         const [searchQuery, setSearchQuery] = useState('')
         const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-        const handleSearch = e => {
+        const handleSearch = (e: React.FormEvent) => {
           e.preventDefault()
           if (onSearch) {
             onSearch(searchQuery)
@@ -284,8 +298,8 @@ const ReactPreview = ({ componentFiles, componentName }) => {
     return DefaultComponent
   }
 
-  const getDefaultProps = componentName => {
-    const props = {}
+  const getDefaultProps = (componentName: string): Record<string, any> => {
+    const props: Record<string, any> = {}
 
     if (componentName.includes('navbar') || componentName.includes('nav')) {
       props.cartItems = 3
@@ -505,7 +519,7 @@ const ReactPreview = ({ componentFiles, componentName }) => {
       <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
         <strong>Preview Note:</strong> This is a visual representation of the{' '}
         {componentName} component. The actual component code with full
-        functionality is shown in the "Code" section below.
+        functionality is shown in the &quot;Code&quot; section below.
       </div>
     </div>
   )

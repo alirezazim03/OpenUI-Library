@@ -2,6 +2,6 @@
   "name": "@open-ui-library/ui-metadata",
   "version": "1.0.0",
   "description": "Metadata schema and utilities for UI components",
-  "main": "index.js",
+  "main": "index.ts",
   "license": "MIT"
 }

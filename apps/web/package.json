@@ -7,20 +7,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch"
   },
   "dependencies": {
+    "@open-ui-library/ui-metadata": "workspace:*",
+    "glob": "^10.3.10",
     "next": "^14.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "glob": "^10.3.10",
-    "@open-ui-library/ui-metadata": "workspace:*"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/node": "^20.19.17",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.16",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.0.0",
+    "postcss": "^8.4.32",
     "tailwindcss": "^3.3.0",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.32"
+    "typescript": "^5.0.0"
   }
 }

@@ -11,13 +11,15 @@
     "dev": "pnpm -C apps/web dev",
     "build": "pnpm -C apps/web build",
     "lint": "eslint .",
-    "validate:metadata": "node packages/tooling/scripts/validate-metadata.js",
-    "validate": "pnpm lint && pnpm validate:metadata && pnpm -C apps/web build"
+    "type-check": "pnpm -C apps/web type-check",
+    "validate:metadata": "tsx packages/tooling/scripts/validate-metadata.ts",
+    "validate": "pnpm lint && pnpm type-check && pnpm validate:metadata && pnpm -C apps/web build"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.0.0",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "tsx": "^4.0.0"
   },
   "packageManager": "pnpm@9.15.1",
   "repository": {
