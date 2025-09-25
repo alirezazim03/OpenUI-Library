@@ -2,13 +2,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import ReactPreview from '../../components/ReactPreview'
+import type { ComponentWithFiles } from '../../types'
 
 export default function ComponentPage() {
   const router = useRouter()
   const { path } = router.query
-  const [component, setComponent] = useState(null)
+  const [component, setComponent] = useState<ComponentWithFiles | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!path) return
@@ -207,7 +208,7 @@ export default function ComponentPage() {
                       Props
                     </h3>
                     <div className="space-y-2">
-                      {component.props.map((prop, index) => (
+                      {component.props.map((prop, index: number) => (
                         <div
                           key={index}
                           className="text-xs bg-gray-50 p-2 rounded"
@@ -324,7 +325,7 @@ export default function ComponentPage() {
               Source Code
             </h2>
             <div className="space-y-4">
-              {Object.entries(component.files).map(([filename, content]) => (
+              {Object.entries(component.files).map(([filename, content]: [string, string]) => (
                 <div key={filename} className="bg-white rounded-lg shadow">
                   <div className="px-4 py-3 bg-gray-50 border-b rounded-t-lg">
                     <h3 className="text-sm font-medium text-gray-900">

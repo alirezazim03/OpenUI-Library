@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-const fs = require('fs')
-const path = require('path')
-const glob = require('glob')
-const Ajv = require('ajv')
-const { schema } = require('../../ui-metadata')
+import fs from 'fs'
+import path from 'path'
+import * as glob from 'glob'
+import Ajv from 'ajv'
+import { schema } from '../../ui-metadata/index'
 
 const ajv = new Ajv()
 const validate = ajv.compile(schema)
 
-function validateMetadata() {
+function validateMetadata(): boolean {
   const componentsDir = path.join(process.cwd(), 'components')
   const pattern = path.join(componentsDir, '**/component.json')
 

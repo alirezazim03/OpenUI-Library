@@ -1,9 +1,14 @@
-import { getComponentByPath } from '../../../lib/components'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import type { ComponentApiResponse } from '../../../types'
+const { getComponentByPath } = require('../../../lib/components')
 
-export default function handler(req, res) {
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ComponentApiResponse | { error: string }>
+) {
   try {
     const { path } = req.query
-    const componentPath = path.join('/')
+    const componentPath = Array.isArray(path) ? path.join('/') : path || ''
     const component = getComponentByPath(componentPath)
 
     if (!component) {
