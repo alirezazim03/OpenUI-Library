@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import Navbar from '../components/Navbar'
 import type { ComponentMetadata } from '../types'
 
 export default function Home() {
@@ -8,7 +9,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     fetch('/api/components')
@@ -79,94 +79,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        {/* Enhanced Navigation Bar */}
-        <header className="bg-white shadow-sm border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-4">
-              <div className="flex items-center">
-                <Link href="/" className="flex items-center space-x-3">
-                  <img
-                    src="https://xbllreuvbgzawhgemndh.supabase.co/storage/v1/object/public/material/openUI.png"
-                    alt="Open UI Library Logo"
-                    className="w-16 h-16 object-contain"
-                  />
-                  <div>
-                    <h1 className="text-xl font-bold text-gray-900">
-                      Open UI Library
-                    </h1>
-                    <p className="text-xs text-gray-500">
-                      Community-driven components
-                    </p>
-                  </div>
-                </Link>
-              </div>
+        <Navbar currentPage="home" />
 
-              {/* Navigation Links */}
-              <nav className="hidden md:flex items-center space-x-8">
-                <Link
-                  href="/"
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
-                >
-                  Components
-                </Link>
-                <Link
-                  href="#contributors"
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
-                >
-                  Contributors
-                </Link>
-                <a
-                  href="https://github.com/your-repo/openui-library"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
-                >
-                  GitHub
-                </a>
-              </nav>
-
-              {/* Mobile menu button */}
-              <div className="md:hidden">
-                <button
-                  onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="text-gray-700 hover:text-blue-600"
-                >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div className="flex flex-1 relative">
-          {/* Mobile sidebar overlay */}
-          {sidebarOpen && (
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
-
+        <div className="flex flex-1">
           {/* Sidebar */}
-          <aside
-            className={`
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-          md:translate-x-0 fixed md:relative inset-y-0 left-0 z-50 md:z-auto
-          w-64 bg-white shadow-sm border-r overflow-y-auto transition-transform duration-300 ease-in-out
-        `}
-          >
+          <aside className="w-64 bg-white shadow-sm border-r overflow-y-auto">
             <div className="p-6">
               {/* Search Bar */}
               <div className="mb-6">
@@ -388,19 +305,17 @@ export default function Home() {
               </p>
               <div className="flex items-center space-x-6">
                 <a
-                  href="#"
-                  className="text-sm text-gray-500 hover:text-gray-700"
-                >
-                  Documentation
-                </a>
-                <a
-                  href="#"
+                  href="https://github.com/alirezazim03/OpenUI-Library"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-gray-500 hover:text-gray-700"
                 >
                   Contributing
                 </a>
                 <a
-                  href="#"
+                  href="https://github.com/alirezazim03/OpenUI-Library/blob/main/LICENSE"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-gray-500 hover:text-gray-700"
                 >
                   License
