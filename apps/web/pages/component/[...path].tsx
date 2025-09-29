@@ -116,10 +116,99 @@ export default function ComponentPage() {
                 Preview
               </h2>
               {isHtmlTailwind && component.files['index.html'] ? (
-                <div className="bg-white border rounded-xl shadow-sm p-6">
+                <div className="bg-gray-50 border rounded-xl shadow-sm p-6 relative">
+                  {/* Subtle checkerboard pattern for better contrast */}
+                  <div
+                    className="absolute inset-6 opacity-30 rounded-lg"
+                    style={{
+                      backgroundImage: `
+                        repeating-conic-gradient(
+                          #f8f9fa 0% 25%,
+                          #e9ecef 25% 50%,
+                          #f8f9fa 50% 75%,
+                          #e9ecef 75% 100%
+                        )
+                      `,
+                      backgroundSize: '20px 20px',
+                    }}
+                  />
                   <iframe
-                    srcDoc={component.files['index.html']}
-                    className="w-full h-96 border-0"
+                    srcDoc={`
+                      <style>
+                        /* Contrast background for better visibility */
+                        body {
+                          background: #f8f9fa;
+                          background-image: repeating-conic-gradient(
+                            #f8f9fa 0% 25%,
+                            #e9ecef 25% 50%,
+                            #f8f9fa 50% 75%,
+                            #e9ecef 75% 100%
+                          );
+                          background-size: 20px 20px;
+                          margin: 0;
+                          padding: 20px;
+                        }
+                        
+                        /* Disable all interactive elements in preview */
+                        button, input, textarea, select, a, [onclick], [onsubmit] {
+                          pointer-events: none !important;
+                          cursor: default !important;
+                        }
+                        
+                        /* Disable form submission */
+                        form {
+                          pointer-events: none !important;
+                        }
+                        
+                        /* Disable hover effects */
+                        *:hover {
+                          cursor: default !important;
+                        }
+                      </style>
+                      ${component.files['index.html']}
+                      <script>
+                        // Prevent all form submissions and link navigation
+                        document.addEventListener('DOMContentLoaded', function() {
+                          // Disable all forms
+                          const forms = document.querySelectorAll('form');
+                          forms.forEach(form => {
+                            form.addEventListener('submit', function(e) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              return false;
+                            });
+                          });
+                          
+                          // Disable all links
+                          const links = document.querySelectorAll('a');
+                          links.forEach(link => {
+                            link.addEventListener('click', function(e) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              return false;
+                            });
+                          });
+                          
+                          // Disable all buttons
+                          const buttons = document.querySelectorAll('button');
+                          buttons.forEach(button => {
+                            button.disabled = true;
+                            button.addEventListener('click', function(e) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              return false;
+                            });
+                          });
+                          
+                          // Disable all inputs
+                          const inputs = document.querySelectorAll('input, textarea, select');
+                          inputs.forEach(input => {
+                            input.disabled = true;
+                          });
+                        });
+                      </script>
+                    `}
+                    className="w-full h-64 border-0 relative z-10 rounded-lg"
                     title={`${component.name} preview`}
                   />
                 </div>
