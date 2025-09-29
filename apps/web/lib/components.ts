@@ -47,6 +47,7 @@ export function getComponentsData(): ComponentMetadata[] {
         })
       } catch (error) {
         // Log parsing errors but continue processing other components
+        // eslint-disable-next-line no-console
         console.warn(
           `Skipping invalid component metadata in ${file}:`,
           (error as Error).message
@@ -56,6 +57,7 @@ export function getComponentsData(): ComponentMetadata[] {
 
     return components
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(
       'Error reading components directory:',
       (error as Error).message
@@ -109,6 +111,7 @@ export function getComponentByPath(
       files: componentFiles,
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(
       `Error reading component ${componentPath}:`,
       (error as Error).message

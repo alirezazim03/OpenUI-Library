@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import type { ReactPreviewProps } from '../types'
 
 const ReactPreview: React.FC<ReactPreviewProps> = ({

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 
 interface NavbarProps {
@@ -14,9 +15,11 @@ export default function Navbar({ currentPage = 'home' }: NavbarProps) {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3">
-              <img
+              <Image
                 src="https://xbllreuvbgzawhgemndh.supabase.co/storage/v1/object/public/material/openUI.png"
                 alt="Open UI Library Logo"
+                width={64}
+                height={64}
                 className="w-16 h-16 object-contain"
               />
               <div>
