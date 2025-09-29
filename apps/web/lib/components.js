@@ -45,9 +45,9 @@ function getComponentsData() {
           name: pathParts[2],
         })
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(
-          `Error reading component metadata from ${file}:`,
+        // Log parsing errors but continue processing other components
+        console.warn(
+          `Skipping invalid component metadata in ${file}:`,
           error.message
         )
       }
@@ -55,8 +55,7 @@ function getComponentsData() {
 
     return components
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error reading components:', error.message)
+    console.error('Error reading components directory:', error.message)
     return []
   }
 }
@@ -104,7 +103,6 @@ function getComponentByPath(componentPath) {
       files: componentFiles,
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(`Error reading component ${componentPath}:`, error.message)
     return null
   }

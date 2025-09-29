@@ -9,6 +9,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     fetch('/api/components')
@@ -18,7 +23,6 @@ export default function Home() {
         setLoading(false)
       })
       .catch(err => {
-        // eslint-disable-next-line no-console
         console.error('Failed to load components:', err)
         setLoading(false)
       })

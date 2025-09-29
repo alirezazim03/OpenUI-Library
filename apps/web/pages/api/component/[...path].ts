@@ -17,7 +17,6 @@ export default function handler(
 
     res.status(200).json({ component })
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error in /api/component/[...path]:', error)
     res.status(500).json({ error: 'Failed to load component' })
   }

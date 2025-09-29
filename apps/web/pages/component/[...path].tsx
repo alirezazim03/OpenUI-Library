@@ -28,7 +28,6 @@ export default function ComponentPage() {
         setLoading(false)
       })
       .catch(err => {
-        // eslint-disable-next-line no-console
         console.error('Failed to load component:', err)
         setError('Failed to load component')
         setLoading(false)

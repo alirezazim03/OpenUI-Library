@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import type { ReactPreviewProps } from '../types'
 
 const ReactPreview: React.FC<ReactPreviewProps> = ({
@@ -10,8 +11,15 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
     useState<React.ComponentType | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isClient) return
+
     const loadComponent = async () => {
       try {
         setLoading(true)
@@ -61,7 +69,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
     }
 
     loadComponent()
-  }, [componentFiles, componentName])
+  }, [componentFiles, componentName, isClient])
 
   const createComponentFromCode = (
     code: string,
@@ -319,7 +327,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
     return props
   }
 
-  if (loading) {
+  if (!isClient || loading) {
     return (
       <div className="bg-white border rounded-lg p-4 h-64 flex items-center justify-center">
         <div className="text-center">
@@ -366,6 +374,18 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           <strong>Interactive Preview:</strong> This is a fully functional
           recreation of the {componentName} component with working state and
           interactions.
+        </div>
+      </div>
+    )
+  }
+
+  // Only render interactive content on client side to avoid hydration issues
+  if (!isClient) {
+    return (
+      <div className="bg-white border rounded-lg p-4 h-64 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-2"></div>
+          <p className="text-gray-600">Loading preview...</p>
         </div>
       </div>
     )
