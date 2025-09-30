@@ -3,7 +3,7 @@
   "category": "navbar",
   "framework": "react",
   "tags": ["ecommerce", "sticky", "shopping-cart", "search"],
-  "author": "OpenUI Library",
+  "author": "alirezazim03",
   "license": "MIT",
   "version": "1.0.0",
   "preview": "A sticky navigation bar designed for ecommerce with search and cart functionality",

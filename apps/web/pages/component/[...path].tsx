@@ -11,6 +11,21 @@ export default function ComponentPage() {
   const [component, setComponent] = useState<ComponentWithFiles | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
+    {}
+  )
+
+  const copyToClipboard = async (text: string, key: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedStates(prev => ({ ...prev, [key]: true }))
+      setTimeout(() => {
+        setCopiedStates(prev => ({ ...prev, [key]: false }))
+      }, 2000)
+    } catch (_err) {
+      // Failed to copy to clipboard
+    }
+  }
 
   useEffect(() => {
     if (!path) return
@@ -27,9 +42,7 @@ export default function ComponentPage() {
         }
         setLoading(false)
       })
-      .catch(err => {
-        // eslint-disable-next-line no-console
-        console.error('Failed to load component:', err)
+      .catch(_err => {
         setError('Failed to load component')
         setLoading(false)
       })
@@ -92,7 +105,7 @@ export default function ComponentPage() {
             <h1 className="text-3xl font-bold text-gray-900">
               {component.name}
             </h1>
-            <div className="flex items-center space-x-4 mt-2">
+            <div className="flex items-center space-x-4 mt-3">
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                 {component.framework}
               </span>
@@ -103,6 +116,31 @@ export default function ComponentPage() {
                 <span className="text-sm text-gray-600">
                   {component.license} License
                 </span>
+              )}
+              {component.author && (
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-500 mr-2">by</span>
+                  <a
+                    href={`https://github.com/${component.author}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200"
+                  >
+                    <svg
+                      className="w-4 h-4 mr-1.5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    @{component.author}
+                  </a>
+                </div>
               )}
             </div>
           </div>
@@ -116,10 +154,99 @@ export default function ComponentPage() {
                 Preview
               </h2>
               {isHtmlTailwind && component.files['index.html'] ? (
-                <div className="bg-white border rounded-xl shadow-sm p-6">
+                <div className="bg-gray-50 border rounded-xl shadow-sm p-6 relative">
+                  {/* Subtle checkerboard pattern for better contrast */}
+                  <div
+                    className="absolute inset-6 opacity-30 rounded-lg"
+                    style={{
+                      backgroundImage: `
+                        repeating-conic-gradient(
+                          #f8f9fa 0% 25%,
+                          #e9ecef 25% 50%,
+                          #f8f9fa 50% 75%,
+                          #e9ecef 75% 100%
+                        )
+                      `,
+                      backgroundSize: '20px 20px',
+                    }}
+                  />
                   <iframe
-                    srcDoc={component.files['index.html']}
-                    className="w-full h-96 border-0"
+                    srcDoc={`
+                      <style>
+                        /* Contrast background for better visibility */
+                        body {
+                          background: #f8f9fa;
+                          background-image: repeating-conic-gradient(
+                            #f8f9fa 0% 25%,
+                            #e9ecef 25% 50%,
+                            #f8f9fa 50% 75%,
+                            #e9ecef 75% 100%
+                          );
+                          background-size: 20px 20px;
+                          margin: 0;
+                          padding: 20px;
+                        }
+                        
+                        /* Disable all interactive elements in preview */
+                        button, input, textarea, select, a, [onclick], [onsubmit] {
+                          pointer-events: none !important;
+                          cursor: default !important;
+                        }
+                        
+                        /* Disable form submission */
+                        form {
+                          pointer-events: none !important;
+                        }
+                        
+                        /* Disable hover effects */
+                        *:hover {
+                          cursor: default !important;
+                        }
+                      </style>
+                      ${component.files['index.html']}
+                      <script>
+                        // Prevent all form submissions and link navigation
+                        document.addEventListener('DOMContentLoaded', function() {
+                          // Disable all forms
+                          const forms = document.querySelectorAll('form');
+                          forms.forEach(form => {
+                            form.addEventListener('submit', function(e) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              return false;
+                            });
+                          });
+                          
+                          // Disable all links
+                          const links = document.querySelectorAll('a');
+                          links.forEach(link => {
+                            link.addEventListener('click', function(e) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              return false;
+                            });
+                          });
+                          
+                          // Disable all buttons
+                          const buttons = document.querySelectorAll('button');
+                          buttons.forEach(button => {
+                            button.disabled = true;
+                            button.addEventListener('click', function(e) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              return false;
+                            });
+                          });
+                          
+                          // Disable all inputs
+                          const inputs = document.querySelectorAll('input, textarea, select');
+                          inputs.forEach(input => {
+                            input.disabled = true;
+                          });
+                        });
+                      </script>
+                    `}
+                    className="w-full h-64 border-0 relative z-10 rounded-lg"
                     title={`${component.name} preview`}
                   />
                 </div>
@@ -139,230 +266,282 @@ export default function ComponentPage() {
               )}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Component Info Section */}
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  Component Info
-                </h2>
-                <div className="bg-white rounded-lg shadow p-6 space-y-4">
-                  {component.author && (
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">
-                        Author
-                      </dt>
-                      <dd className="text-sm text-gray-900">
-                        {component.author}
-                      </dd>
-                    </div>
-                  )}
-
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">
-                      Category
-                    </dt>
-                    <dd className="text-sm text-gray-900 capitalize">
-                      {component.category}
-                    </dd>
-                  </div>
-
-                  {component.tags && component.tags.length > 0 && (
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">
-                        Tags
-                      </dt>
-                      <dd className="flex flex-wrap gap-1 mt-1">
-                        {component.tags.map(tag => (
-                          <span
-                            key={tag}
-                            className="inline-flex items-center px-2 py-1 rounded text-xs bg-gray-100 text-gray-800"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </dd>
-                    </div>
-                  )}
-
-                  {component.demoUrl && (
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">
-                        Demo URL
-                      </dt>
-                      <dd>
-                        <a
-                          href={component.demoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 text-sm"
-                        >
-                          View Demo →
-                        </a>
-                      </dd>
-                    </div>
-                  )}
-                </div>
+            {/* Optional: Show demo URL prominently if available */}
+            {component.demoUrl && (
+              <div className="mb-8">
+                <a
+                  href={component.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                >
+                  View Live Demo
+                  <svg
+                    className="ml-2 -mr-1 w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </a>
               </div>
+            )}
 
-              {/* Usage Section */}
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  Usage
-                </h2>
-                <div className="bg-white rounded-lg shadow p-6 space-y-4">
-                  <div className="prose prose-sm text-gray-600">
-                    <p className="mb-4">
-                      Copy the component code and customize it for your project:
-                    </p>
-                    <ol className="list-decimal list-inside space-y-2 text-sm">
-                      <li>
-                        Install required dependencies (React, Tailwind CSS)
-                      </li>
-                      <li>Copy the component code to your project</li>
-                      <li>Import and use the component in your application</li>
-                      <li>Customize props and styling as needed</li>
-                    </ol>
-                  </div>
-
-                  {component.props && component.props.length > 0 && (
-                    <div className="mt-4">
-                      <h3 className="text-sm font-medium text-gray-900 mb-2">
-                        Props
-                      </h3>
-                      <div className="space-y-2">
-                        {component.props.map((prop, index: number) => (
-                          <div
-                            key={index}
-                            className="text-xs bg-gray-50 p-2 rounded"
-                          >
-                            <span className="font-medium text-indigo-600">
-                              {prop.name}
-                            </span>
-                            <span className="text-gray-500 ml-2">
-                              ({prop.type})
-                            </span>
-                            <p className="text-gray-600 mt-1">
-                              {prop.description}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {component.demoUrl && (
-                    <div className="pt-4 border-t">
-                      <a
-                        href={component.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        View Live Demo
-                        <svg
-                          className="ml-2 -mr-1 w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Tips Section */}
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  Customization Tips
-                </h2>
-                <div className="bg-white rounded-lg shadow p-6">
-                  <div className="space-y-3 text-sm text-gray-600">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-5 h-5 text-indigo-500 mt-0.5">
-                        <svg fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-3">
-                        <p>
-                          <span className="font-medium">Styling:</span> Modify
-                          Tailwind classes to match your design system
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-5 h-5 text-indigo-500 mt-0.5">
-                        <svg fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-3">
-                        <p>
-                          <span className="font-medium">Responsiveness:</span>{' '}
-                          Test on different screen sizes
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-5 h-5 text-indigo-500 mt-0.5">
-                        <svg fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-3">
-                        <p>
-                          <span className="font-medium">Accessibility:</span>{' '}
-                          Ensure proper ARIA labels and keyboard navigation
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Code Section - Full Width */}
+            {/* Code Section - Two Panel Layout */}
             <div className="mt-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-                Source Code
+                Documentation & Code
               </h2>
-              <div className="space-y-4">
-                {Object.entries(component.files).map(
-                  ([filename, content]: [string, string]) => (
-                    <div key={filename} className="bg-white rounded-lg shadow">
-                      <div className="px-4 py-3 bg-gray-50 border-b rounded-t-lg">
-                        <h3 className="text-sm font-medium text-gray-900">
-                          {filename}
-                        </h3>
-                      </div>
-                      <div className="p-4">
-                        <pre className="text-sm bg-gray-900 text-gray-100 p-4 rounded overflow-x-auto">
-                          <code>{content}</code>
-                        </pre>
-                      </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* README Panel */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                    <div className="flex items-center space-x-2">
+                      <svg
+                        className="w-5 h-5 text-blue-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        README.md
+                      </h3>
                     </div>
-                  )
-                )}
+                  </div>
+                  <div className="p-6 max-h-96 overflow-y-auto">
+                    <div className="prose prose-sm max-w-none">
+                      <h1 className="text-xl font-bold text-gray-900 mb-3">
+                        {component.name}
+                      </h1>
+                      <p className="text-gray-600 mb-4">
+                        A feature-rich {component.category} component designed
+                        for {component.framework} applications.
+                      </p>
+                      <p className="text-sm text-gray-500 mb-4">
+                        <strong>Author:</strong>{' '}
+                        <a
+                          href={`https://github.com/${component.author}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          @{component.author}
+                        </a>
+                      </p>
+
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        Features
+                      </h2>
+                      <ul className="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                        <li>Modern and responsive design</li>
+                        <li>Easy to customize</li>
+                        <li>
+                          Built with {component.framework}
+                          {component.framework === 'react'
+                            ? ' and Tailwind CSS'
+                            : ''}
+                        </li>
+                      </ul>
+
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        Installation
+                      </h2>
+                      <ol className="list-decimal list-inside text-gray-600 mb-4 space-y-1">
+                        <li>Copy the component code to your project</li>
+                        <li>
+                          Install required dependencies (
+                          {component.framework === 'react'
+                            ? 'React, Tailwind CSS'
+                            : 'Tailwind CSS'}
+                          )
+                        </li>
+                        <li>Import and use the component</li>
+                      </ol>
+
+                      {component.props && component.props.length > 0 && (
+                        <>
+                          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                            Props
+                          </h2>
+                          <div className="overflow-x-auto mb-4">
+                            <table className="min-w-full text-sm">
+                              <thead>
+                                <tr className="border-b">
+                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                    Prop
+                                  </th>
+                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                    Type
+                                  </th>
+                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                    Description
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {component.props.map((prop, index) => (
+                                  <tr key={index} className="border-b">
+                                    <td className="py-2 font-mono text-blue-600">
+                                      {prop.name}
+                                    </td>
+                                    <td className="py-2 text-gray-600">
+                                      {prop.type}
+                                    </td>
+                                    <td className="py-2 text-gray-600">
+                                      {prop.description}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </>
+                      )}
+
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        Customization
+                      </h2>
+                      <ul className="list-disc list-inside text-gray-600 space-y-1">
+                        <li>
+                          Modify Tailwind classes to match your design system
+                        </li>
+                        <li>
+                          Update colors, spacing, and typography as needed
+                        </li>
+                        <li>Add additional functionality as required</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Component Code Panel */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-200">
+                    <div className="flex items-center space-x-2">
+                      <svg
+                        className="w-5 h-5 text-gray-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        />
+                      </svg>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Component Code
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const allCode = Object.entries(component.files)
+                          .filter(([filename]) => {
+                            // Only include actual component files, exclude documentation
+                            const lowerFilename = filename.toLowerCase()
+                            return (
+                              !lowerFilename.includes('readme') &&
+                              !lowerFilename.includes('.md') &&
+                              filename !== 'component.json'
+                            )
+                          })
+                          .map(
+                            ([filename, content]) =>
+                              `// ${filename}\n${content}`
+                          )
+                          .join('\n\n')
+                        copyToClipboard(allCode, 'component')
+                      }}
+                      className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                        copiedStates.component
+                          ? 'bg-green-100 text-green-700 border border-green-200'
+                          : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                      }`}
+                    >
+                      {copiedStates.component ? (
+                        <>
+                          <svg
+                            className="w-4 h-4 mr-1.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="w-4 h-4 mr-1.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
+                          </svg>
+                          Copy All
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {Object.entries(component.files)
+                      .filter(([filename]) => {
+                        // Only show actual component files, exclude documentation
+                        const lowerFilename = filename.toLowerCase()
+                        return (
+                          !lowerFilename.includes('readme') &&
+                          !lowerFilename.includes('.md') &&
+                          filename !== 'component.json'
+                        )
+                      })
+                      .map(([filename, content]: [string, string], index) => (
+                        <div key={filename}>
+                          <div className="px-6 py-3 bg-gray-800 text-gray-200">
+                            <span className="text-sm font-mono">
+                              {filename}
+                            </span>
+                          </div>
+                          <div className="px-6 py-4 bg-gray-900">
+                            <pre className="text-sm text-gray-100 overflow-x-auto">
+                              <code>{content}</code>
+                            </pre>
+                          </div>
+                          {index <
+                            Object.entries(component.files).length - 1 && (
+                            <div className="border-t border-gray-700"></div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

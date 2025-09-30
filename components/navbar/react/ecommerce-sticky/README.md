@@ -2,6 +2,8 @@
 
 A feature-rich sticky navigation bar designed specifically for ecommerce applications.
 
+**Author:** [@alirezazim03](https://github.com/alirezazim03)
+
 ## Features
 
 - Sticky positioning that stays at the top when scrolling
@@ -13,10 +15,10 @@ A feature-rich sticky navigation bar designed specifically for ecommerce applica
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `cartItems` | number | 0 | Number of items in the shopping cart |
-| `onSearch` | function | undefined | Callback function called when search is performed |
+| Prop        | Type     | Default   | Description                                       |
+| ----------- | -------- | --------- | ------------------------------------------------- |
+| `cartItems` | number   | 0         | Number of items in the shopping cart              |
+| `onSearch`  | function | undefined | Callback function called when search is performed |
 
 ## Usage
 
@@ -24,17 +26,14 @@ A feature-rich sticky navigation bar designed specifically for ecommerce applica
 import Navbar from './Navbar'
 
 function App() {
-  const handleSearch = (query) => {
+  const handleSearch = query => {
     console.log('Searching for:', query)
     // Implement your search logic here
   }
 
   return (
     <div>
-      <Navbar 
-        cartItems={3} 
-        onSearch={handleSearch}
-      />
+      <Navbar cartItems={3} onSearch={handleSearch} />
       {/* Rest of your app */}
     </div>
   )
