@@ -304,7 +304,7 @@ export default function ComponentPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* README Panel */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                  <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                  <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
                     <div className="flex items-center space-x-2">
                       <svg
                         className="w-5 h-5 text-blue-600"
@@ -323,55 +323,6 @@ export default function ComponentPage() {
                         README.md
                       </h3>
                     </div>
-                    <button
-                      onClick={() =>
-                        copyToClipboard(
-                          `# ${component.name}\n\nA feature-rich ${component.category} component designed for ${component.framework} applications.\n\n**Author:** [@${component.author}](https://github.com/${component.author})\n\n## Features\n\n- Modern and responsive design\n- Easy to customize\n- Built with ${component.framework}${component.framework === 'react' ? ' and Tailwind CSS' : ''}\n\n## Installation\n\n1. Copy the component code to your project\n2. Install required dependencies (${component.framework === 'react' ? 'React, Tailwind CSS' : 'Tailwind CSS'})\n3. Import and use the component\n\n## Usage\n\n\`\`\`${component.framework === 'react' ? 'jsx' : 'html'}\n${Object.entries(component.files).find(([filename]) => filename.includes(component.framework === 'react' ? '.jsx' : '.html'))?.[1] || Object.values(component.files)[0] || ''}\n\`\`\`\n\n${component.props && component.props.length > 0 ? '## Props\n\n| Prop | Type | Description |\n|------|------|-------------|\n' + component.props.map(prop => `| \`${prop.name}\` | ${prop.type} | ${prop.description} |`).join('\n') + '\n\n' : ''}## Customization\n\n- Modify Tailwind classes to match your design system\n- Update colors, spacing, and typography as needed\n- Add additional functionality as required\n\n## License\n\n${component.license || 'MIT'} License`,
-                          'readme'
-                        )
-                      }
-                      className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
-                        copiedStates.readme
-                          ? 'bg-green-100 text-green-700 border border-green-200'
-                          : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                      }`}
-                    >
-                      {copiedStates.readme ? (
-                        <>
-                          <svg
-                            className="w-4 h-4 mr-1.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          Copied!
-                        </>
-                      ) : (
-                        <>
-                          <svg
-                            className="w-4 h-4 mr-1.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                            />
-                          </svg>
-                          Copy
-                        </>
-                      )}
-                    </button>
                   </div>
                   <div className="p-6 max-h-96 overflow-y-auto">
                     <div className="prose prose-sm max-w-none">
