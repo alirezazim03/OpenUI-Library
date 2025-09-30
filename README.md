@@ -13,21 +13,6 @@ A community-driven, open-source library of reusable UI components for modern web
 - **Type Safe**: TypeScript support for applicable frameworks
 - **Accessible**: Built with accessibility best practices
 
-## 📦 Components
-
-Currently available components:
-
-### Navbars
-- **Simple Center** (Tailwind) - Clean, centered navigation
-- **Ecommerce Sticky** (React) - Feature-rich ecommerce navigation
-
-### Coming Soon
-- Footers
-- Buttons
-- Forms
-- Cards
-- Hero sections
-
 ## 🏗️ Project Structure
 
 This is a monorepo managed with pnpm workspaces:
@@ -50,7 +35,7 @@ open-ui-library/
 
 ### View Components
 
-Visit the [live preview site](https://your-domain.vercel.app) to browse all available components.
+Visit the [live preview site](https://www.openuilibrary.com/) to browse all available components.
 
 ### Local Development
 
