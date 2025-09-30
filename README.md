@@ -3,8 +3,6 @@
 A community-driven, open-source library of reusable UI components for modern web development.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![GitHub issues](https://img.shields.io/github/issues/YOUR_HANDLE/open-ui-library)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/YOUR_HANDLE/open-ui-library)
 
 ## 🚀 Features
 
