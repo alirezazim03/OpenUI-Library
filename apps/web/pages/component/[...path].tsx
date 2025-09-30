@@ -11,6 +11,21 @@ export default function ComponentPage() {
   const [component, setComponent] = useState<ComponentWithFiles | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
+    {}
+  )
+
+  const copyToClipboard = async (text: string, key: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedStates(prev => ({ ...prev, [key]: true }))
+      setTimeout(() => {
+        setCopiedStates(prev => ({ ...prev, [key]: false }))
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to copy: ', err)
+    }
+  }
 
   useEffect(() => {
     if (!path) return
@@ -280,28 +295,350 @@ export default function ComponentPage() {
               </div>
             )}
 
-            {/* Code Section - Full Width */}
+            {/* Code Section - Two Panel Layout */}
             <div className="mt-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-                Source Code
+                Documentation & Code
               </h2>
-              <div className="space-y-4">
-                {Object.entries(component.files).map(
-                  ([filename, content]: [string, string]) => (
-                    <div key={filename} className="bg-white rounded-lg shadow">
-                      <div className="px-4 py-3 bg-gray-50 border-b rounded-t-lg">
-                        <h3 className="text-sm font-medium text-gray-900">
-                          {filename}
-                        </h3>
-                      </div>
-                      <div className="p-4">
-                        <pre className="text-sm bg-gray-900 text-gray-100 p-4 rounded overflow-x-auto">
-                          <code>{content}</code>
-                        </pre>
-                      </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* README Panel */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                    <div className="flex items-center space-x-2">
+                      <svg
+                        className="w-5 h-5 text-blue-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        README.md
+                      </h3>
                     </div>
-                  )
-                )}
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          `# ${component.name}\n\nA feature-rich ${component.category} component designed for ${component.framework} applications.\n\n**Author:** [@${component.author}](https://github.com/${component.author})\n\n## Features\n\n- Modern and responsive design\n- Easy to customize\n- Built with ${component.framework}${component.framework === 'react' ? ' and Tailwind CSS' : ''}\n\n## Installation\n\n1. Copy the component code to your project\n2. Install required dependencies (${component.framework === 'react' ? 'React, Tailwind CSS' : 'Tailwind CSS'})\n3. Import and use the component\n\n## Usage\n\n\`\`\`${component.framework === 'react' ? 'jsx' : 'html'}\n${Object.entries(component.files).find(([filename]) => filename.includes(component.framework === 'react' ? '.jsx' : '.html'))?.[1] || Object.values(component.files)[0] || ''}\n\`\`\`\n\n${component.props && component.props.length > 0 ? '## Props\n\n| Prop | Type | Description |\n|------|------|-------------|\n' + component.props.map(prop => `| \`${prop.name}\` | ${prop.type} | ${prop.description} |`).join('\n') + '\n\n' : ''}## Customization\n\n- Modify Tailwind classes to match your design system\n- Update colors, spacing, and typography as needed\n- Add additional functionality as required\n\n## License\n\n${component.license || 'MIT'} License`,
+                          'readme'
+                        )
+                      }
+                      className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                        copiedStates.readme
+                          ? 'bg-green-100 text-green-700 border border-green-200'
+                          : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                      }`}
+                    >
+                      {copiedStates.readme ? (
+                        <>
+                          <svg
+                            className="w-4 h-4 mr-1.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="w-4 h-4 mr-1.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
+                          </svg>
+                          Copy
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <div className="p-6 max-h-96 overflow-y-auto">
+                    <div className="prose prose-sm max-w-none">
+                      <h1 className="text-xl font-bold text-gray-900 mb-3">
+                        {component.name}
+                      </h1>
+                      <p className="text-gray-600 mb-4">
+                        A feature-rich {component.category} component designed
+                        for {component.framework} applications.
+                      </p>
+                      <p className="text-sm text-gray-500 mb-4">
+                        <strong>Author:</strong>{' '}
+                        <a
+                          href={`https://github.com/${component.author}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          @{component.author}
+                        </a>
+                      </p>
+
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        Features
+                      </h2>
+                      <ul className="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                        <li>Modern and responsive design</li>
+                        <li>Easy to customize</li>
+                        <li>
+                          Built with {component.framework}
+                          {component.framework === 'react'
+                            ? ' and Tailwind CSS'
+                            : ''}
+                        </li>
+                      </ul>
+
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        Installation
+                      </h2>
+                      <ol className="list-decimal list-inside text-gray-600 mb-4 space-y-1">
+                        <li>Copy the component code to your project</li>
+                        <li>
+                          Install required dependencies (
+                          {component.framework === 'react'
+                            ? 'React, Tailwind CSS'
+                            : 'Tailwind CSS'}
+                          )
+                        </li>
+                        <li>Import and use the component</li>
+                      </ol>
+
+                      {component.props && component.props.length > 0 && (
+                        <>
+                          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                            Props
+                          </h2>
+                          <div className="overflow-x-auto mb-4">
+                            <table className="min-w-full text-sm">
+                              <thead>
+                                <tr className="border-b">
+                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                    Prop
+                                  </th>
+                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                    Type
+                                  </th>
+                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                    Description
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {component.props.map((prop, index) => (
+                                  <tr key={index} className="border-b">
+                                    <td className="py-2 font-mono text-blue-600">
+                                      {prop.name}
+                                    </td>
+                                    <td className="py-2 text-gray-600">
+                                      {prop.type}
+                                    </td>
+                                    <td className="py-2 text-gray-600">
+                                      {prop.description}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </>
+                      )}
+
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        Customization
+                      </h2>
+                      <ul className="list-disc list-inside text-gray-600 space-y-1">
+                        <li>
+                          Modify Tailwind classes to match your design system
+                        </li>
+                        <li>
+                          Update colors, spacing, and typography as needed
+                        </li>
+                        <li>Add additional functionality as required</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Component Code Panel */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-200">
+                    <div className="flex items-center space-x-2">
+                      <svg
+                        className="w-5 h-5 text-gray-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        />
+                      </svg>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Component Code
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const allCode = Object.entries(component.files)
+                          .filter(([filename]) => {
+                            // Only include actual component files, exclude documentation
+                            const lowerFilename = filename.toLowerCase()
+                            return (
+                              !lowerFilename.includes('readme') &&
+                              !lowerFilename.includes('.md') &&
+                              filename !== 'component.json'
+                            )
+                          })
+                          .map(
+                            ([filename, content]) =>
+                              `// ${filename}\n${content}`
+                          )
+                          .join('\n\n')
+                        copyToClipboard(allCode, 'component')
+                      }}
+                      className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                        copiedStates.component
+                          ? 'bg-green-100 text-green-700 border border-green-200'
+                          : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                      }`}
+                    >
+                      {copiedStates.component ? (
+                        <>
+                          <svg
+                            className="w-4 h-4 mr-1.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="w-4 h-4 mr-1.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
+                          </svg>
+                          Copy All
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {Object.entries(component.files)
+                      .filter(([filename]) => {
+                        // Only show actual component files, exclude documentation
+                        const lowerFilename = filename.toLowerCase()
+                        return (
+                          !lowerFilename.includes('readme') &&
+                          !lowerFilename.includes('.md') &&
+                          filename !== 'component.json'
+                        )
+                      })
+                      .map(([filename, content]: [string, string], index) => (
+                        <div key={filename}>
+                          <div className="flex items-center justify-between px-6 py-3 bg-gray-800 text-gray-200">
+                            <span className="text-sm font-mono">
+                              {filename}
+                            </span>
+                            <button
+                              onClick={() =>
+                                copyToClipboard(content, `file-${index}`)
+                              }
+                              className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                                copiedStates[`file-${index}`]
+                                  ? 'bg-green-600 text-white'
+                                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                              }`}
+                            >
+                              {copiedStates[`file-${index}`] ? (
+                                <>
+                                  <svg
+                                    className="w-3 h-3 mr-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M5 13l4 4L19 7"
+                                    />
+                                  </svg>
+                                  Copied
+                                </>
+                              ) : (
+                                <>
+                                  <svg
+                                    className="w-3 h-3 mr-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                    />
+                                  </svg>
+                                  Copy
+                                </>
+                              )}
+                            </button>
+                          </div>
+                          <div className="px-6 py-4 bg-gray-900">
+                            <pre className="text-sm text-gray-100 overflow-x-auto">
+                              <code>{content}</code>
+                            </pre>
+                          </div>
+                          {index <
+                            Object.entries(component.files).length - 1 && (
+                            <div className="border-t border-gray-700"></div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
