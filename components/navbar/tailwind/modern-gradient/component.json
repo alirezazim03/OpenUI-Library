@@ -1,0 +1,10 @@
+{
+  "name": "modern-gradient",
+  "category": "navbar",
+  "framework": "tailwind",
+  "tags": ["responsive", "modern", "gradient", "animated", "glass-morphism"],
+  "author": "alirezazim03",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A stunning modern navigation bar with gradient backgrounds, smooth animations, and beautiful hover effects"
+}

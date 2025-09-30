@@ -1,12 +1,12 @@
 {
-  "name": "ecommerce-sticky",
+  "name": "basic-ecommerce",
   "category": "navbar",
   "framework": "react",
-  "tags": ["ecommerce", "sticky", "shopping-cart", "search"],
+  "tags": ["ecommerce", "basic", "shopping-cart", "search"],
   "author": "alirezazim03",
   "license": "MIT",
   "version": "1.0.0",
-  "preview": "A sticky navigation bar designed for ecommerce with search and cart functionality",
+  "preview": "A basic ecommerce navigation bar with search and cart functionality",
   "props": [
     {
       "name": "cartItems",
