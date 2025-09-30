@@ -2,8 +2,6 @@
 
 A community-driven, open-source library of reusable UI components for modern web development.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-
 ## 🚀 Features
 
 - **Multi-Framework Support**: Components for React, Vue, Svelte, HTML/CSS, and Tailwind
