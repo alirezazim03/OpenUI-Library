@@ -1,43 +1,328 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Center Navbar</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Gradient Navbar</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <a href="#" class="text-xl font-bold text-gray-800">
-                        Logo
-                    </a>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-600 hover:text-gray-800 transition duration-300">
-                        Home
-                    </a>
-                    <a href="#" class="text-gray-600 hover:text-gray-800 transition duration-300">
-                        About
-                    </a>
-                    <a href="#" class="text-gray-600 hover:text-gray-800 transition duration-300">
-                        Services
-                    </a>
-                    <a href="#" class="text-gray-600 hover:text-gray-800 transition duration-300">
-                        Contact
-                    </a>
-                </div>
-                <div class="md:hidden">
-                    <button class="text-gray-600 hover:text-gray-800 focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-in-out',
+              'slide-down': 'slideDown 0.3s ease-out',
+              'pulse-glow': 'pulseGlow 2s infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideDown: {
+                '0%': { opacity: '0', transform: 'translateY(-20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              pulseGlow: {
+                '0%, 100%': { boxShadow: '0 0 5px rgba(38, 99, 235, 0.5)' },
+                '50%': { boxShadow: '0 0 20px rgba(38, 99, 235, 0.8)' },
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      .nav-link {
+        position: relative;
+        overflow: hidden;
+      }
+      .nav-link::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #2663eb, #1d4ed8);
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::before {
+        width: 100%;
+      }
+      .mobile-menu {
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+      }
+      .mobile-menu.open {
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Modern Navbar with Gradient Background -->
+    <nav
+      class="bg-gradient-to-r from-white via-blue-50 to-blue-100 backdrop-blur-lg border-b border-white/20 shadow-lg shadow-blue-500/10 sticky top-0 z-50"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4 lg:py-6">
+          <!-- Logo Section with Glow Effect -->
+          <div class="flex items-center group">
+            <div
+              style="background: linear-gradient(to right, #2663eb, #1d4ed8)"
+              class="p-2 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300"
+            >
+              <svg
+                class="w-8 h-8 text-white"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"
+                />
+              </svg>
             </div>
+            <a
+              href="#"
+              style="
+                background: linear-gradient(to right, #2663eb, #1d4ed8);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+              "
+              class="ml-3 text-2xl font-bold transition-all duration-300 hover:opacity-80"
+            >
+              Logo
+            </a>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden lg:flex items-center space-x-1">
+            <a
+              href="#"
+              class="nav-link px-4 py-2 text-gray-700 font-medium transition-all duration-300 rounded-lg hover:bg-white/50"
+              style="--hover-color: #2663eb"
+              onmouseover="this.style.color='#2663eb'"
+              onmouseout="this.style.color='#374151'"
+            >
+              Home
+            </a>
+            <a
+              href="#"
+              class="nav-link px-4 py-2 text-gray-700 font-medium transition-all duration-300 rounded-lg hover:bg-white/50"
+              style="--hover-color: #2663eb"
+              onmouseover="this.style.color='#2663eb'"
+              onmouseout="this.style.color='#374151'"
+            >
+              About
+            </a>
+            <a
+              href="#"
+              class="nav-link px-4 py-2 text-gray-700 font-medium transition-all duration-300 rounded-lg hover:bg-white/50"
+              style="--hover-color: #2663eb"
+              onmouseover="this.style.color='#2663eb'"
+              onmouseout="this.style.color='#374151'"
+            >
+              Services
+            </a>
+            <a
+              href="#"
+              class="nav-link px-4 py-2 text-gray-700 font-medium transition-all duration-300 rounded-lg hover:bg-white/50"
+              style="--hover-color: #2663eb"
+              onmouseover="this.style.color='#2663eb'"
+              onmouseout="this.style.color='#374151'"
+            >
+              Portfolio
+            </a>
+            <a
+              href="#"
+              class="nav-link px-4 py-2 text-gray-700 font-medium transition-all duration-300 rounded-lg hover:bg-white/50"
+              style="--hover-color: #2663eb"
+              onmouseover="this.style.color='#2663eb'"
+              onmouseout="this.style.color='#374151'"
+            >
+              Contact
+            </a>
+          </div>
+
+          <!-- CTA Button and Mobile Menu Button -->
+          <div class="flex items-center space-x-4">
+            <!-- CTA Button -->
+            <button
+              style="background: linear-gradient(to right, #2663eb, #1d4ed8)"
+              class="hidden md:inline-flex items-center px-6 py-2.5 text-white font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl hover:opacity-90"
+            >
+              Get Started
+              <svg
+                class="ml-2 w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                ></path>
+              </svg>
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button
+              id="mobile-menu-btn"
+              class="lg:hidden p-2 text-gray-700 hover:bg-white/50 rounded-lg transition-all duration-300 focus:outline-none"
+              style="--hover-color: #2663eb; --focus-ring: #2663eb"
+              onmouseover="this.style.color='#2663eb'"
+              onmouseout="this.style.color='#374151'"
+              onfocus="this.style.boxShadow='0 0 0 2px #2663eb'"
+              onblur="this.style.boxShadow='none'"
+            >
+              <svg
+                id="menu-icon"
+                class="w-6 h-6 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+              <svg
+                id="close-icon"
+                class="w-6 h-6 hidden transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="mobile-menu lg:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200/50 shadow-lg"
+      >
+        <div class="px-4 py-6 space-y-4">
+          <a
+            href="#"
+            class="block px-4 py-3 text-gray-700 rounded-lg transition-all duration-300 font-medium"
+            style="--hover-bg: rgba(38, 99, 235, 0.1)"
+            onmouseover="this.style.color='#2663eb'; this.style.backgroundColor='rgba(38, 99, 235, 0.1)'"
+            onmouseout="this.style.color='#374151'; this.style.backgroundColor='transparent'"
+          >
+            Home
+          </a>
+          <a
+            href="#"
+            class="block px-4 py-3 text-gray-700 rounded-lg transition-all duration-300 font-medium"
+            style="--hover-bg: rgba(38, 99, 235, 0.1)"
+            onmouseover="this.style.color='#2663eb'; this.style.backgroundColor='rgba(38, 99, 235, 0.1)'"
+            onmouseout="this.style.color='#374151'; this.style.backgroundColor='transparent'"
+          >
+            About
+          </a>
+          <a
+            href="#"
+            class="block px-4 py-3 text-gray-700 rounded-lg transition-all duration-300 font-medium"
+            style="--hover-bg: rgba(38, 99, 235, 0.1)"
+            onmouseover="this.style.color='#2663eb'; this.style.backgroundColor='rgba(38, 99, 235, 0.1)'"
+            onmouseout="this.style.color='#374151'; this.style.backgroundColor='transparent'"
+          >
+            Services
+          </a>
+          <a
+            href="#"
+            class="block px-4 py-3 text-gray-700 rounded-lg transition-all duration-300 font-medium"
+            style="--hover-bg: rgba(38, 99, 235, 0.1)"
+            onmouseover="this.style.color='#2663eb'; this.style.backgroundColor='rgba(38, 99, 235, 0.1)'"
+            onmouseout="this.style.color='#374151'; this.style.backgroundColor='transparent'"
+          >
+            Portfolio
+          </a>
+          <a
+            href="#"
+            class="block px-4 py-3 text-gray-700 rounded-lg transition-all duration-300 font-medium"
+            style="--hover-bg: rgba(38, 99, 235, 0.1)"
+            onmouseover="this.style.color='#2663eb'; this.style.backgroundColor='rgba(38, 99, 235, 0.1)'"
+            onmouseout="this.style.color='#374151'; this.style.backgroundColor='transparent'"
+          >
+            Contact
+          </a>
+          <div class="pt-4 border-t border-gray-200">
+            <button
+              style="background: linear-gradient(to right, #2663eb, #1d4ed8)"
+              class="w-full flex items-center justify-center px-6 py-3 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:opacity-90"
+            >
+              Get Started
+              <svg
+                class="ml-2 w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </nav>
-</body>
+
+    <script>
+      // Mobile menu toggle functionality
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn')
+      const mobileMenu = document.getElementById('mobile-menu')
+      const menuIcon = document.getElementById('menu-icon')
+      const closeIcon = document.getElementById('close-icon')
+
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('open')
+        menuIcon.classList.toggle('hidden')
+        closeIcon.classList.toggle('hidden')
+      })
+
+      // Add scroll effect to navbar
+      window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('nav')
+        if (window.scrollY > 0) {
+          navbar.classList.add('shadow-xl')
+        } else {
+          navbar.classList.remove('shadow-xl')
+        }
+      })
+
+      // Add animation on load
+      document.addEventListener('DOMContentLoaded', () => {
+        const navElements = document.querySelectorAll('nav a, nav button')
+        navElements.forEach((el, index) => {
+          el.style.opacity = '0'
+          el.style.transform = 'translateY(-20px)'
+          setTimeout(() => {
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease'
+            el.style.opacity = '1'
+            el.style.transform = 'translateY(0)'
+          }, index * 100)
+        })
+      })
+    </script>
+  </body>
 </html>
