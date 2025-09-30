@@ -22,8 +22,8 @@ export default function ComponentPage() {
       setTimeout(() => {
         setCopiedStates(prev => ({ ...prev, [key]: false }))
       }, 2000)
-    } catch (err) {
-      console.error('Failed to copy: ', err)
+    } catch (_err) {
+      // Failed to copy to clipboard
     }
   }
 
@@ -42,9 +42,7 @@ export default function ComponentPage() {
         }
         setLoading(false)
       })
-      .catch(err => {
-        // eslint-disable-next-line no-console
-        console.error('Failed to load component:', err)
+      .catch(_err => {
         setError('Failed to load component')
         setLoading(false)
       })

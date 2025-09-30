@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
 import type { ReactPreviewProps } from '../types'
 
 const ReactPreview: React.FC<ReactPreviewProps> = ({
@@ -84,22 +83,8 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
       code.includes('<nav')
 
     if (isNavbarComponent) {
-      const NavbarComponent = ({
-        cartItems = 0,
-        onSearch,
-      }: {
-        cartItems?: number
-        onSearch?: (_query: string) => void
-      }) => {
+      const NavbarComponent = ({ cartItems = 0 }: { cartItems?: number }) => {
         const [searchQuery, setSearchQuery] = useState('')
-        const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-        const handleSearch = (e: React.FormEvent) => {
-          e.preventDefault()
-          if (onSearch) {
-            onSearch(searchQuery)
-          }
-        }
 
         return (
           <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -226,45 +211,12 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d={
-                          isMenuOpen
-                            ? 'M6 18L18 6M6 6l12 12'
-                            : 'M4 6h16M4 12h16M4 18h16'
-                        }
+                        d="M4 6h16M4 12h16M4 18h16"
                       />
                     </svg>
                   </button>
                 </div>
               </div>
-
-              {/* Mobile Menu */}
-              {isMenuOpen && (
-                <div className="md:hidden py-4 border-t border-gray-200">
-                  <div className="space-y-4">
-                    <div className="px-2">
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        placeholder="Search products..."
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-default"
-                        disabled
-                      />
-                    </div>
-                    <div className="flex flex-col space-y-2">
-                      <span className="px-2 py-2 text-gray-700 cursor-default">
-                        Products
-                      </span>
-                      <span className="px-2 py-2 text-gray-700 cursor-default">
-                        Categories
-                      </span>
-                      <span className="px-2 py-2 text-gray-700 cursor-default">
-                        Deals
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </nav>
         )
