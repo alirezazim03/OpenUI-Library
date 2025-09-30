@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@open-ui-library/ui-metadata": "workspace:*",
+    "@vercel/analytics": "^1.5.0",
     "glob": "^10.3.10",
     "next": "^14.0.0",
     "react": "^18.2.0",
