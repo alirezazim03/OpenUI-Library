@@ -12,6 +12,7 @@
     "type-check:watch": "tsc --noEmit --watch"
   },
   "dependencies": {
+    "@babel/standalone": "^7.28.4",
     "@open-ui-library/ui-metadata": "workspace:*",
     "@vercel/analytics": "^1.5.0",
     "glob": "^10.3.10",
@@ -20,6 +21,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/babel__standalone": "^7.1.9",
     "@types/node": "^20.19.17",
     "@types/react": "^18.3.24",
     "@types/react-dom": "^18.2.0",

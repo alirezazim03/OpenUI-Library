@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import type { ReactPreviewProps } from '../types'
 
+// Type declaration for Babel standalone
+declare const Babel: {
+  transform: (code: string, options: any) => { code?: string }
+}
+
+// Import Babel standalone
+const BabelStandalone = require('@babel/standalone')
+
 const ReactPreview: React.FC<ReactPreviewProps> = ({
   componentFiles,
   componentName,
@@ -46,13 +54,11 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           throw new Error('Could not extract React component')
         }
 
-        // Create wrapper with default props
+        // Create wrapper without any props - components should have their own defaults
         const ComponentWrapper = () => {
-          const defaultProps = getDefaultProps(componentName)
-
           return (
             <div className="w-full" style={{ minHeight: '200px' }}>
-              <Component {...defaultProps} />
+              <Component />
             </div>
           )
         }
@@ -73,193 +79,101 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
     code: string,
     componentName: string
   ): React.ComponentType<any> => {
-    // Analyze the component code to create an intelligent mock
-    // Check for navbar patterns in component name or the actual code
-    const isNavbarComponent =
-      componentName.includes('navbar') ||
-      componentName.includes('nav') ||
-      code.includes('navbar') ||
-      code.includes('nav className') ||
-      code.includes('<nav')
+    try {
+      // Use a more direct approach - create a module with the component code
+      // and use dynamic import to load it
 
-    if (isNavbarComponent) {
-      const NavbarComponent = ({ cartItems = 0 }: { cartItems?: number }) => {
-        const [searchQuery, setSearchQuery] = useState('')
+      // Prepare the component code as a module
+      const moduleCode = `
+        import React, { useState, useEffect } from 'react';
+        
+        ${code}
+      `
 
-        return (
-          <nav className="bg-white shadow-md sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center h-16">
-                {/* Logo */}
-                <div className="flex items-center">
-                  <span className="text-2xl font-bold text-indigo-600 cursor-default">
-                    ShopLogo
-                  </span>
-                </div>
+      // Create a blob URL for the module
+      const blob = new Blob([moduleCode], { type: 'application/javascript' })
+      const moduleUrl = URL.createObjectURL(blob)
 
-                {/* Search Bar */}
-                <div className="hidden md:flex flex-1 max-w-md mx-8">
-                  <div className="w-full">
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        placeholder="Search products..."
-                        className="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-default"
-                        disabled
-                      />
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg
-                          className="h-5 w-5 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      // Use Babel to transform JSX to JavaScript
+      let cleanCode = code
+        .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*/g, '')
+        .replace(/export\s+default\s+/, '')
+        .replace(/export\s+/, '')
 
-                {/* Navigation Links */}
-                <div className="hidden md:flex items-center space-x-8">
-                  <span className="text-gray-700 cursor-default">Products</span>
-                  <span className="text-gray-700 cursor-default">
-                    Categories
-                  </span>
-                  <span className="text-gray-700 cursor-default">Deals</span>
-                </div>
+      // Transform JSX using Babel
+      const transformedResult = BabelStandalone.transform(cleanCode, {
+        presets: [
+          [
+            'react',
+            {
+              runtime: 'classic',
+            },
+          ],
+        ],
+        plugins: [],
+      })
 
-                {/* Cart & User Actions */}
-                <div className="flex items-center space-x-4">
-                  <button className="text-gray-700 cursor-default" disabled>
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                  </button>
+      const transformedCode = transformedResult.code || cleanCode
 
-                  <button
-                    className="relative text-gray-700 cursor-default"
-                    disabled
-                  >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.293 2.293a1 1 0 00-.293.707V19a1 1 0 001 1h12a1 1 0 001-1v-3a1 1 0 00-.293-.707L16 13"
-                      />
-                    </svg>
-                    {cartItems > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {cartItems}
-                      </span>
-                    )}
-                  </button>
+      const wrappedCode = `
+        (function(React, useState, useEffect) {
+          ${transformedCode}
+          
+          return ${extractComponentName(code)};
+        })
+      `
 
-                  <button className="text-gray-700 cursor-default" disabled>
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                  </button>
+      // Execute the wrapped code
+      const componentFactory = eval(wrappedCode)
+      const Component = componentFactory(React, useState, useEffect)
 
-                  {/* Mobile menu button */}
-                  <button
-                    onClick={e => e.preventDefault()}
-                    className="md:hidden text-gray-700 cursor-default"
-                    disabled
-                  >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6h16M4 12h16M4 18h16"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </nav>
-        )
+      // Clean up the blob URL
+      URL.revokeObjectURL(moduleUrl)
+
+      if (typeof Component === 'function') {
+        Component.displayName = componentName
+        return Component
       }
-      NavbarComponent.displayName = 'NavbarComponent'
-      return NavbarComponent
-    }
 
-    // Default component for other types
-    const DefaultComponent = () => (
-      <div className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg text-center">
-        <div className="text-gray-600">
-          <div className="text-lg font-semibold mb-2">{componentName}</div>
-          <div className="text-sm">React Component Preview</div>
-          <div className="text-xs text-gray-500 mt-2">
-            Interactive preview based on component analysis
+      throw new Error('Component is not a function')
+    } catch (error) {
+      console.error('Error creating component from code:', error)
+
+      // Return fallback component that shows the error
+      const FallbackComponent = () => (
+        <div className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg text-center">
+          <div className="text-gray-600">
+            <div className="text-lg font-semibold mb-2">{componentName}</div>
+            <div className="text-sm text-red-600">Component Preview Error</div>
+            <div className="text-xs text-gray-500 mt-2">
+              {error instanceof Error ? error.message : String(error)}
+            </div>
+            <div className="text-xs text-gray-400 mt-2">
+              The component code will be shown in the Code section below.
+            </div>
           </div>
         </div>
-      </div>
-    )
-    DefaultComponent.displayName = 'DefaultComponent'
-    return DefaultComponent
+      )
+      FallbackComponent.displayName = 'FallbackComponent'
+      return FallbackComponent
+    }
   }
 
-  const getDefaultProps = (componentName: string): Record<string, any> => {
-    const props: Record<string, any> = {}
+  const extractComponentName = (code: string): string => {
+    // Extract component name from various patterns
+    const patterns = [
+      /const\s+(\w+)\s*=/,
+      /function\s+(\w+)\s*\(/,
+      /export\s+default\s+function\s+(\w+)/,
+      /export\s+default\s+(\w+)/,
+    ]
 
-    if (componentName.includes('navbar') || componentName.includes('nav')) {
-      props.cartItems = 3
-      props.onSearch = () => {} // Empty function for demo purposes
+    for (const pattern of patterns) {
+      const match = code.match(pattern)
+      if (match) return match[1]
     }
 
-    if (componentName.includes('button')) {
-      props.children = 'Sample Button'
-      props.onClick = () => {} // Empty function for demo purposes
-    }
-
-    if (componentName.includes('card')) {
-      props.title = 'Sample Card Title'
-      props.content = 'This is sample card content for preview purposes.'
-    }
-
-    return props
+    return 'Component'
   }
 
   if (!isClient || loading) {
@@ -336,141 +250,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
     )
   }
 
-  // Fallback to mock preview if component couldn't be loaded
-
-  const renderMockPreview = () => {
-    if (componentName.includes('navbar') || componentName.includes('nav')) {
-      return (
-        <div className="w-full">
-          <nav className="bg-white shadow-md sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center h-16">
-                <div className="flex items-center">
-                  <span className="text-2xl font-bold text-indigo-600 cursor-default">
-                    ShopLogo
-                  </span>
-                </div>
-                <div className="hidden md:flex flex-1 max-w-md mx-8">
-                  <div className="w-full">
-                    <div className="relative">
-                      <input
-                        type="text"
-                        placeholder="Search products..."
-                        className="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-default"
-                        disabled
-                      />
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg
-                          className="h-5 w-5 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="hidden md:flex items-center space-x-8">
-                  <span className="text-gray-700 cursor-default">Products</span>
-                  <span className="text-gray-700 cursor-default">
-                    Categories
-                  </span>
-                  <span className="text-gray-700 cursor-default">Deals</span>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <button className="text-gray-700 cursor-default" disabled>
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    className="relative text-gray-700 cursor-default"
-                    disabled
-                  >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.293 2.293a1 1 0 00-.293.707V19a1 1 0 001 1h12a1 1 0 001-1v-3a1 1 0 00-.293-.707L16 13"
-                      />
-                    </svg>
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      3
-                    </span>
-                  </button>
-                  <button className="text-gray-700 cursor-default" disabled>
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </nav>
-        </div>
-      )
-    }
-
-    if (componentName.includes('button')) {
-      return (
-        <div className="w-full p-4">
-          <button
-            className="px-4 py-2 bg-blue-600 text-white rounded cursor-default"
-            disabled
-          >
-            Sample Button
-          </button>
-        </div>
-      )
-    }
-
-    // Default preview for other components
-    return (
-      <div className="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
-        <div className="text-gray-600">
-          <div className="text-lg font-semibold mb-2">{componentName}</div>
-          <div className="text-sm">React Component Preview</div>
-          <div className="text-xs text-gray-500 mt-2">
-            This is a mock preview. The actual component code is shown below.
-          </div>
-        </div>
-      </div>
-    )
-  }
-
+  // Fallback if no component could be rendered
   return (
     <div className="bg-gray-50 border rounded-lg p-4 min-h-48 relative">
       {/* Subtle checkerboard pattern for better contrast */}
@@ -488,11 +268,16 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           backgroundSize: '20px 20px',
         }}
       />
-      <div className="relative z-10 w-full">{renderMockPreview()}</div>
-      <div className="relative z-10 mt-4 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
-        <strong>Preview Note:</strong> This is a visual representation of the{' '}
-        {componentName} component. The actual component code with full
-        functionality is shown in the &quot;Code&quot; section below.
+      <div className="relative z-10 w-full">
+        <div className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg text-center">
+          <div className="text-gray-600">
+            <div className="text-lg font-semibold mb-2">{componentName}</div>
+            <div className="text-sm">Component could not be rendered</div>
+            <div className="text-xs text-gray-500 mt-2">
+              Please check the component code for any issues.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
