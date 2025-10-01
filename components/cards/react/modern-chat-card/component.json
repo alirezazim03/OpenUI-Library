@@ -1,0 +1,47 @@
+{
+  "name": "modern-chat-card",
+  "category": "cards",
+  "framework": "react",
+  "tags": ["chat", "modern", "card", "messaging", "ui"],
+  "author": "alirezazim03",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A modern chat card component with illustration and call-to-action buttons",
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Main title text displayed on the card"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Description text displayed below the title"
+    },
+    {
+      "name": "primaryButtonText",
+      "type": "string",
+      "description": "Text for the primary action button"
+    },
+    {
+      "name": "secondaryButtonText",
+      "type": "string",
+      "description": "Text for the secondary action button"
+    },
+    {
+      "name": "onPrimaryClick",
+      "type": "function",
+      "description": "Callback function when primary button is clicked"
+    },
+    {
+      "name": "onSecondaryClick",
+      "type": "function",
+      "description": "Callback function when secondary button is clicked"
+    },
+    {
+      "name": "imageUrl",
+      "type": "string",
+      "description": "URL for the card's header image"
+    }
+  ]
+}
