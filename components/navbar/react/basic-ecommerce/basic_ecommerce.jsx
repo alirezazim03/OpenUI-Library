@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState } from "react"
 
 const Navbar = ({ cartItems = 3, onSearch = () => {} }) => {
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState("")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleSearch = e => {
@@ -149,8 +149,8 @@ const Navbar = ({ cartItems = 3, onSearch = () => {} }) => {
                   strokeWidth={2}
                   d={
                     isMenuOpen
-                      ? 'M6 18L18 6M6 6l12 12'
-                      : 'M4 6h16M4 12h16M4 18h16'
+                      ? "M6 18L18 6M6 6l12 12"
+                      : "M4 6h16M4 12h16M4 18h16"
                   }
                 />
               </svg>

@@ -1,12 +1,12 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { useState } from 'react'
+import Link from "next/link"
+import Image from "next/image"
+import { useState } from "react"
 
 interface NavbarProps {
-  currentPage?: 'home' | 'contributors'
+  currentPage?: "home" | "contributors"
 }
 
-export default function Navbar({ currentPage = 'home' }: NavbarProps) {
+export default function Navbar({ currentPage = "home" }: NavbarProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
@@ -35,7 +35,7 @@ export default function Navbar({ currentPage = 'home' }: NavbarProps) {
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center space-x-8">
-            {currentPage !== 'home' && (
+            {currentPage !== "home" && (
               <Link
                 href="/"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
@@ -46,9 +46,9 @@ export default function Navbar({ currentPage = 'home' }: NavbarProps) {
             <Link
               href="/contributors"
               className={`font-medium transition-colors ${
-                currentPage === 'contributors'
-                  ? 'text-blue-600'
-                  : 'text-gray-700 hover:text-blue-600'
+                currentPage === "contributors"
+                  ? "text-blue-600"
+                  : "text-gray-700 hover:text-blue-600"
               }`}
             >
               Contributors
@@ -121,7 +121,7 @@ export default function Navbar({ currentPage = 'home' }: NavbarProps) {
               </div>
 
               <nav className="space-y-4">
-                {currentPage !== 'home' && (
+                {currentPage !== "home" && (
                   <Link
                     href="/"
                     className="block text-gray-700 hover:text-blue-600 font-medium transition-colors"
@@ -133,9 +133,9 @@ export default function Navbar({ currentPage = 'home' }: NavbarProps) {
                 <Link
                   href="/contributors"
                   className={`block font-medium transition-colors ${
-                    currentPage === 'contributors'
-                      ? 'text-blue-600'
-                      : 'text-gray-700 hover:text-blue-600'
+                    currentPage === "contributors"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
                   }`}
                   onClick={() => setSidebarOpen(false)}
                 >

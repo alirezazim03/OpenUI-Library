@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import type { ReactPreviewProps } from '../types'
+import React, { useState, useEffect, useCallback } from "react"
+import type { ReactPreviewProps } from "../types"
 
 // Type declaration for Babel standalone - removed unused declaration
 
 // Import Babel standalone
-const BabelStandalone = require('@babel/standalone')
+const BabelStandalone = require("@babel/standalone")
 
 const ReactPreview: React.FC<ReactPreviewProps> = ({
   componentFiles,
@@ -34,22 +34,22 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
       `
 
         // Create a blob URL for the module
-        const blob = new Blob([moduleCode], { type: 'application/javascript' })
+        const blob = new Blob([moduleCode], { type: "application/javascript" })
         const moduleUrl = URL.createObjectURL(blob)
 
         // Use Babel to transform JSX to JavaScript
         let cleanCode = code
-          .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*/g, '')
-          .replace(/export\s+default\s+/, '')
-          .replace(/export\s+/, '')
+          .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*/g, "")
+          .replace(/export\s+default\s+/, "")
+          .replace(/export\s+/, "")
 
         // Transform JSX using Babel
         const transformedResult = BabelStandalone.transform(cleanCode, {
           presets: [
             [
-              'react',
+              "react",
               {
-                runtime: 'classic',
+                runtime: "classic",
               },
             ],
           ],
@@ -73,12 +73,12 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
         // Clean up the blob URL
         URL.revokeObjectURL(moduleUrl)
 
-        if (typeof Component === 'function') {
+        if (typeof Component === "function") {
           Component.displayName = componentName
           return Component
         }
 
-        throw new Error('Component is not a function')
+        throw new Error("Component is not a function")
       } catch (error) {
         // Error creating component from code - using fallback component instead
 
@@ -99,7 +99,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
             </div>
           </div>
         )
-        FallbackComponent.displayName = 'FallbackComponent'
+        FallbackComponent.displayName = "FallbackComponent"
         return FallbackComponent
       }
     },
@@ -116,11 +116,11 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
 
         // Find the main component file
         const mainFile = Object.keys(componentFiles).find(
-          file => file.endsWith('.jsx') || file.endsWith('.js')
+          file => file.endsWith(".jsx") || file.endsWith(".js")
         )
 
         if (!mainFile) {
-          throw new Error('No React component file found')
+          throw new Error("No React component file found")
         }
 
         const componentCode = componentFiles[mainFile]
@@ -133,19 +133,19 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
 
         const Component = createComponentFromCode(componentCode, componentName)
 
-        if (!Component || typeof Component !== 'function') {
-          throw new Error('Could not extract React component')
+        if (!Component || typeof Component !== "function") {
+          throw new Error("Could not extract React component")
         }
 
         // Create wrapper without any props - components should have their own defaults
         const ComponentWrapper = () => {
           return (
-            <div className="w-full" style={{ minHeight: '200px' }}>
+            <div className="w-full" style={{ minHeight: "200px" }}>
               <Component />
             </div>
           )
         }
-        ComponentWrapper.displayName = 'ComponentWrapper'
+        ComponentWrapper.displayName = "ComponentWrapper"
 
         setRenderedComponent(() => ComponentWrapper)
       } catch (err) {
@@ -172,13 +172,13 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
       if (match && match[1]) {
         // Skip common non-component names
         const name = match[1]
-        if (!['defaultProps', 'props', 'state', 'config'].includes(name)) {
+        if (!["defaultProps", "props", "state", "config"].includes(name)) {
           return name
         }
       }
     }
 
-    return 'Component'
+    return "Component"
   }
 
   if (!isClient || loading) {
@@ -233,7 +233,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
                 #e9ecef 75% 100%
               )
             `,
-            backgroundSize: '20px 20px',
+            backgroundSize: "20px 20px",
           }}
         />
         <div className="relative z-10 w-full">
@@ -270,7 +270,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
               #e9ecef 75% 100%
             )
           `,
-          backgroundSize: '20px 20px',
+          backgroundSize: "20px 20px",
         }}
       />
       <div className="relative z-10 w-full">

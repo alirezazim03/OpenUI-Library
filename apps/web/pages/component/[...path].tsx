@@ -1,9 +1,9 @@
-import Link from 'next/link'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import ReactPreview from '../../components/ReactPreview'
-import type { ComponentWithFiles } from '../../types'
+import Link from "next/link"
+import Head from "next/head"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import ReactPreview from "../../components/ReactPreview"
+import type { ComponentWithFiles } from "../../types"
 
 export default function ComponentPage() {
   const router = useRouter()
@@ -30,7 +30,7 @@ export default function ComponentPage() {
   useEffect(() => {
     if (!path) return
 
-    const componentPath = Array.isArray(path) ? path.join('/') : path
+    const componentPath = Array.isArray(path) ? path.join("/") : path
 
     fetch(`/api/component/${componentPath}`)
       .then(res => res.json())
@@ -38,12 +38,12 @@ export default function ComponentPage() {
         if (data.component) {
           setComponent(data.component)
         } else {
-          setError('Component not found')
+          setError("Component not found")
         }
         setLoading(false)
       })
       .catch(_err => {
-        setError('Failed to load component')
+        setError("Failed to load component")
         setLoading(false)
       })
   }, [path])
@@ -65,7 +65,7 @@ export default function ComponentPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            {error || 'Component not found'}
+            {error || "Component not found"}
           </h1>
           <Link href="/" className="text-blue-600 hover:text-blue-800">
             ← Back to home
@@ -76,8 +76,8 @@ export default function ComponentPage() {
   }
 
   const isHtmlTailwind =
-    component.framework === 'html' || component.framework === 'tailwind'
-  const isReact = component.framework === 'react'
+    component.framework === "html" || component.framework === "tailwind"
+  const isReact = component.framework === "react"
 
   return (
     <>
@@ -153,7 +153,7 @@ export default function ComponentPage() {
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
                 Preview
               </h2>
-              {isHtmlTailwind && component.files['index.html'] ? (
+              {isHtmlTailwind && component.files["index.html"] ? (
                 <div className="bg-gray-50 border rounded-xl shadow-sm p-6 relative">
                   {/* Subtle checkerboard pattern for better contrast */}
                   <div
@@ -167,7 +167,7 @@ export default function ComponentPage() {
                           #e9ecef 75% 100%
                         )
                       `,
-                      backgroundSize: '20px 20px',
+                      backgroundSize: "20px 20px",
                     }}
                   />
                   <iframe
@@ -203,7 +203,7 @@ export default function ComponentPage() {
                           cursor: default !important;
                         }
                       </style>
-                      ${component.files['index.html']}
+                      ${component.files["index.html"]}
                       <script>
                         // Prevent all form submissions and link navigation
                         document.addEventListener('DOMContentLoaded', function() {
@@ -332,7 +332,7 @@ export default function ComponentPage() {
                         for {component.framework} applications.
                       </p>
                       <p className="text-sm text-gray-500 mb-4">
-                        <strong>Author:</strong>{' '}
+                        <strong>Author:</strong>{" "}
                         <a
                           href={`https://github.com/${component.author}`}
                           target="_blank"
@@ -351,9 +351,9 @@ export default function ComponentPage() {
                         <li>Easy to customize</li>
                         <li>
                           Built with {component.framework}
-                          {component.framework === 'react'
-                            ? ' and Tailwind CSS'
-                            : ''}
+                          {component.framework === "react"
+                            ? " and Tailwind CSS"
+                            : ""}
                         </li>
                       </ul>
 
@@ -364,9 +364,9 @@ export default function ComponentPage() {
                         <li>Copy the component code to your project</li>
                         <li>
                           Install required dependencies (
-                          {component.framework === 'react'
-                            ? 'React, Tailwind CSS'
-                            : 'Tailwind CSS'}
+                          {component.framework === "react"
+                            ? "React, Tailwind CSS"
+                            : "Tailwind CSS"}
                           )
                         </li>
                         <li>Import and use the component</li>
@@ -456,22 +456,22 @@ export default function ComponentPage() {
                             // Only include actual component files, exclude documentation
                             const lowerFilename = filename.toLowerCase()
                             return (
-                              !lowerFilename.includes('readme') &&
-                              !lowerFilename.includes('.md') &&
-                              filename !== 'component.json'
+                              !lowerFilename.includes("readme") &&
+                              !lowerFilename.includes(".md") &&
+                              filename !== "component.json"
                             )
                           })
                           .map(
                             ([filename, content]) =>
                               `// ${filename}\n${content}`
                           )
-                          .join('\n\n')
-                        copyToClipboard(allCode, 'component')
+                          .join("\n\n")
+                        copyToClipboard(allCode, "component")
                       }}
                       className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
                         copiedStates.component
-                          ? 'bg-green-100 text-green-700 border border-green-200'
-                          : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                          ? "bg-green-100 text-green-700 border border-green-200"
+                          : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
                       }`}
                     >
                       {copiedStates.component ? (
@@ -517,9 +517,9 @@ export default function ComponentPage() {
                         // Only show actual component files, exclude documentation
                         const lowerFilename = filename.toLowerCase()
                         return (
-                          !lowerFilename.includes('readme') &&
-                          !lowerFilename.includes('.md') &&
-                          filename !== 'component.json'
+                          !lowerFilename.includes("readme") &&
+                          !lowerFilename.includes(".md") &&
+                          filename !== "component.json"
                         )
                       })
                       .map(([filename, content]: [string, string], index) => (
