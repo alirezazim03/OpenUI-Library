@@ -82,7 +82,7 @@ Create a `component.json` file with this structure:
 #### For React Components
 - Use `.jsx` extension
 - Follow React best practices
-- Include prop validation when applicable
+- Include prop validation when applicable as well as default values for the prop so they can get rendered correctly
 - Use functional components with hooks
 
 #### For HTML/Tailwind Components
