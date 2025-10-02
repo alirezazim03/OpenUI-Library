@@ -1,10 +1,27 @@
 const fs = require("fs")
 const path = require("path")
-const glob = require("glob")
+
+// Debug: Check if glob is available
+let glob
+try {
+  glob = require("glob")
+  console.log(
+    "[DEBUG] glob package loaded successfully, version:",
+    glob.version || "unknown"
+  )
+} catch (error) {
+  console.error("[DEBUG] CRITICAL: Failed to load glob package:", error.message)
+  throw new Error("Missing required dependency: glob")
+}
 
 function getComponentsData() {
   // Determine the correct path to components directory
   let componentsDir = path.resolve(process.cwd(), "../../components")
+
+  // Debug logging
+  console.log("[DEBUG] Component discovery started")
+  console.log("[DEBUG] Current working directory:", process.cwd())
+  console.log("[DEBUG] __dirname:", __dirname)
 
   // Fallback paths to try
   const possiblePaths = [
@@ -14,17 +31,26 @@ function getComponentsData() {
     path.resolve(process.cwd(), "components"), // If running from project root
   ]
 
+  console.log("[DEBUG] Checking possible component paths:")
   for (const possiblePath of possiblePaths) {
-    if (fs.existsSync(possiblePath)) {
+    const exists = fs.existsSync(possiblePath)
+    console.log(`[DEBUG] - ${possiblePath}: ${exists ? "EXISTS" : "NOT FOUND"}`)
+    if (exists) {
       componentsDir = possiblePath
+      console.log(`[DEBUG] Using components directory: ${componentsDir}`)
       break
     }
   }
 
   const pattern = path.join(componentsDir, "**", "component.json")
+  console.log(
+    "[DEBUG] Searching for component.json files with pattern:",
+    pattern
+  )
 
   try {
     const files = glob.sync(pattern)
+    console.log(`[DEBUG] Found ${files.length} component.json files:`, files)
     const components = []
 
     for (const file of files) {
@@ -44,20 +70,27 @@ function getComponentsData() {
           framework: pathParts[1],
           name: pathParts[2],
         })
+        console.log(
+          `[DEBUG] Successfully processed component: ${metadata.name} (${componentPath})`
+        )
       } catch (error) {
         // Log parsing errors but continue processing other components
         // eslint-disable-next-line no-console
         console.warn(
-          `Skipping invalid component metadata in ${file}:`,
+          `[DEBUG] Skipping invalid component metadata in ${file}:`,
           error.message
         )
       }
     }
 
+    console.log(
+      `[DEBUG] Component discovery completed. Found ${components.length} valid components`
+    )
     return components
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error("Error reading components directory:", error.message)
+    console.error("[DEBUG] Error reading components directory:", error.message)
+    console.error("[DEBUG] Error details:", error)
     return []
   }
 }
