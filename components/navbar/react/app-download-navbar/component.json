@@ -1,0 +1,32 @@
+{
+  "name": "app-download-navbar",
+  "category": "navbar",
+  "framework": "react",
+  "tags": ["app", "download", "navbar", "search", "login", "register"],
+  "author": "abhijeet-singh",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A simple navbar with logo, product links, search bar, about link, download app button, register button, and login link.",
+  "props": [
+    {
+      "name": "onSearch",
+      "type": "function",
+      "description": "Callback function triggered when a search is performed"
+    },
+    {
+      "name": "onDownload",
+      "type": "function",
+      "description": "Callback function triggered when the download app button is clicked"
+    },
+    {
+      "name": "onRegister",
+      "type": "function",
+      "description": "Callback function triggered when the register button is clicked"
+    },
+    {
+      "name": "onLogin",
+      "type": "function",
+      "description": "Callback function triggered when the login link is clicked"
+    }
+  ]
+}
