@@ -1,6 +1,6 @@
 {
   "name": "modern-update-card",
-  "category": "cards",
+  "category": "card",
   "framework": "react",
   "tags": ["update", "modern", "card", "ui"],
   "author": "alirezazim03",
