@@ -128,7 +128,7 @@ export default function Navbar({ currentPage = "home" }: NavbarProps) {
                 </button>
               </div>
 
-              <nav className="space-y-4">
+              <nav className="flex flex-col space-y-4">
                 {currentPage !== "home" && (
                   <Link
                     href="/"
@@ -162,7 +162,7 @@ export default function Navbar({ currentPage = "home" }: NavbarProps) {
               href="https://discord.gg/649Q4HG3XK"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              className="block text-gray-700 hover:text-blue-600 font-medium transition-colors"
             >
               Discord
             </a>
