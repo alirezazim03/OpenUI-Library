@@ -1,17 +1,17 @@
-import Link from 'next/link'
-import Head from 'next/head'
-import { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
-import type { ComponentMetadata } from '../types'
+import Link from "next/link"
+import Head from "next/head"
+import { useEffect, useState } from "react"
+import Navbar from "../components/Navbar"
+import type { ComponentMetadata } from "../types"
 
 export default function Home() {
   const [components, setComponents] = useState<ComponentMetadata[]>([])
   const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch('/api/components')
+    fetch("/api/components")
       .then(res => res.json())
       .then(data => {
         setComponents(data.components || [])
@@ -19,7 +19,7 @@ export default function Home() {
       })
       .catch(err => {
         // eslint-disable-next-line no-console
-        console.error('Failed to load components:', err)
+        console.error("Failed to load components:", err)
         setLoading(false)
       })
   }, [])
@@ -38,7 +38,7 @@ export default function Home() {
   // Filter components based on search query and selected category
   const filteredComponents = components.filter(component => {
     const matchesSearch =
-      searchQuery === '' ||
+      searchQuery === "" ||
       component.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       component.tags?.some(tag =>
         tag.toLowerCase().includes(searchQuery.toLowerCase())
@@ -123,8 +123,8 @@ export default function Home() {
                     onClick={() => setSelectedCategory(null)}
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
                       selectedCategory === null
-                        ? 'bg-blue-100 text-blue-700 font-medium'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? "bg-blue-100 text-blue-700 font-medium"
+                        : "text-gray-700 hover:bg-gray-100"
                     }`}
                   >
                     All Components ({components.length})
@@ -137,8 +137,8 @@ export default function Home() {
                         onClick={() => setSelectedCategory(category)}
                         className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
                           selectedCategory === category
-                            ? 'bg-blue-100 text-blue-700 font-medium'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            ? "bg-blue-100 text-blue-700 font-medium"
+                            : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
                         <span className="capitalize">{category}</span>
@@ -159,15 +159,15 @@ export default function Home() {
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">
                   {selectedCategory
                     ? `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Components`
-                    : 'All Components'}
+                    : "All Components"}
                 </h2>
                 <p className="text-gray-600">
                   {searchQuery && `Search results for "${searchQuery}" • `}
-                  {Object.values(filteredGroupedComponents).flat().length}{' '}
+                  {Object.values(filteredGroupedComponents).flat().length}{" "}
                   component
                   {Object.values(filteredGroupedComponents).flat().length !== 1
-                    ? 's'
-                    : ''}{' '}
+                    ? "s"
+                    : ""}{" "}
                   found
                 </p>
               </div>
@@ -198,16 +198,16 @@ export default function Home() {
                     </svg>
                   </div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                    {searchQuery ? 'No components found' : 'No components yet'}
+                    {searchQuery ? "No components found" : "No components yet"}
                   </h2>
                   <p className="text-gray-600 mb-6">
                     {searchQuery
-                      ? 'Try adjusting your search terms or browse by category.'
-                      : 'Add your first component to get started!'}
+                      ? "Try adjusting your search terms or browse by category."
+                      : "Add your first component to get started!"}
                   </p>
                   {searchQuery && (
                     <button
-                      onClick={() => setSearchQuery('')}
+                      onClick={() => setSearchQuery("")}
                       className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       Clear Search

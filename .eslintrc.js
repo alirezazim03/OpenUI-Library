@@ -1,51 +1,48 @@
 module.exports = {
   root: true,
-  extends: [
-    'eslint:recommended',
-    'next/core-web-vitals'
-  ],
+  extends: ["eslint:recommended", "next/core-web-vitals"],
   env: {
     node: true,
     browser: true,
-    es2022: true
+    es2022: true,
   },
   parserOptions: {
     ecmaVersion: 2022,
-    sourceType: 'module',
+    sourceType: "module",
     ecmaFeatures: {
-      jsx: true
-    }
+      jsx: true,
+    },
   },
   rules: {
-    'semi': ['error', 'never'],
-    'quotes': ['error', 'single'],
-    'no-console': 'warn',
-    'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }]
+    semi: ["error", "never"],
+    quotes: ["error", "double"],
+    "no-console": "warn",
+    "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
   },
   overrides: [
     {
-      files: ['apps/web/**/*.js', 'apps/web/**/*.jsx'],
-      extends: ['next/core-web-vitals'],
+      files: ["apps/web/**/*.js", "apps/web/**/*.jsx"],
+      extends: ["next/core-web-vitals"],
       rules: {
-        'react/no-unescaped-entities': 'off'
-      }
+        "react/no-unescaped-entities": "off",
+      },
     },
     {
-      files: ['packages/**/*.js'],
+      files: ["packages/**/*.js"],
       env: {
-        node: true
-      }
+        node: true,
+      },
     },
     {
-      files: ['components/**/*.jsx'],
+      files: ["components/**/*.jsx"],
       env: {
-        browser: true
+        browser: true,
       },
       parserOptions: {
         ecmaFeatures: {
-          jsx: true
-        }
-      }
-    }
-  ]
+          jsx: true,
+        },
+      },
+    },
+  ],
 }
