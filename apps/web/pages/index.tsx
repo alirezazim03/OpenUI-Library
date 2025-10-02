@@ -82,8 +82,8 @@ export default function Home() {
         <Navbar currentPage="home" />
 
         <div className="flex flex-1">
-          {/* Sidebar */}
-          <aside className="w-64 bg-white shadow-sm border-r overflow-y-auto">
+          {/* Sidebar - Hidden below 590px */}
+          <aside className="hidden min-[590px]:block w-64 bg-white shadow-sm border-r overflow-y-auto">
             <div className="p-6">
               {/* Search Bar */}
               <div className="mb-6">
