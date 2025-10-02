@@ -1,5 +1,6 @@
 const fs = require("fs")
 const path = require("path")
+
 const glob = require("glob")
 
 function getComponentsData() {
@@ -21,10 +22,21 @@ function getComponentsData() {
     }
   }
 
-  const pattern = path.join(componentsDir, "**", "component.json")
+  // Normalize path for cross-platform compatibility (Windows fix)
+  const pattern = path
+    .join(componentsDir, "**", "component.json")
+    .replace(/\\/g, "/")
 
   try {
-    const files = glob.sync(pattern)
+    let files = glob.sync(pattern)
+
+    // Windows fallback: try with forward slashes if no files found
+    if (files.length === 0 && process.platform === "win32") {
+      const fallbackPattern =
+        componentsDir.replace(/\\/g, "/") + "/**/component.json"
+      files = glob.sync(fallbackPattern)
+    }
+
     const components = []
 
     for (const file of files) {
@@ -47,6 +59,7 @@ function getComponentsData() {
       } catch (error) {
         // Log parsing errors but continue processing other components
         // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
         console.warn(
           `Skipping invalid component metadata in ${file}:`,
           error.message
@@ -56,6 +69,7 @@ function getComponentsData() {
 
     return components
   } catch (error) {
+    // eslint-disable-next-line no-console
     // eslint-disable-next-line no-console
     console.error("Error reading components directory:", error.message)
     return []
