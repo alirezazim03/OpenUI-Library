@@ -162,15 +162,21 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
   const extractComponentName = (code: string): string => {
     // Extract component name from various patterns
     const patterns = [
-      /const\s+(\w+)\s*=/,
-      /function\s+(\w+)\s*\(/,
-      /export\s+default\s+function\s+(\w+)/,
-      /export\s+default\s+(\w+)/,
+      /export\s+default\s+function\s+(\w+)/, // export default function ComponentName
+      /export\s+default\s+(\w+)/, // export default ComponentName
+      /const\s+(\w+)\s*=\s*\(/, // const ComponentName = (
+      /function\s+(\w+)\s*\(/, // function ComponentName(
     ]
 
     for (const pattern of patterns) {
       const match = code.match(pattern)
-      if (match) return match[1]
+      if (match && match[1]) {
+        // Skip common non-component names
+        const name = match[1]
+        if (!['defaultProps', 'props', 'state', 'config'].includes(name)) {
+          return name
+        }
+      }
     }
 
     return 'Component'

@@ -1,13 +1,25 @@
 import React from 'react'
 
-const ChatCard = ({
-  title = "What's on your mind?",
-  description = "You've confirmed abc@xyz.com. You're all ready to start a new group for chatting",
-  primaryButtonText = "What's new?",
-  secondaryButtonText = 'Later',
+const defaultProps = {
+  title: "What's on your mind?",
+  description:
+    "You've confirmed abc@xyz.com. You're all ready to start a new group for chatting",
+  primaryButtonText: "What's new?",
+  secondaryButtonText: 'Later',
+  onPrimaryClick: () => {},
+  onSecondaryClick: () => {},
+  imageUrl:
+    'https://xbllreuvbgzawhgemndh.supabase.co/storage/v1/object/public/material/placeholder1.jpg',
+}
+
+const ModernUpdateCard = ({
+  title = defaultProps.title,
+  description = defaultProps.description,
+  primaryButtonText = defaultProps.primaryButtonText,
+  secondaryButtonText = defaultProps.secondaryButtonText,
   onPrimaryClick,
   onSecondaryClick,
-  imageUrl = 'https://xbllreuvbgzawhgemndh.supabase.co/storage/v1/object/public/material/placeholder1.jpg',
+  imageUrl = defaultProps.imageUrl,
 }) => {
   const handlePrimaryClick = () => {
     if (onPrimaryClick) {
@@ -73,4 +85,4 @@ const ChatCard = ({
   )
 }
 
-export default ChatCard
+export default ModernUpdateCard

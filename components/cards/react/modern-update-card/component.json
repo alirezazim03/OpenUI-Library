@@ -1,8 +1,8 @@
 {
-  "name": "modern-chat-card",
+  "name": "modern-update-card",
   "category": "cards",
   "framework": "react",
-  "tags": ["chat", "modern", "card", "messaging", "ui"],
+  "tags": ["update", "modern", "card", "ui"],
   "author": "alirezazim03",
   "license": "MIT",
   "version": "1.0.0",
