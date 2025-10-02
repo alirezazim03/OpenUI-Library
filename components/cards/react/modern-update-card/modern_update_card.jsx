@@ -5,9 +5,7 @@ const defaultProps = {
   description:
     "You've confirmed abc@xyz.com. You're all ready to start a new group for chatting",
   primaryButtonText: "What's new?",
-  secondaryButtonText: 'Later',
   onPrimaryClick: () => {},
-  onSecondaryClick: () => {},
   imageUrl:
     'https://xbllreuvbgzawhgemndh.supabase.co/storage/v1/object/public/material/placeholder1.jpg',
 }
@@ -16,9 +14,7 @@ const ModernUpdateCard = ({
   title = defaultProps.title,
   description = defaultProps.description,
   primaryButtonText = defaultProps.primaryButtonText,
-  secondaryButtonText = defaultProps.secondaryButtonText,
   onPrimaryClick,
-  onSecondaryClick,
   imageUrl = defaultProps.imageUrl,
 }) => {
   const handlePrimaryClick = () => {
@@ -27,16 +23,11 @@ const ModernUpdateCard = ({
     }
   }
 
-  const handleSecondaryClick = () => {
-    if (onSecondaryClick) {
-      onSecondaryClick()
-    }
-  }
-
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden max-w-sm mx-auto transform rotate-1 hover:rotate-0 transition-transform duration-300">
       {/* Header with Image */}
       <div className="bg-green-100 relative overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={imageUrl}
           alt="Chat illustration"

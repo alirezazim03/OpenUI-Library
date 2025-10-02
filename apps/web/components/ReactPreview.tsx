@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import type { ReactPreviewProps } from '../types'
 
-// Type declaration for Babel standalone
-declare const Babel: {
-  transform: (code: string, options: any) => { code?: string }
-}
+// Type declaration for Babel standalone - removed unused declaration
 
 // Import Babel standalone
 const BabelStandalone = require('@babel/standalone')
@@ -22,6 +19,92 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
   useEffect(() => {
     setIsClient(true)
   }, [])
+
+  const createComponentFromCode = useCallback(
+    (code: string, componentName: string): React.ComponentType<any> => {
+      try {
+        // Use a more direct approach - create a module with the component code
+        // and use dynamic import to load it
+
+        // Prepare the component code as a module
+        const moduleCode = `
+        import React, { useState, useEffect } from 'react';
+        
+        ${code}
+      `
+
+        // Create a blob URL for the module
+        const blob = new Blob([moduleCode], { type: 'application/javascript' })
+        const moduleUrl = URL.createObjectURL(blob)
+
+        // Use Babel to transform JSX to JavaScript
+        let cleanCode = code
+          .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*/g, '')
+          .replace(/export\s+default\s+/, '')
+          .replace(/export\s+/, '')
+
+        // Transform JSX using Babel
+        const transformedResult = BabelStandalone.transform(cleanCode, {
+          presets: [
+            [
+              'react',
+              {
+                runtime: 'classic',
+              },
+            ],
+          ],
+          plugins: [],
+        })
+
+        const transformedCode = transformedResult.code || cleanCode
+
+        const wrappedCode = `
+        (function(React, useState, useEffect) {
+          ${transformedCode}
+          
+          return ${extractComponentName(code)};
+        })
+      `
+
+        // Execute the wrapped code
+        const componentFactory = eval(wrappedCode)
+        const Component = componentFactory(React, useState, useEffect)
+
+        // Clean up the blob URL
+        URL.revokeObjectURL(moduleUrl)
+
+        if (typeof Component === 'function') {
+          Component.displayName = componentName
+          return Component
+        }
+
+        throw new Error('Component is not a function')
+      } catch (error) {
+        // Error creating component from code - using fallback component instead
+
+        // Return fallback component that shows the error
+        const FallbackComponent = () => (
+          <div className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg text-center">
+            <div className="text-gray-600">
+              <div className="text-lg font-semibold mb-2">{componentName}</div>
+              <div className="text-sm text-red-600">
+                Component Preview Error
+              </div>
+              <div className="text-xs text-gray-500 mt-2">
+                {error instanceof Error ? error.message : String(error)}
+              </div>
+              <div className="text-xs text-gray-400 mt-2">
+                The component code will be shown in the Code section below.
+              </div>
+            </div>
+          </div>
+        )
+        FallbackComponent.displayName = 'FallbackComponent'
+        return FallbackComponent
+      }
+    },
+    []
+  )
 
   useEffect(() => {
     if (!isClient) return
@@ -73,91 +156,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
     }
 
     loadComponent()
-  }, [componentFiles, componentName, isClient])
-
-  const createComponentFromCode = (
-    code: string,
-    componentName: string
-  ): React.ComponentType<any> => {
-    try {
-      // Use a more direct approach - create a module with the component code
-      // and use dynamic import to load it
-
-      // Prepare the component code as a module
-      const moduleCode = `
-        import React, { useState, useEffect } from 'react';
-        
-        ${code}
-      `
-
-      // Create a blob URL for the module
-      const blob = new Blob([moduleCode], { type: 'application/javascript' })
-      const moduleUrl = URL.createObjectURL(blob)
-
-      // Use Babel to transform JSX to JavaScript
-      let cleanCode = code
-        .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*/g, '')
-        .replace(/export\s+default\s+/, '')
-        .replace(/export\s+/, '')
-
-      // Transform JSX using Babel
-      const transformedResult = BabelStandalone.transform(cleanCode, {
-        presets: [
-          [
-            'react',
-            {
-              runtime: 'classic',
-            },
-          ],
-        ],
-        plugins: [],
-      })
-
-      const transformedCode = transformedResult.code || cleanCode
-
-      const wrappedCode = `
-        (function(React, useState, useEffect) {
-          ${transformedCode}
-          
-          return ${extractComponentName(code)};
-        })
-      `
-
-      // Execute the wrapped code
-      const componentFactory = eval(wrappedCode)
-      const Component = componentFactory(React, useState, useEffect)
-
-      // Clean up the blob URL
-      URL.revokeObjectURL(moduleUrl)
-
-      if (typeof Component === 'function') {
-        Component.displayName = componentName
-        return Component
-      }
-
-      throw new Error('Component is not a function')
-    } catch (error) {
-      console.error('Error creating component from code:', error)
-
-      // Return fallback component that shows the error
-      const FallbackComponent = () => (
-        <div className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg text-center">
-          <div className="text-gray-600">
-            <div className="text-lg font-semibold mb-2">{componentName}</div>
-            <div className="text-sm text-red-600">Component Preview Error</div>
-            <div className="text-xs text-gray-500 mt-2">
-              {error instanceof Error ? error.message : String(error)}
-            </div>
-            <div className="text-xs text-gray-400 mt-2">
-              The component code will be shown in the Code section below.
-            </div>
-          </div>
-        </div>
-      )
-      FallbackComponent.displayName = 'FallbackComponent'
-      return FallbackComponent
-    }
-  }
+  }, [componentFiles, componentName, isClient, createComponentFromCode])
 
   const extractComponentName = (code: string): string => {
     // Extract component name from various patterns
