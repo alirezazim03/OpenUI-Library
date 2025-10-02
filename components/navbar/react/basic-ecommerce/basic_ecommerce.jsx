@@ -17,7 +17,10 @@ const Navbar = ({ cartItems = 3, onSearch = () => {} }) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <a href="/" className="text-2xl font-bold text-indigo-600">
+            <a
+              // href="/"
+              className="text-2xl font-bold text-indigo-600"
+            >
               ShopLogo
             </a>
           </div>
@@ -55,19 +58,19 @@ const Navbar = ({ cartItems = 3, onSearch = () => {} }) => {
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
             <a
-              href="/products"
+              // href="/products"
               className="text-gray-700 hover:text-indigo-600 transition duration-200"
             >
               Products
             </a>
             <a
-              href="/categories"
+              // href="/categories"
               className="text-gray-700 hover:text-indigo-600 transition duration-200"
             >
               Categories
             </a>
             <a
-              href="/deals"
+              // href="/deals"
               className="text-gray-700 hover:text-indigo-600 transition duration-200"
             >
               Deals
