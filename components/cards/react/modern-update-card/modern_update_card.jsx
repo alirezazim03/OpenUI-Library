@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 
 const defaultProps = {
   title: "What's on your mind?",
@@ -7,7 +7,7 @@ const defaultProps = {
   primaryButtonText: "What's new?",
   onPrimaryClick: () => {},
   imageUrl:
-    'https://xbllreuvbgzawhgemndh.supabase.co/storage/v1/object/public/material/placeholder1.jpg',
+    "https://xbllreuvbgzawhgemndh.supabase.co/storage/v1/object/public/material/placeholder1.jpg",
 }
 
 const ModernUpdateCard = ({
