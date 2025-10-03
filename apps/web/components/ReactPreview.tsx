@@ -113,9 +113,11 @@ const loadReactIcon = async (
         return null
     }
 
-    const iconComponent = module[iconName]
+    const iconComponent = (module as any)[iconName]
     if (iconComponent) {
-      console.log(`Successfully loaded icon: ${iconName} from react-icons/${iconPackage}`)
+      console.log(
+        `Successfully loaded icon: ${iconName} from react-icons/${iconPackage}`
+      )
       return iconComponent
     } else {
       console.warn(`Icon ${iconName} not found in react-icons/${iconPackage}`)
@@ -160,6 +162,9 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           const iconNames = match[1].split(",").map(name => name.trim())
           const iconPackage = match[2]
           reactIconsImports[iconPackage] = iconNames
+          console.log(
+            `Found react-icons import: ${iconNames.join(", ")} from react-icons/${iconPackage}`
+          )
         }
 
         // Dynamically load only the required icons
