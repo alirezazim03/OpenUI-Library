@@ -1,0 +1,27 @@
+{
+  "name": "tech-navbar",
+  "category": "navbar",
+  "framework": "react",
+  "tags": ["tech", "navbar", "navigation", "email", "logo"],
+  "author": "jjf2009",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A modern tech-themed navbar with a logo, navigation items, and email display.",
+  "props": [
+    {
+      "name": "logo",
+      "type": "ReactNode",
+      "description": "Logo element to be displayed inside the navbar"
+    },
+    {
+      "name": "navItems",
+      "type": "array",
+      "description": "List of navigation items displayed as links"
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Email address displayed on the right side of the navbar"
+    }
+  ]
+}

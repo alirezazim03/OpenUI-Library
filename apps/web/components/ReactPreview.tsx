@@ -305,7 +305,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           .replace(/import\s+Image\s+from\s+['"]next\/image['"];?\s*/g, "")
           .replace(/<Image\s+/g, "<img ")
           .replace(
-            /\bfill\b/g,
+            /\bfill(?=\s|$|>)/g,
             "style={{width: \"100%\", height: \"100%\", objectFit: \"cover\"}}"
           )
 
