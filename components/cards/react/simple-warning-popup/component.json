@@ -1,0 +1,22 @@
+{
+  "name": "simple-warning-popup",
+  "category": "card",
+  "framework": "react",
+  "tags": ["card", "ui", "minimal"],
+  "author": "chatfly",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A deletion warning popup with two buttons and minimal design",
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Defines the thing that you want to use the popup name's."
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Description text"
+    }
+  ]
+}
