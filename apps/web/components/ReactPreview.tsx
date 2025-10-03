@@ -13,117 +13,121 @@ const loadReactIcon = async (
 ): Promise<React.ComponentType<any> | null> => {
   try {
     // Use dynamic imports with explicit module paths that Next.js can resolve
-    let module
+    let iconModule
     switch (iconPackage) {
       case "ai":
-        module = await import("react-icons/ai")
+        iconModule = await import("react-icons/ai")
         break
       case "bi":
-        module = await import("react-icons/bi")
+        iconModule = await import("react-icons/bi")
         break
       case "bs":
-        module = await import("react-icons/bs")
+        iconModule = await import("react-icons/bs")
         break
       case "cg":
-        module = await import("react-icons/cg")
+        iconModule = await import("react-icons/cg")
         break
       case "ci":
-        module = await import("react-icons/ci")
+        iconModule = await import("react-icons/ci")
         break
       case "di":
-        module = await import("react-icons/di")
+        iconModule = await import("react-icons/di")
         break
       case "fa":
-        module = await import("react-icons/fa")
+        iconModule = await import("react-icons/fa")
         break
       case "fa6":
-        module = await import("react-icons/fa6")
+        iconModule = await import("react-icons/fa6")
         break
       case "fc":
-        module = await import("react-icons/fc")
+        iconModule = await import("react-icons/fc")
         break
       case "fi":
-        module = await import("react-icons/fi")
+        iconModule = await import("react-icons/fi")
         break
       case "gi":
-        module = await import("react-icons/gi")
+        iconModule = await import("react-icons/gi")
         break
       case "go":
-        module = await import("react-icons/go")
+        iconModule = await import("react-icons/go")
         break
       case "gr":
-        module = await import("react-icons/gr")
+        iconModule = await import("react-icons/gr")
         break
       case "hi":
-        module = await import("react-icons/hi")
+        iconModule = await import("react-icons/hi")
         break
       case "hi2":
-        module = await import("react-icons/hi2")
+        iconModule = await import("react-icons/hi2")
         break
       case "im":
-        module = await import("react-icons/im")
+        iconModule = await import("react-icons/im")
         break
       case "io":
-        module = await import("react-icons/io")
+        iconModule = await import("react-icons/io")
         break
       case "io5":
-        module = await import("react-icons/io5")
+        iconModule = await import("react-icons/io5")
         break
       case "lia":
-        module = await import("react-icons/lia")
+        iconModule = await import("react-icons/lia")
         break
       case "lu":
-        module = await import("react-icons/lu")
+        iconModule = await import("react-icons/lu")
         break
       case "md":
-        module = await import("react-icons/md")
+        iconModule = await import("react-icons/md")
         break
       case "pi":
-        module = await import("react-icons/pi")
+        iconModule = await import("react-icons/pi")
         break
       case "ri":
-        module = await import("react-icons/ri")
+        iconModule = await import("react-icons/ri")
         break
       case "rx":
-        module = await import("react-icons/rx")
+        iconModule = await import("react-icons/rx")
         break
       case "si":
-        module = await import("react-icons/si")
+        iconModule = await import("react-icons/si")
         break
       case "sl":
-        module = await import("react-icons/sl")
+        iconModule = await import("react-icons/sl")
         break
       case "tb":
-        module = await import("react-icons/tb")
+        iconModule = await import("react-icons/tb")
         break
       case "tfi":
-        module = await import("react-icons/tfi")
+        iconModule = await import("react-icons/tfi")
         break
       case "ti":
-        module = await import("react-icons/ti")
+        iconModule = await import("react-icons/ti")
         break
       case "vsc":
-        module = await import("react-icons/vsc")
+        iconModule = await import("react-icons/vsc")
         break
       case "wi":
-        module = await import("react-icons/wi")
+        iconModule = await import("react-icons/wi")
         break
       default:
+        // eslint-disable-next-line no-console
         console.warn(`Unsupported icon package: ${iconPackage}`)
         return null
     }
 
-    const iconComponent = (module as any)[iconName]
+    const iconComponent = (iconModule as any)[iconName]
     if (iconComponent) {
+      // eslint-disable-next-line no-console
       console.log(
         `Successfully loaded icon: ${iconName} from react-icons/${iconPackage}`
       )
       return iconComponent
     } else {
+      // eslint-disable-next-line no-console
       console.warn(`Icon ${iconName} not found in react-icons/${iconPackage}`)
       return null
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(
       `Failed to load icon ${iconName} from react-icons/${iconPackage}:`,
       error
@@ -154,17 +158,111 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
       try {
         // Extract react-icons imports and their variables
         const reactIconsImports: { [key: string]: string[] } = {}
-        const importRegex =
+        const reactIconsRegex =
           /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]react-icons\/([^'"]+)['"];?/g
         let match
 
-        while ((match = importRegex.exec(code)) !== null) {
+        while ((match = reactIconsRegex.exec(code)) !== null) {
           const iconNames = match[1].split(",").map(name => name.trim())
           const iconPackage = match[2]
           reactIconsImports[iconPackage] = iconNames
+          // eslint-disable-next-line no-console
           console.log(
             `Found react-icons import: ${iconNames.join(", ")} from react-icons/${iconPackage}`
           )
+        }
+
+        // Check for unsupported icon library imports
+        const unsupportedIconLibraries = [
+          "lucide-react",
+          "@heroicons/react",
+          "@tabler/icons",
+          "@phosphor-icons/react",
+          "feather-icons",
+          "@fortawesome/react-fontawesome",
+          "@mui/icons-material",
+          "react-feather",
+          "@ant-design/icons",
+          "react-bootstrap-icons",
+          "@radix-ui/react-icons",
+        ]
+
+        const unsupportedImports: string[] = []
+        unsupportedIconLibraries.forEach(library => {
+          const unsupportedRegex = new RegExp(
+            `import\\s*.*?from\\s*['"]${library.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.*?['"];?`,
+            "g"
+          )
+          if (unsupportedRegex.test(code)) {
+            unsupportedImports.push(library)
+          }
+        })
+
+        // If unsupported icon imports are found, return a warning component
+        if (unsupportedImports.length > 0) {
+          const WarningComponent = () => (
+            <div className="w-full p-6 border-2 border-orange-300 bg-orange-50 rounded-lg">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-6 w-6 text-orange-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-orange-800 mb-2">
+                    Unsupported Icon Library Detected
+                  </h3>
+                  <p className="text-orange-700 mb-3">
+                    This component uses{" "}
+                    <strong>{unsupportedImports.join(", ")}</strong> which is
+                    not supported in the preview system.
+                  </p>
+                  <div className="bg-white p-4 rounded border border-orange-200 mb-3">
+                    <p className="text-sm text-gray-700 mb-2">
+                      <strong>✅ Supported:</strong> Only{" "}
+                      <code className="bg-gray-100 px-1 rounded">
+                        react-icons
+                      </code>{" "}
+                      is supported
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Please replace your icon imports with equivalent icons
+                      from react-icons:
+                    </p>
+                    <code className="block mt-2 text-sm bg-gray-100 p-2 rounded">
+                      import &#123; IconName &#125; from
+                      &quot;react-icons/[package]&quot;
+                    </code>
+                  </div>
+                  <div className="text-sm text-orange-600">
+                    <p>
+                      📚 Browse available icons at:
+                      <a
+                        href="https://react-icons.github.io/react-icons"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline ml-1"
+                      >
+                        react-icons.github.io
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+          WarningComponent.displayName = "UnsupportedIconWarning"
+          return WarningComponent
         }
 
         // Dynamically load only the required icons
@@ -248,6 +346,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
 
         throw new Error("Component is not a function")
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Error creating component:", error)
 
         // Return fallback component that shows the error
