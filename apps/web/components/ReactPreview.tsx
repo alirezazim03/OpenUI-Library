@@ -301,6 +301,13 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           )
           .replace(/export\s+default\s+/, "")
           .replace(/export\s+/, "")
+          // Replace Next.js Image with regular img tag to avoid Image constructor issues
+          .replace(/import\s+Image\s+from\s+['"]next\/image['"];?\s*/g, "")
+          .replace(/<Image\s+/g, "<img ")
+          .replace(
+            /\bfill\b/g,
+            'style={{width: "100%", height: "100%", objectFit: "cover"}}'
+          )
 
         // Transform JSX using Babel
         const transformedResult = BabelStandalone.transform(cleanCode, {
