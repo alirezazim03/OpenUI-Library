@@ -40,9 +40,8 @@ function getComponentsData() {
         components.push({
           ...metadata,
           path: componentPath,
-          category: pathParts[0],
-          framework: pathParts[1],
-          name: pathParts[2],
+          // Only override category if not provided in metadata
+          category: metadata.category || pathParts[0],
         })
       } catch (error) {
         // Log parsing errors but continue processing other components
