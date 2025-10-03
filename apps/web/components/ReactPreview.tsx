@@ -347,8 +347,10 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           // Replace Next.js Image with regular img tag to avoid Image constructor issues
           .replace(/import\s+Image\s+from\s+['"]next\/image['"];?\s*/g, "")
           .replace(/<Image\s+/g, "<img ")
-          // SAFER: remove Next/Image 'fill' only when it appears as an attribute on <img>
-          .replace(/(<img[^>]*?)\sfill(\s*=\s*{?true}?|\s)?/g, "$1 ")
+          .replace(
+            /\bfill(?=\s|$|>)/g,
+            "style={{width: \"100%\", height: \"100%\", objectFit: \"cover\"}}"
+          )
 
         // Transform JSX using Babel
         const transformedResult = BabelStandalone.transform(cleanCode, {
