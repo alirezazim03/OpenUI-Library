@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toast Notification Component</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            animation: {
+              'slide-in-right': 'slideInRight 0.3s ease-out',
+              'slide-out-right': 'slideOutRight 0.3s ease-in',
+              'progress': 'progress 5s linear',
+              'bounce-in': 'bounceIn 0.5s ease-out',
+              'fade-in': 'fadeIn 0.3s ease-out',
+            },
+            keyframes: {
+              slideInRight: {
+                '0%': { transform: 'translateX(100%)', opacity: '0' },
+                '100%': { transform: 'translateX(0)', opacity: '1' },
+              },
+              slideOutRight: {
+                '0%': { transform: 'translateX(0)', opacity: '1' },
+                '100%': { transform: 'translateX(100%)', opacity: '0' },
+              },
+              progress: {
+                '0%': { width: '100%' },
+                '100%': { width: '0%' },
+              },
+              bounceIn: {
+                '0%': { transform: 'scale(0.3)', opacity: '0' },
+                '50%': { transform: 'scale(1.05)' },
+                '70%': { transform: 'scale(0.9)' },
+                '100%': { transform: 'scale(1)', opacity: '1' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      .toast-container {
+        pointer-events: none;
+      }
+      .toast {
+        pointer-events: auto;
+      }
+      .progress-bar {
+        animation-play-state: running;
+      }
+      .progress-bar.paused {
+        animation-play-state: paused;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Demo Buttons Section -->
+    <div class="container mx-auto px-4 py-8">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Toast Notifications</h1>
+        <p class="text-gray-600 mb-8">Interactive toast notifications with different variants, smooth animations, and auto-dismiss functionality.</p>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Try Different Toast Types</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <button 
+              onclick="showToast('success', 'Success! Your changes have been saved successfully.')" 
+              class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+              Success Toast
+            </button>
+            <button 
+              onclick="showToast('error', 'Error! Something went wrong. Please try again.')" 
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+              Error Toast
+            </button>
+            <button 
+              onclick="showToast('info', 'Info: New updates are available for download.')" 
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+              </svg>
+              Info Toast
+            </button>
+            <button 
+              onclick="showToast('warning', 'Warning: Your session will expire in 5 minutes.')" 
+              class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+              Warning Toast
+            </button>
+          </div>
+          
+          <div class="mt-6 pt-6 border-t border-gray-200">
+            <h3 class="text-lg font-medium text-gray-800 mb-3">Additional Options</h3>
+            <div class="flex flex-wrap gap-3">
+              <button 
+                onclick="showToast('success', 'This toast has no auto-dismiss!', false)" 
+                class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm"
+              >
+                No Auto-dismiss
+              </button>
+              <button 
+                onclick="showToast('info', 'This is a longer message to demonstrate how the toast handles multiple lines of text and adapts to different content lengths.', true)" 
+                class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm"
+              >
+                Long Message
+              </button>
+              <button 
+                onclick="clearAllToasts()" 
+                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm"
+              >
+                Clear All
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Use Cases Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Common Use Cases</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="font-medium text-gray-800 mb-2">Form & Authentication</h3>
+              <ul class="text-sm text-gray-600 space-y-1">
+                <li>• Form submission feedback</li>
+                <li>• Login/signup responses</li>
+                <li>• Validation errors</li>
+                <li>• Password reset confirmations</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-800 mb-2">Dashboard & Data</h3>
+              <ul class="text-sm text-gray-600 space-y-1">
+                <li>• Data refresh notifications</li>
+                <li>• API error handling</li>
+                <li>• Background task updates</li>
+                <li>• System status alerts</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-800 mb-2">E-commerce</h3>
+              <ul class="text-sm text-gray-600 space-y-1">
+                <li>• Add to cart confirmations</li>
+                <li>• Checkout progress updates</li>
+                <li>• Inventory warnings</li>
+                <li>• Order status changes</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-800 mb-2">File Operations</h3>
+              <ul class="text-sm text-gray-600 space-y-1">
+                <li>• Upload progress/completion</li>
+                <li>• Download notifications</li>
+                <li>• File processing status</li>
+                <li>• Storage limit warnings</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container - positioned at top-right by default -->
+    <div id="toast-container" class="toast-container fixed top-4 right-4 z-50 space-y-3 max-w-sm w-full pointer-events-none">
+      <!-- Toasts will be dynamically inserted here -->
+    </div>
+
+    <!-- Toast Templates (Hidden) -->
+    <div id="toast-templates" class="hidden">
+      <!-- Success Toast Template -->
+      <div data-type="success" class="toast bg-white border-l-4 border-green-500 rounded-lg shadow-lg p-4 animate-slide-in-right relative overflow-hidden">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+              <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-3 flex-1">
+            <p class="text-sm font-medium text-gray-900 toast-message"></p>
+          </div>
+          <div class="ml-4 flex-shrink-0">
+            <button class="toast-close inline-flex text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-200">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="progress-bar absolute bottom-0 left-0 h-1 bg-green-500 animate-progress"></div>
+      </div>
+
+      <!-- Error Toast Template -->
+      <div data-type="error" class="toast bg-white border-l-4 border-red-500 rounded-lg shadow-lg p-4 animate-slide-in-right relative overflow-hidden">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
+              <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-3 flex-1">
+            <p class="text-sm font-medium text-gray-900 toast-message"></p>
+          </div>
+          <div class="ml-4 flex-shrink-0">
+            <button class="toast-close inline-flex text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-200">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="progress-bar absolute bottom-0 left-0 h-1 bg-red-500 animate-progress"></div>
+      </div>
+
+      <!-- Info Toast Template -->
+      <div data-type="info" class="toast bg-white border-l-4 border-blue-500 rounded-lg shadow-lg p-4 animate-slide-in-right relative overflow-hidden">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+              <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-3 flex-1">
+            <p class="text-sm font-medium text-gray-900 toast-message"></p>
+          </div>
+          <div class="ml-4 flex-shrink-0">
+            <button class="toast-close inline-flex text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-200">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="progress-bar absolute bottom-0 left-0 h-1 bg-blue-500 animate-progress"></div>
+      </div>
+
+      <!-- Warning Toast Template -->
+      <div data-type="warning" class="toast bg-white border-l-4 border-amber-500 rounded-lg shadow-lg p-4 animate-slide-in-right relative overflow-hidden">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <div class="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center">
+              <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-3 flex-1">
+            <p class="text-sm font-medium text-gray-900 toast-message"></p>
+          </div>
+          <div class="ml-4 flex-shrink-0">
+            <button class="toast-close inline-flex text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-200">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="progress-bar absolute bottom-0 left-0 h-1 bg-amber-500 animate-progress"></div>
+      </div>
+    </div>
+
+    <script>
+      // Toast management system
+      class ToastManager {
+        constructor() {
+          this.toasts = new Map();
+          this.container = document.getElementById('toast-container');
+          this.templates = document.getElementById('toast-templates');
+        }
+
+        show(type, message, autoDismiss = true, duration = 5000) {
+          const toastId = this.generateId();
+          const toastElement = this.createToast(type, message, toastId, autoDismiss, duration);
+          
+          this.toasts.set(toastId, {
+            element: toastElement,
+            timeout: null,
+            autoDismiss: autoDismiss,
+            duration: duration
+          });
+
+          this.container.appendChild(toastElement);
+          
+          // Setup close button
+          const closeBtn = toastElement.querySelector('.toast-close');
+          closeBtn.addEventListener('click', () => this.dismiss(toastId));
+
+          // Setup hover pause/resume for auto-dismiss
+          if (autoDismiss) {
+            const progressBar = toastElement.querySelector('.progress-bar');
+            
+            toastElement.addEventListener('mouseenter', () => {
+              this.pauseAutoDismiss(toastId);
+              progressBar?.classList.add('paused');
+            });
+            
+            toastElement.addEventListener('mouseleave', () => {
+              this.resumeAutoDismiss(toastId);
+              progressBar?.classList.remove('paused');
+            });
+
+            // Start auto-dismiss timer
+            this.startAutoDismiss(toastId, duration);
+          } else {
+            // Remove progress bar if no auto-dismiss
+            const progressBar = toastElement.querySelector('.progress-bar');
+            progressBar?.remove();
+          }
+
+          return toastId;
+        }
+
+        createToast(type, message, id, autoDismiss, duration) {
+          const template = this.templates.querySelector(`[data-type="${type}"]`);
+          if (!template) {
+            console.error(`Toast template for type "${type}" not found`);
+            return null;
+          }
+
+          const toastElement = template.cloneNode(true);
+          toastElement.id = `toast-${id}`;
+          toastElement.querySelector('.toast-message').textContent = message;
+          
+          // Remove data-type attribute from the clone
+          toastElement.removeAttribute('data-type');
+          
+          return toastElement;
+        }
+
+        startAutoDismiss(toastId, duration) {
+          const toast = this.toasts.get(toastId);
+          if (!toast || !toast.autoDismiss) return;
+
+          toast.timeout = setTimeout(() => {
+            this.dismiss(toastId);
+          }, duration);
+        }
+
+        pauseAutoDismiss(toastId) {
+          const toast = this.toasts.get(toastId);
+          if (!toast || !toast.autoDismiss) return;
+
+          if (toast.timeout) {
+            clearTimeout(toast.timeout);
+            toast.timeout = null;
+          }
+        }
+
+        resumeAutoDismiss(toastId) {
+          const toast = this.toasts.get(toastId);
+          if (!toast || !toast.autoDismiss) return;
+
+          // Calculate remaining time based on progress bar animation
+          const progressBar = toast.element.querySelector('.progress-bar');
+          if (progressBar) {
+            const computedStyle = window.getComputedStyle(progressBar);
+            const animationDuration = parseFloat(computedStyle.animationDuration) * 1000;
+            const animationDelay = parseFloat(computedStyle.animationDelay || 0) * 1000;
+            const totalDuration = animationDuration + animationDelay;
+            
+            // Estimate remaining time (this is approximate)
+            const elapsedRatio = 1 - (parseFloat(progressBar.style.width || '100%') / 100);
+            const remainingTime = totalDuration * (1 - elapsedRatio);
+            
+            this.startAutoDismiss(toastId, Math.max(remainingTime, 500));
+          }
+        }
+
+        dismiss(toastId) {
+          const toast = this.toasts.get(toastId);
+          if (!toast) return;
+
+          // Clear timeout if exists
+          if (toast.timeout) {
+            clearTimeout(toast.timeout);
+          }
+
+          // Add exit animation
+          toast.element.classList.remove('animate-slide-in-right');
+          toast.element.classList.add('animate-slide-out-right');
+
+          // Remove after animation
+          setTimeout(() => {
+            if (toast.element.parentNode) {
+              toast.element.parentNode.removeChild(toast.element);
+            }
+            this.toasts.delete(toastId);
+          }, 300);
+        }
+
+        dismissAll() {
+          const toastIds = Array.from(this.toasts.keys());
+          toastIds.forEach(id => this.dismiss(id));
+        }
+
+        generateId() {
+          return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+      }
+
+      // Initialize toast manager
+      const toastManager = new ToastManager();
+
+      // Global functions for demo buttons
+      function showToast(type, message, autoDismiss = true) {
+        toastManager.show(type, message, autoDismiss);
+      }
+
+      function clearAllToasts() {
+        toastManager.dismissAll();
+      }
+
+      // Demo: Show a welcome toast on page load
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          showToast('info', 'Welcome! Try clicking the buttons above to see different toast types.');
+        }, 1000);
+      });
+
+      // Keyboard shortcuts for accessibility
+      document.addEventListener('keydown', (e) => {
+        // Escape key to dismiss all toasts
+        if (e.key === 'Escape') {
+          clearAllToasts();
+        }
+      });
+    </script>
+  </body>
+</html>

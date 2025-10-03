@@ -24,7 +24,7 @@
   "packageManager": "pnpm@9.15.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_HANDLE/open-ui-library.git"
+    "url": "https://github.com/alirezazim03/OpenUI-Library.git"
   },
   "license": "MIT",
   "keywords": [
