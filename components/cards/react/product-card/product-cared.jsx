@@ -23,62 +23,61 @@ export default function ProductCard({
   badges = defaultProps.badges,
   images = defaultProps.images,
   buttonText = defaultProps.buttonText,
-  onPrimaryClick = defaultProps.onPrimaryClick,
 }) {
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+    setCurrentIndex(prev => (prev === 0 ? images.length - 1 : prev - 1))
   }
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+    setCurrentIndex(prev => (prev === images.length - 1 ? 0 : prev + 1))
   }
 
-const handleTouchStart = (e) => {
-  setTouchStart(e.targetTouches[0].clientX)
-}
-
-const handleTouchMove = (e) => {
-  setTouchEnd(e.targetTouches[0].clientX)
-}
-
-const handleTouchEnd = () => {
-  if (!touchStart || !touchEnd) return
-  const distance = touchStart - touchEnd
-
-  // Minimum distance for swipe
-  const minSwipeDistance = 50
-
-  if (distance > minSwipeDistance) {
-    nextSlide()// swipe left
-  } else if (distance < -minSwipeDistance) {
-    prevSlide()// swipe right
+  const handleTouchStart = e => {
+    setTouchStart(e.targetTouches[0].clientX)
   }
 
-  setTouchStart(null)
-  setTouchEnd(null)
-}
+  const handleTouchMove = e => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
 
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+
+    // Minimum distance for swipe
+    const minSwipeDistance = 50
+
+    if (distance > minSwipeDistance) {
+      nextSlide() // swipe left
+    } else if (distance < -minSwipeDistance) {
+      prevSlide() // swipe right
+    }
+
+    setTouchStart(null)
+    setTouchEnd(null)
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-2 sm:p-4">
       <div className="relative w-full max-w-md h-[600px] sm:h-[700px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
         {/* Background Image */}
-        <div className="absolute inset-0"
+        <div
+          className="absolute inset-0"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-        <Image
-        src={images[currentIndex]}
-        alt={`Slide ${currentIndex + 1}`}
-        fill
-        priority={currentIndex === 0} // preload the first image
-        className="object-cover transition-all duration-500"
-      />
+          <Image
+            src={images[currentIndex]}
+            alt={`Slide ${currentIndex + 1}`}
+            fill
+            priority={currentIndex === 0} // preload the first image
+            className="object-cover transition-all duration-500"
+          />
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-slate-800/60 via-teal-900/40 to-slate-900/80 pointer-events-none"></div>
         </div>
@@ -88,40 +87,39 @@ const handleTouchEnd = () => {
           {/* Top Section */}
           <div>
             {/* Carousel Dots */}
-            <div className="flex justify-center gap-1.5 mt-6">
-
-            </div>
+            <div className="flex justify-center gap-1.5 mt-6"></div>
           </div>
-           {/* Navigation Buttons */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/20 text-white p-1.5 sm:p-2 rounded-full hover:bg-white/40 transition text-sm sm:text-base"
-        >
-          ◀
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/20 text-white p-1.5 sm:p-2 rounded-full hover:bg-white/40 transition text-sm sm:text-base"
-        >
-          ▶
-        </button>
+          {/* Navigation Buttons */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/20 text-white p-1.5 sm:p-2 rounded-full hover:bg-white/40 transition text-sm sm:text-base"
+          >
+            ◀
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/20 text-white p-1.5 sm:p-2 rounded-full hover:bg-white/40 transition text-sm sm:text-base"
+          >
+            ▶
+          </button>
 
           {/* Bottom Section */}
           <div>
             <div>
-            {/* Carousel Dots */}
-            <div className="flex justify-center gap-1.5 mt-4 sm:mt-6 mb-3 sm:mb-4">
-              {images.map((_,idx)=>(
-              <div
-              key={idx}
-              className={`rounded-full transition-all duration-300 ${
-                idx === currentIndex ? "w-6 sm:w-8 h-1 bg-white" : "w-1.5 h-1 bg-white/40 "
-              }`}
-            />
-              ))}
-              
+              {/* Carousel Dots */}
+              <div className="flex justify-center gap-1.5 mt-4 sm:mt-6 mb-3 sm:mb-4">
+                {images.map((_, idx) => (
+                  <div
+                    key={idx}
+                    className={`rounded-full transition-all duration-300 ${
+                      idx === currentIndex
+                        ? "w-6 sm:w-8 h-1 bg-white"
+                        : "w-1.5 h-1 bg-white/40 "
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
             {/* Title and Price */}
             <div className="flex items-start justify-between mb-3 sm:mb-4">
               <h2 className="text-2xl sm:text-4xl font-bold text-white leading-tight">
@@ -151,7 +149,7 @@ const handleTouchEnd = () => {
 
             {/* Add to Cart Button */}
             <button className="w-full bg-white text-slate-900 py-3 sm:py-4 rounded-full text-base sm:text-lg font-bold hover:bg-gray-100 transition-colors duration-200 shadow-lg">
-             {buttonText}
+              {buttonText}
             </button>
           </div>
         </div>

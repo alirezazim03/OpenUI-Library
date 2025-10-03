@@ -306,7 +306,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           .replace(/<Image\s+/g, "<img ")
           .replace(
             /\bfill\b/g,
-            'style={{width: "100%", height: "100%", objectFit: "cover"}}'
+            "style={{width: \"100%\", height: \"100%\", objectFit: \"cover\"}}"
           )
 
         // Transform JSX using Babel
