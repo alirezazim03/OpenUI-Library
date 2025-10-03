@@ -7,6 +7,7 @@ export interface ComponentMetadata {
   path: string
   tags?: string[]
   license?: string
+  preview?: string
   demoUrl?: string
   props?: ComponentProp[]
 }
@@ -31,6 +32,7 @@ export interface ComponentPageProps {
 export interface ReactPreviewProps {
   componentFiles: Record<string, string>
   componentName: string
+  compact?: boolean
 }
 
 export interface ApiResponse<T> {
