@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState } from "react"
+import Image from "next/image"
 
 const defaultProps = {
   title: "Deep Blue Nights",
@@ -13,8 +13,8 @@ const defaultProps = {
     "https://xbllreuvbgzawhgemndh.supabase.co/storage/v1/object/public/material/placeholder1.jpg",
   ],
   buttonText: "Add to Cart",
-  onPrimaryClick: () => console.log("Added to cart!"),
-};
+  onPrimaryClick: () => {},
+}
 
 export default function ProductCard({
   title = defaultProps.title,
@@ -25,42 +25,42 @@ export default function ProductCard({
   buttonText = defaultProps.buttonText,
   onPrimaryClick = defaultProps.onPrimaryClick,
 }) {
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
-
-const handleTouchStart = (e) => {
-  setTouchStart(e.targetTouches[0].clientX);
-};
-
-const handleTouchMove = (e) => {
-  setTouchEnd(e.targetTouches[0].clientX);
-};
-
-const handleTouchEnd = () => {
-  if (!touchStart || !touchEnd) return;
-  const distance = touchStart - touchEnd;
-
-  // Minimum distance for swipe
-  const minSwipeDistance = 50;
-
-  if (distance > minSwipeDistance) {
-    nextSlide(); // swipe left
-  } else if (distance < -minSwipeDistance) {
-    prevSlide(); // swipe right
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
   }
 
-  setTouchStart(null);
-  setTouchEnd(null);
-};
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+  }
+
+const handleTouchStart = (e) => {
+  setTouchStart(e.targetTouches[0].clientX)
+}
+
+const handleTouchMove = (e) => {
+  setTouchEnd(e.targetTouches[0].clientX)
+}
+
+const handleTouchEnd = () => {
+  if (!touchStart || !touchEnd) return
+  const distance = touchStart - touchEnd
+
+  // Minimum distance for swipe
+  const minSwipeDistance = 50
+
+  if (distance > minSwipeDistance) {
+    nextSlide()// swipe left
+  } else if (distance < -minSwipeDistance) {
+    prevSlide()// swipe right
+  }
+
+  setTouchStart(null)
+  setTouchEnd(null)
+}
 
 
   return (
@@ -72,11 +72,13 @@ const handleTouchEnd = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-        <img
-            src={images[currentIndex]}
-            alt={`Slide ${currentIndex + 1}`}
-            className="w-full h-full object-cover transition-all duration-500"
-          />
+        <Image
+        src={images[currentIndex]}
+        alt={`Slide ${currentIndex + 1}`}
+        fill
+        priority={currentIndex === 0} // preload the first image
+        className="object-cover transition-all duration-500"
+      />
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-slate-800/60 via-teal-900/40 to-slate-900/80 pointer-events-none"></div>
         </div>
@@ -155,5 +157,5 @@ const handleTouchEnd = () => {
         </div>
       </div>
     </div>
-  );
+  )
 }
