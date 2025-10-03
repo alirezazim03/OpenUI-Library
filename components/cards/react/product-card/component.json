@@ -1,0 +1,67 @@
+{
+  "name": "swipeable-product-card",
+  "category": "card",
+  "framework": "react",
+  "tags": [
+    "product",
+    "ecommerce",
+    "card",
+    "carousel",
+    "swipeable",
+    "navigation",
+    "ui"
+  ],
+  "author": "alirezazim03",
+  "license": "MIT",
+  "version": "1.1.0",
+  "preview": "A visually immersive product card with swipeable images, navigation buttons, product details, price, badges, and a call-to-action button.",
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Product name displayed on the card"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Short description of the product"
+    },
+    {
+      "name": "price",
+      "type": "string",
+      "description": "Price of the product displayed in the card"
+    },
+    {
+      "name": "badges",
+      "type": "array",
+      "description": "Highlight tags like 'Top Pick' or 'Only 9 left'"
+    },
+    {
+      "name": "images",
+      "type": "array",
+      "description": "Array of image URLs for the swipeable carousel"
+    },
+    {
+      "name": "buttonText",
+      "type": "string",
+      "description": "Text for the call-to-action button"
+    },
+    {
+      "name": "onButtonClick",
+      "type": "function",
+      "description": "Callback function when the button is clicked"
+    },
+    {
+      "name": "Navigation",
+      "type": "boolean",
+      "description": "to move to next image",
+      "default": true
+    },
+    {
+      "name": "enableSwipe",
+      "type": "boolean",
+      "description": "Enable swipe gestures for image carousel",
+      "default": true
+    }
+  ]
+}
