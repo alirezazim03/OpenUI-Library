@@ -6,6 +6,130 @@ import type { ReactPreviewProps } from "../types"
 // Import Babel standalone
 const BabelStandalone = require("@babel/standalone")
 
+// Dynamic icon loader - only loads icons that are actually used
+const loadReactIcon = async (
+  iconPackage: string,
+  iconName: string
+): Promise<React.ComponentType<any> | null> => {
+  try {
+    // Use dynamic imports with explicit module paths that Next.js can resolve
+    let module
+    switch (iconPackage) {
+      case "ai":
+        module = await import("react-icons/ai")
+        break
+      case "bi":
+        module = await import("react-icons/bi")
+        break
+      case "bs":
+        module = await import("react-icons/bs")
+        break
+      case "cg":
+        module = await import("react-icons/cg")
+        break
+      case "ci":
+        module = await import("react-icons/ci")
+        break
+      case "di":
+        module = await import("react-icons/di")
+        break
+      case "fa":
+        module = await import("react-icons/fa")
+        break
+      case "fa6":
+        module = await import("react-icons/fa6")
+        break
+      case "fc":
+        module = await import("react-icons/fc")
+        break
+      case "fi":
+        module = await import("react-icons/fi")
+        break
+      case "gi":
+        module = await import("react-icons/gi")
+        break
+      case "go":
+        module = await import("react-icons/go")
+        break
+      case "gr":
+        module = await import("react-icons/gr")
+        break
+      case "hi":
+        module = await import("react-icons/hi")
+        break
+      case "hi2":
+        module = await import("react-icons/hi2")
+        break
+      case "im":
+        module = await import("react-icons/im")
+        break
+      case "io":
+        module = await import("react-icons/io")
+        break
+      case "io5":
+        module = await import("react-icons/io5")
+        break
+      case "lia":
+        module = await import("react-icons/lia")
+        break
+      case "lu":
+        module = await import("react-icons/lu")
+        break
+      case "md":
+        module = await import("react-icons/md")
+        break
+      case "pi":
+        module = await import("react-icons/pi")
+        break
+      case "ri":
+        module = await import("react-icons/ri")
+        break
+      case "rx":
+        module = await import("react-icons/rx")
+        break
+      case "si":
+        module = await import("react-icons/si")
+        break
+      case "sl":
+        module = await import("react-icons/sl")
+        break
+      case "tb":
+        module = await import("react-icons/tb")
+        break
+      case "tfi":
+        module = await import("react-icons/tfi")
+        break
+      case "ti":
+        module = await import("react-icons/ti")
+        break
+      case "vsc":
+        module = await import("react-icons/vsc")
+        break
+      case "wi":
+        module = await import("react-icons/wi")
+        break
+      default:
+        console.warn(`Unsupported icon package: ${iconPackage}`)
+        return null
+    }
+
+    const iconComponent = module[iconName]
+    if (iconComponent) {
+      console.log(`Successfully loaded icon: ${iconName} from react-icons/${iconPackage}`)
+      return iconComponent
+    } else {
+      console.warn(`Icon ${iconName} not found in react-icons/${iconPackage}`)
+      return null
+    }
+  } catch (error) {
+    console.error(
+      `Failed to load icon ${iconName} from react-icons/${iconPackage}:`,
+      error
+    )
+    return null
+  }
+}
+
 const ReactPreview: React.FC<ReactPreviewProps> = ({
   componentFiles,
   componentName,
@@ -21,25 +145,57 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
   }, [])
 
   const createComponentFromCode = useCallback(
-    (code: string, componentName: string): React.ComponentType<any> => {
+    async (
+      code: string,
+      componentName: string
+    ): Promise<React.ComponentType<any>> => {
       try {
-        // Use a more direct approach - create a module with the component code
-        // and use dynamic import to load it
+        // Extract react-icons imports and their variables
+        const reactIconsImports: { [key: string]: string[] } = {}
+        const importRegex =
+          /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]react-icons\/([^'"]+)['"];?/g
+        let match
 
-        // Prepare the component code as a module
-        const moduleCode = `
-        import React, { useState, useEffect } from 'react';
-        
-        ${code}
-      `
+        while ((match = importRegex.exec(code)) !== null) {
+          const iconNames = match[1].split(",").map(name => name.trim())
+          const iconPackage = match[2]
+          reactIconsImports[iconPackage] = iconNames
+        }
 
-        // Create a blob URL for the module
-        const blob = new Blob([moduleCode], { type: "application/javascript" })
-        const moduleUrl = URL.createObjectURL(blob)
+        // Dynamically load only the required icons
+        const iconVariables: { [key: string]: any } = {}
+
+        for (const [iconPackage, iconNames] of Object.entries(
+          reactIconsImports
+        )) {
+          for (const iconName of iconNames) {
+            const IconComponent = await loadReactIcon(iconPackage, iconName)
+            if (IconComponent) {
+              iconVariables[iconName] = IconComponent
+            } else {
+              // Create a fallback icon component if the specific icon doesn't exist
+              iconVariables[iconName] = ({ className, ...props }: any) =>
+                React.createElement("div", {
+                  className: `inline-block w-4 h-4 bg-gray-400 rounded ${className || ""}`,
+                  title: `Icon: ${iconName} (not found)`,
+                  ...props,
+                })
+            }
+          }
+        }
 
         // Use Babel to transform JSX to JavaScript
         let cleanCode = code
-          .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*/g, "")
+          // Remove all imports except react-icons (we'll handle those separately)
+          .replace(
+            /import\s+.*?from\s+['"](?!react-icons\/)[^'"]*['"];?\s*/g,
+            ""
+          )
+          // Remove react-icons imports (we'll inject them)
+          .replace(
+            /import\s*\{\s*[^}]+\s*\}\s*from\s*['"]react-icons\/[^'"]+['"];?\s*/g,
+            ""
+          )
           .replace(/export\s+default\s+/, "")
           .replace(/export\s+/, "")
 
@@ -59,7 +215,12 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
         const transformedCode = transformedResult.code || cleanCode
 
         const wrappedCode = `
-        (function(React, useState, useEffect) {
+        (function(React, useState, useEffect, iconVariables) {
+          // Inject icon variables into the scope
+          ${Object.keys(iconVariables)
+            .map(iconName => `const ${iconName} = iconVariables.${iconName};`)
+            .join("\n          ")}
+          
           ${transformedCode}
           
           return ${extractComponentName(code)};
@@ -68,10 +229,12 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
 
         // Execute the wrapped code
         const componentFactory = eval(wrappedCode)
-        const Component = componentFactory(React, useState, useEffect)
-
-        // Clean up the blob URL
-        URL.revokeObjectURL(moduleUrl)
+        const Component = componentFactory(
+          React,
+          useState,
+          useEffect,
+          iconVariables
+        )
 
         if (typeof Component === "function") {
           Component.displayName = componentName
@@ -80,7 +243,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
 
         throw new Error("Component is not a function")
       } catch (error) {
-        // Error creating component from code - using fallback component instead
+        console.error("Error creating component:", error)
 
         // Return fallback component that shows the error
         const FallbackComponent = () => (
@@ -131,7 +294,10 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
         // For now, we'll show a realistic mock that represents what the component does
         // This is safer and more reliable than trying to execute arbitrary code
 
-        const Component = createComponentFromCode(componentCode, componentName)
+        const Component = await createComponentFromCode(
+          componentCode,
+          componentName
+        )
 
         if (!Component || typeof Component !== "function") {
           throw new Error("Could not extract React component")
