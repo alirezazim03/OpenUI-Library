@@ -33,5 +33,8 @@
     "tailwind",
     "open-source",
     "design-system"
-  ]
+  ],
+  "dependencies": {
+    "react-swipeable": "^7.0.2"
+  }
 }
