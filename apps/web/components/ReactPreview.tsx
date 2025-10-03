@@ -5,6 +5,47 @@ import type { ReactPreviewProps } from "../types"
 
 // Import Babel standalone
 const BabelStandalone = require("@babel/standalone")
+// A simple container that measures available space and scales children to fit
+const MeasuredFit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [scale, setScale] = useState(1)
+  const outerRef = React.useRef<HTMLDivElement | null>(null)
+  const innerRef = React.useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const ro = new ResizeObserver(() => {
+      if (!outerRef.current || !innerRef.current) return
+      const outer = outerRef.current.getBoundingClientRect()
+      const innerWidth = innerRef.current.scrollWidth || innerRef.current.getBoundingClientRect().width
+      const innerHeight = innerRef.current.scrollHeight || innerRef.current.getBoundingClientRect().height
+      if (innerWidth === 0 || innerHeight === 0) {
+        setScale(1)
+        return
+      }
+      const s = Math.min(outer.width / innerWidth, outer.height / innerHeight, 1)
+      setScale(Math.max(0.1, s * 0.98))
+    })
+    if (outerRef.current) ro.observe(outerRef.current)
+    if (innerRef.current) ro.observe(innerRef.current)
+    return () => ro.disconnect()
+  }, [])
+
+  return (
+    <div ref={outerRef} className="w-full h-full overflow-hidden flex items-center justify-center">
+      <div
+        ref={innerRef}
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: "center",
+          display: "inline-block",
+          width: "max-content",
+          height: "max-content",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
 
 // Dynamic icon loader - only loads icons that are actually used
 const loadReactIcon = async (
@@ -139,12 +180,14 @@ const loadReactIcon = async (
 const ReactPreview: React.FC<ReactPreviewProps> = ({
   componentFiles,
   componentName,
+  compact,
 }) => {
   const [RenderedComponent, setRenderedComponent] =
     useState<React.ComponentType | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [isClient, setIsClient] = useState(false)
+  const [compactScale, setCompactScale] = useState(1)
 
   useEffect(() => {
     setIsClient(true)
@@ -291,7 +334,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
         let cleanCode = code
           // Remove all imports except react-icons (we'll handle those separately)
           .replace(
-            /import\s+.*?from\s+['"](?!react-icons\/)[^'"]*['"];?\s*/g,
+            /import\s+.*?from\s+['"](?!react-icons\/)\S+['"];?\s*/g,
             ""
           )
           // Remove react-icons imports (we'll inject them)
@@ -304,10 +347,8 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           // Replace Next.js Image with regular img tag to avoid Image constructor issues
           .replace(/import\s+Image\s+from\s+['"]next\/image['"];?\s*/g, "")
           .replace(/<Image\s+/g, "<img ")
-          .replace(
-            /\bfill\b/g,
-            "style={{width: \"100%\", height: \"100%\", objectFit: \"cover\"}}"
-          )
+          // SAFER: remove Next/Image 'fill' only when it appears as an attribute on <img>
+          .replace(/(<img[^>]*?)\sfill(\s*=\s*{?true}?|\s)?/g, "$1 ")
 
         // Transform JSX using Babel
         const transformedResult = BabelStandalone.transform(cleanCode, {
@@ -416,6 +457,16 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
 
         // Create wrapper without any props - components should have their own defaults
         const ComponentWrapper = () => {
+          // In compact mode (popover), measure and scale to fit
+          if (compact) {
+            return (
+              <div className="w-full h-full">
+                <MeasuredFit>
+                  <Component />
+                </MeasuredFit>
+              </div>
+            )
+          }
           return (
             <div className="w-full" style={{ minHeight: "200px" }}>
               <Component />

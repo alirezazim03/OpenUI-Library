@@ -3,6 +3,7 @@ import Head from "next/head"
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import type { ComponentMetadata } from "../types"
+import PreviewPopover from "../components/PreviewPopover"
 
 export default function Home() {
   const [components, setComponents] = useState<ComponentMetadata[]>([])
@@ -233,25 +234,36 @@ export default function Home() {
                           </div>
                         )}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                          {categoryComponents.map(
-                            (component: ComponentMetadata) => (
-                              <Link
-                                key={component.path}
-                                href={`/component/${encodeURIComponent(component.path)}`}
-                                className="group block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-blue-200"
-                              >
-                                <div className="p-6">
+                          {categoryComponents.map((component: ComponentMetadata) => (
+                            <PreviewPopover
+                              key={component.path}
+                              component={component}
+                              getFiles={async () => {
+                                try {
+                                  const res = await fetch(`/api/component/${encodeURIComponent(component.path)}`)
+                                  const data = await res.json()
+                                  return data?.component?.files || null
+                                } catch {
+                                  return null
+                                }
+                              }}
+                            >
+                              <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-blue-200">
+                                <Link
+                                  href={`/component/${encodeURIComponent(component.path)}`}
+                                  className="block p-6 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-xl"
+                                  aria-label={`Open ${component.name} details`}
+                                >
                                   <div className="flex items-start justify-between mb-3">
                                     <h4 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                                       {component.name}
                                     </h4>
-                                    <div className="flex items-center space-x-1">
+                                    <div className="flex items-center space-x-2">
                                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                         {component.framework}
                                       </span>
                                     </div>
                                   </div>
-
                                   <div className="flex items-center space-x-3 mb-3 text-sm text-gray-500">
                                     <span>v{component.version}</span>
                                     {component.author && (
@@ -261,31 +273,28 @@ export default function Home() {
                                       </>
                                     )}
                                   </div>
-
-                                  {component.tags &&
-                                    component.tags.length > 0 && (
-                                      <div className="flex flex-wrap gap-1">
-                                        {component.tags
-                                          .slice(0, 3)
-                                          .map((tag: string) => (
-                                            <span
-                                              key={tag}
-                                              className="inline-flex items-center px-2 py-1 rounded text-xs bg-gray-100 text-gray-700"
-                                            >
-                                              {tag}
-                                            </span>
-                                          ))}
-                                        {component.tags.length > 3 && (
-                                          <span className="inline-flex items-center px-2 py-1 rounded text-xs bg-gray-100 text-gray-700">
-                                            +{component.tags.length - 3} more
-                                          </span>
-                                        )}
-                                      </div>
-                                    )}
-                                </div>
-                              </Link>
-                            )
-                          )}
+                                  {component.tags && component.tags.length > 0 && (
+                                    <div className="flex flex-wrap gap-1">
+                                      {component.tags.slice(0, 3).map((tag: string) => (
+                                        <span
+                                          key={tag}
+                                          className="inline-flex items-center px-2 py-1 rounded text-xs bg-gray-100 text-gray-700"
+                                        >
+                                          {tag}
+                                        </span>
+                                      ))}
+                                      {component.tags.length > 3 && (
+                                        <span className="inline-flex items-center px-2 py-1 rounded text-xs bg-gray-100 text-gray-700">
+                                          +{component.tags.length - 3} more
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                </Link>
+                                {/* Preview opens on hover/focus of entire card; no explicit button */}
+                              </div>
+                            </PreviewPopover>
+                          ))}
                         </div>
                       </section>
                     )
