@@ -2,7 +2,7 @@
 
 A visually immersive, interactive card component designed for showcasing products with swipeable images, navigation controls, product details, price, badges, and a call-to-action button.
 
-**Author:** [@alirezazim03](https://github.com/alirezazim03)
+**Author:** [@jff2009](https://github.com/jjf2009)
 
 ## Features
 
