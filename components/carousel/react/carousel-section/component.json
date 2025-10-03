@@ -1,0 +1,48 @@
+{
+  "name": "carousel",
+  "category": "slider",
+  "framework": "react",
+  "tags": ["carousel", "slider", "gallery", "slideshow", "image slider", "responsive"],
+  "author": "Saikiran-Sugurthi",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A flexible, responsive, and accessible Carousel component for sliding content.",
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "The slides to display inside the carousel (e.g., images or custom components).",
+      "default": null
+    },
+    {
+      "name": "autoplay",
+      "type": "boolean",
+      "description": "Whether the carousel should play automatically.",
+      "default": false
+    },
+    {
+      "name": "interval",
+      "type": "number",
+      "description": "The time (in ms) between automatic slide transitions.",
+      "default": 3000
+    },
+    {
+      "name": "loop",
+      "type": "boolean",
+      "description": "Whether the carousel should loop back after the last slide.",
+      "default": true
+    },
+    {
+      "name": "showArrows",
+      "type": "boolean",
+      "description": "Whether to display the left and right navigation arrows.",
+      "default": true
+    },
+    {
+      "name": "showDots",
+      "type": "boolean",
+      "description": "Whether to display the pagination dots at the bottom.",
+      "default": true
+    }
+  ]
+}
