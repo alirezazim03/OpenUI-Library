@@ -187,8 +187,8 @@ export default function ComponentPage() {
                           padding: 20px;
                         }
                         
-                        /* Disable all interactive elements in preview */
-                        button, input, textarea, select, a, [onclick], [onsubmit] {
+                        /* Disable only redirect-causing elements in preview */
+                        a[href]:not([href^="#"]):not([href=""]) {
                           pointer-events: none !important;
                           cursor: default !important;
                         }
@@ -198,14 +198,14 @@ export default function ComponentPage() {
                           pointer-events: none !important;
                         }
                         
-                        /* Disable hover effects */
-                        *:hover {
-                          cursor: default !important;
+                        /* Allow interactive elements like buttons to work */
+                        button {
+                          cursor: pointer !important;
                         }
                       </style>
                       ${component.files["index.html"]}
                       <script>
-                        // Prevent all form submissions and link navigation
+                        // Prevent only redirect-causing interactions
                         document.addEventListener('DOMContentLoaded', function() {
                           // Disable all forms
                           const forms = document.querySelectorAll('form');
@@ -217,8 +217,8 @@ export default function ComponentPage() {
                             });
                           });
                           
-                          // Disable all links
-                          const links = document.querySelectorAll('a');
+                          // Disable only external links (not hash links or empty hrefs)
+                          const links = document.querySelectorAll('a[href]:not([href^="#"]):not([href=""])');
                           links.forEach(link => {
                             link.addEventListener('click', function(e) {
                               e.preventDefault();
@@ -227,22 +227,23 @@ export default function ComponentPage() {
                             });
                           });
                           
-                          // Disable all buttons
+                          // Allow buttons to work normally - they should handle their own interactions
+                          // Only prevent if they would cause navigation
                           const buttons = document.querySelectorAll('button');
                           buttons.forEach(button => {
-                            button.disabled = true;
-                            button.addEventListener('click', function(e) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return false;
-                            });
+                            // Check if button has onclick that might cause navigation
+                            const onclickAttr = button.getAttribute('onclick');
+                            if (onclickAttr && (onclickAttr.includes('window.location') || onclickAttr.includes('location.href'))) {
+                              button.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                return false;
+                              });
+                            }
                           });
                           
-                          // Disable all inputs
-                          const inputs = document.querySelectorAll('input, textarea, select');
-                          inputs.forEach(input => {
-                            input.disabled = true;
-                          });
+                          // Allow inputs to work normally unless they're in forms
+                          // Forms are already disabled above
                         });
                       </script>
                     `}
