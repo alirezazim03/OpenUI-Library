@@ -1,3 +1,15 @@
+# Ignore component source and packages from the root eslint run
+components/
+packages/
+
+# Node and lockfiles
+node_modules/
+**/node_modules/
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
 node_modules/
 .next/
 out/

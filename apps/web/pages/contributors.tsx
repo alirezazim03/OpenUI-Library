@@ -18,16 +18,16 @@ export default function Contributors() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="min-h-screen bg-gray-50 flex flex-col dark:bg-gray-900">
         <Navbar currentPage="contributors" />
 
         {/* Main Content */}
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center max-w-2xl mx-auto px-4">
             {/* Construction Icon */}
-            <div className="mx-auto w-32 h-32 bg-yellow-100 rounded-full flex items-center justify-center mb-8">
+            <div className="mx-auto w-32 h-32 bg-yellow-100 rounded-full flex items-center justify-center mb-8 dark:bg-yellow-900">
               <svg
-                className="w-16 h-16 text-yellow-600"
+                className="w-16 h-16 text-yellow-600 dark:text-yellow-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -42,17 +42,17 @@ export default function Contributors() {
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4 dark:text-white">
               Contributors Page
             </h1>
 
             {/* Subtitle */}
-            <h2 className="text-2xl font-semibold text-yellow-600 mb-6">
+            <h2 className="text-2xl font-semibold text-yellow-600 mb-6 dark:text-yellow-400">
               Under Construction
             </h2>
 
             {/* Description */}
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed dark:text-gray-400">
               We&apos;re building an amazing contributors page to showcase all
               the talented developers who help make Open UI Library better.
               Check back soon to see our community heroes!
@@ -70,18 +70,18 @@ export default function Contributors() {
                 href="https://github.com/alirezazim03/OpenUI-Library"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors font-medium"
+                className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors font-medium dark:bg-gray-700 dark:hover:bg-gray-600"
               >
                 Contribute on GitHub
               </a>
             </div>
 
             {/* Coming Soon Features */}
-            <div className="mt-12 p-6 bg-white rounded-xl shadow-sm border">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="mt-12 p-6 bg-white rounded-xl shadow-sm border dark:bg-gray-800 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white">
                 Coming Soon
               </h3>
-              <ul className="text-gray-600 space-y-2">
+              <ul className="text-gray-600 space-y-2 dark:text-gray-400">
                 <li>• Contributor profiles and avatars</li>
                 <li>• Contribution statistics and metrics</li>
                 <li>• Component attribution</li>
@@ -92,10 +92,10 @@ export default function Contributors() {
         </main>
 
         {/* Footer */}
-        <footer className="bg-white border-t mt-auto">
+        <footer className="bg-white border-t mt-auto dark:bg-gray-800 dark:border-gray-700">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-sm text-gray-500 mb-4 md:mb-0">
+              <p className="text-sm text-gray-500 mb-4 md:mb-0 dark:text-gray-400">
                 Open UI Library - MIT License
               </p>
               <div className="flex items-center space-x-6">
@@ -103,7 +103,7 @@ export default function Contributors() {
                   href="https://github.com/alirezazim03/OpenUI-Library"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-gray-500 hover:text-gray-700"
+                  className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                 >
                   Contributing
                 </a>
@@ -111,18 +111,18 @@ export default function Contributors() {
                   href="https://github.com/alirezazim03/OpenUI-Library/blob/main/LICENSE"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-gray-500 hover:text-gray-700"
+                  className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                 >
                   License
                 </a>
-                 <a
-          href="https://discord.gg/649Q4HG3XK"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-gray-500 hover:text-gray-700"
-        >
-          Discord
-        </a>
+                <a
+                  href="https://discord.gg/649Q4HG3XK"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                >
+                  Discord
+                </a>
               </div>
             </div>
           </div>
