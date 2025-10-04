@@ -1,0 +1,54 @@
+{
+  "name": "milestone-fireworks",
+  "category": "celebration",
+  "framework": "react",
+  "tags": ["celebration", "fireworks", "animation", "milestone", "map", "dark-mode", "light-mode"],
+  "author": "TejaswaniRai",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "Animated fireworks celebration component for user milestones on interactive maps",
+  "props": [
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "description": "Whether the fireworks animation is currently active",
+      "default": false
+    },
+    {
+      "name": "milestone",
+      "type": "number",
+      "description": "The milestone number being celebrated (e.g., 10000, 50000, 100000)",
+      "default": 10000
+    },
+    {
+      "name": "regions",
+      "type": "Array<{x: number, y: number, intensity: number}>",
+      "description": "Array of regions with coordinates and intensity for fireworks placement",
+      "default": "[]"
+    },
+    {
+      "name": "duration",
+      "type": "number",
+      "description": "Duration of the fireworks animation in milliseconds",
+      "default": 5000
+    },
+    {
+      "name": "onComplete",
+      "type": "function",
+      "description": "Callback function called when animation completes",
+      "default": "() => {}"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes to apply to the container",
+      "default": ""
+    },
+    {
+      "name": "theme",
+      "type": "'light' | 'dark'",
+      "description": "Theme for the fireworks colors",
+      "default": "dark"
+    }
+  ]
+}
