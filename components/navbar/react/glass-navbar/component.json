@@ -1,0 +1,28 @@
+{
+  "name": "glass-navbar",
+  "category": "navbar",
+  "framework": "react",
+  "tags": ["glassmorphism", "navbar", "navigation", "logo", "modern"],
+  "author": "suryssss",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A stunning glassmorphism navigation bar with backdrop blur effects, gradient backgrounds, and smooth animations.",
+  "props": [
+    {
+      "name": "logo",
+      "type": "string",
+      "description": "Logo text to be displayed in the navbar"
+    },
+    {
+      "name": "navItems",
+      "type": "array",
+      "description": "List of navigation items displayed as links"
+    },
+    {
+      "name": "showLogo",
+      "type": "boolean",
+      "description": "Whether to show the logo icon"
+    }
+  ]
+}
+
