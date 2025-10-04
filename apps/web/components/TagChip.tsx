@@ -3,7 +3,7 @@ import React from "react"
 interface TagChipProps {
   tag: string
   active: boolean
-  onToggle: (tag: string) => void
+  onToggle: (_tag: string) => void
 }
 
 /**
@@ -11,7 +11,8 @@ interface TagChipProps {
  * - Uses aria-pressed to indicate toggle state
  * - Keeps visual focus outline for keyboard users
  */
-export function TagChip({ tag, active, onToggle }: TagChipProps) {
+export function TagChip(props: TagChipProps) {
+  const { tag, active, onToggle } = props
   return (
     <button
       type="button"
