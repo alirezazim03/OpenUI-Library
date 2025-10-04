@@ -407,7 +407,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
         const componentCode = componentFiles[mainFile]
 
         // Special handling for milestone-fireworks component
-        if (componentName === 'milestone-fireworks') {
+        if (componentName === "milestone-fireworks") {
           const StaticPreview = () => (
             <div className="relative w-full h-64 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-lg overflow-hidden">
               {/* Animated background */}
@@ -417,13 +417,13 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
               <div className="absolute inset-0">
                 {/* Single firework burst with minimal particles */}
                 <div className="absolute w-3 h-3 bg-yellow-400 rounded-full opacity-80"
-                     style={{ left: '30%', top: '35%', animation: 'firework 2s ease-out infinite' }} />
+                     style={{ left: "30%", top: "35%", animation: "firework 2s ease-out infinite" }} />
                 <div className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-70"
-                     style={{ left: '50%', top: '40%', animation: 'firework 2s ease-out infinite 0.3s' }} />
+                     style={{ left: "50%", top: "40%", animation: "firework 2s ease-out infinite 0.3s" }} />
                 <div className="absolute w-2.5 h-2.5 bg-red-400 rounded-full opacity-75"
-                     style={{ left: '70%', top: '30%', animation: 'firework 2s ease-out infinite 0.6s' }} />
+                     style={{ left: "70%", top: "30%", animation: "firework 2s ease-out infinite 0.6s" }} />
                 <div className="absolute w-2 h-2 bg-pink-400 rounded-full opacity-80"
-                     style={{ left: '40%', top: '50%', animation: 'firework 2s ease-out infinite 0.9s' }} />
+                     style={{ left: "40%", top: "50%", animation: "firework 2s ease-out infinite 0.9s" }} />
               </div>
 
               {/* Milestone text overlay */}
@@ -467,13 +467,6 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
 
           // Create wrapper with theme context for components that might need it
           const ComponentWrapper = () => {
-            // Mock theme context for components that use useTheme
-            const mockThemeContext = {
-              theme: "dark",
-              setTheme: () => {},
-              toggleTheme: () => {}
-            }
-
             // Create a simple theme provider mock
             const ThemeProviderMock = ({ children }: { children: React.ReactNode }) => {
               return React.createElement("div", {
@@ -483,7 +476,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
             }
 
             // Wrap component in mock theme provider
-            const wrappedComponent = React.createElement(ThemeProviderMock, { children: React.createElement(Component) })
+            const wrappedComponent = React.createElement(ThemeProviderMock, null, React.createElement(Component))
 
             return (
               <div className="w-full" style={{ minHeight: "200px" }}>

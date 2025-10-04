@@ -11,10 +11,34 @@ const validate = ajv.compile(schema)
 
 function validateMetadata(): boolean {
   const componentsDir = path.join(process.cwd(), "components")
-  const pattern = path.join(componentsDir, "**/component.json")
 
   try {
-    const files = glob.sync(pattern)
+    // Use fs.readdirSync recursively to find all component.json files
+    function findComponentJsonFiles(dir: string): string[] {
+      const files: string[] = []
+
+      try {
+        const items = fs.readdirSync(dir)
+
+        for (const item of items) {
+          const fullPath = path.join(dir, item)
+          const stat = fs.statSync(fullPath)
+
+          if (stat.isDirectory()) {
+            files.push(...findComponentJsonFiles(fullPath))
+          } else if (item === 'component.json') {
+            files.push(fullPath)
+          }
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(`Error reading directory ${dir}:`, (error as Error).message)
+      }
+
+      return files
+    }
+
+    const files = findComponentJsonFiles(componentsDir)
 
     if (files.length === 0) {
       // eslint-disable-next-line no-console
@@ -46,7 +70,7 @@ function validateMetadata(): boolean {
         }
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error(`❌ Error processing ${file}:`, error.message)
+        console.error(`❌ Error processing ${file}:`, (error as Error).message)
         hasErrors = true
       }
     }
@@ -54,7 +78,7 @@ function validateMetadata(): boolean {
     return !hasErrors
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error("Error during validation:", error.message)
+    console.error("Error during validation:", (error as Error).message)
     return false
   }
 }
