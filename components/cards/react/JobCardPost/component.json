@@ -1,0 +1,42 @@
+{
+  "name": "Job-Card-Posting",
+  "category": "card",
+  "framework": "tailwind",
+  "tags": ["job-posting", "modern", "card", "ui","reactive","animation"],
+  "author": "kananmmehta",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "An interactive Job Posting Card with beautiful UI designs.",
+  "props": [
+    {
+      "name": "logo",
+      "type": "image",
+      "description": "Company logo displayed on card"
+    },
+    {
+      "name": "company",
+      "type": "string",
+      "description": "Company name displayed alongside logo"
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Designation requirement for Job Post"
+    },
+    {
+      "name": "salary",
+      "type": "string",
+      "description": "Salary offered for the designated job"
+    },
+    {
+      "name": "tags",
+      "type": "string",
+      "description": "Relative tags for the designated job"
+    },
+    {
+      "name": "postedDate",
+      "type": "string",
+      "description": "The date on which Job is posted"
+    }
+  ]
+}

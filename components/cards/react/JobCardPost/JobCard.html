@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Job Cards from JSON</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col items-center py-10 gap-6">
+
+  <!-- Job Cards Container -->
+  <div id="jobContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-6">
+    <div
+      class="bg-white rounded-2xl shadow-[0_6px_20px_rgba(205,78,78,0.707)] border-2 border-[#e46666] hover:-translate-y-1 hover:shadow-xl hover:border-[#d28d78] transition p-0">
+
+      <!-- Top Section -->
+      <div class="flex flex-col gap-3 mb-4 p-6 pb-0">
+
+        <!-- Header -->
+        <div class="flex items-center gap-4 mb-3">
+          <img src="slack-logo.png" alt="Company Logo" class="w-12 h-12 rounded-lg">
+          <div>
+            <p class="text-lg text-gray-600 font-semibold size-44">slack</p>
+          </div>
+        </div>
+
+        <!-- Job Title -->
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900">SENIOR UI DESIGNER</h2>
+        </div>
+
+        <!-- Salary -->
+        <p class="text-sm text-gray-700 mb-4">$80k - $100k / year</p>
+
+        <!-- Tags -->
+        <div class="flex gap-2 mb-3">
+          <span class="px-3 py-1 rounded-xl text-xs font-semibold bg-[#a4baecbf] text-[#0027ad]">PROJECT-BASED</span>
+          <span class="px-3 py-1 rounded-xl text-xs font-semibold bg-[#a4baecbf] text-[#0027ad]">REMOTE</span>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="flex justify-center py-3 px-4 rounded-b-2xl bg-[#df807136] text-[#a8414191] text-base font-medium">
+        POSTED 2 DAYS AGO
+      </div>
+    </div>
+
+    <script>
+      const jobContainer = document.getElementById('jobContainer');
+
+      const defaultJobs = [
+        {
+          "logo": "https://toppng.com/uploads/preview/slack-new-logo-icon-11609376883z32jbkf8kg.png",
+          "company": "Slack",
+          "title": "Senior UI Designer",
+          "salary": "$80k – $100k / year",
+          "tags": ["Project-Based", "Remote"],
+          "postedDate": "2 DAYS AGO"
+        }
+      ];
+
+      // Fetch JSON and render cards
+      async function loadJobs() {
+        let jobs = [];
+
+        try {
+          const response = await fetch('component.json');
+          if (!response.ok) throw new Error('Failed to fetch JSON');
+
+          jobs = await response.json();
+
+          // Check if the JSON is empty or not an array
+          if (!Array.isArray(jobs) || jobs.length === 0) {
+            jobs = defaultJobs;
+          }
+        } catch (error) {
+          console.error(error);
+          // fallback to default
+          jobs = defaultJobs;
+        }
+
+        jobContainer.innerHTML = ''; // clear existing cards
+
+        jobs.forEach(job => {
+          const card = document.createElement('div');
+          card.className = "bg-white rounded-2xl shadow-[0_6px_20px_rgba(205,78,78,0.707)] border-2 border-[#e46666] hover:-translate-y-1 hover:shadow-xl hover:border-[#d28d78] transition p-0";
+
+          card.innerHTML = `
+        <div class="flex flex-col gap-3 mb-4 p-6 pb-0">
+          <div class="flex items-center gap-4 mb-3">
+            <img src="${job.logo}" alt="Company Logo" class="w-12 h-12 rounded-lg">
+            <div>
+              <p class="text-sm text-gray-600 font-semibold">${job.company}</p>
+            </div>
+          </div>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-900">${job.title}</h2>
+          </div>
+          <p class="text-sm text-gray-700 mb-4">${job.salary}</p>
+          <div class="flex gap-2 mb-3">
+            ${job.tags.map(tag => `<span class="px-3 py-1 rounded-xl text-xs font-semibold bg-[#a4baecbf] text-[#0027ad]">${tag}</span>`).join('')}
+          </div>
+        </div>
+        <div class="flex justify-center py-3 px-4 rounded-b-2xl bg-[#df807136] text-[#a8414191] text-base font-medium">
+          POSTED ${job.postedDate}
+        </div>
+      `;
+          jobContainer.appendChild(card);
+        });
+      } 
+      
+
+      // Call the function on page load
+      loadJobs();
+    </script>
+
+</body>
+
+</html>
