@@ -1,0 +1,54 @@
+{
+  "name": "five-star-rating",
+  "fileName": "five-star-rating.jsx",
+  "description": "An interactive five-star rating button component with hover effects and click persistence. Stars light up on hover and maintain their state when clicked.",
+  "tags": ["button", "rating", "interactive", "stars", "feedback"],
+  "category": "button",
+  "framework": "react",
+  "author": "ankitpokhrel08",
+  "version": "1.0.0",
+  "created": "2025-10-04",
+  "dependencies": ["react"],
+  "features": [
+    "Interactive star rating system",
+    "Hover preview with smooth animations",
+    "Click to set permanent rating",
+    "Three size variants (sm, md, lg)",
+    "Dark mode support",
+    "Customizable styling",
+    "Callback function for rating changes",
+    "Accessible with ARIA labels"
+  ],
+  "usage": {
+    "basic": "<FiveStarButton />",
+    "withCallback": "<FiveStarButton onRatingChange={(rating) => console.log(rating)} />",
+    "withInitialRating": "<FiveStarButton initialRating={3} />",
+    "customSize": "<FiveStarButton size=\"lg\" />",
+    "customStyling": "<FiveStarButton className=\"my-custom-class\" />"
+  },
+  "props": {
+    "onRatingChange": {
+      "type": "function",
+      "description": "Callback function called when rating changes",
+      "optional": true
+    },
+    "initialRating": {
+      "type": "number",
+      "description": "Initial rating value (0-5)",
+      "default": 0,
+      "optional": true
+    },
+    "size": {
+      "type": "string",
+      "description": "Size variant of the button",
+      "options": ["sm", "md", "lg"],
+      "default": "md",
+      "optional": true
+    },
+    "className": {
+      "type": "string",
+      "description": "Additional CSS classes",
+      "optional": true
+    }
+  }
+}
