@@ -3,7 +3,7 @@
   "category": "navbar",
   "framework": "react",
   "tags": ["app", "download", "navbar", "search", "login", "register"],
-  "author": "abhijeet-singh",
+  "author": "abhijeet-singhh",
   "license": "MIT",
   "version": "1.0.0",
   "preview": "A simple navbar with logo, product links, search bar, about link, download app button, register button, and login link.",
@@ -30,3 +30,4 @@
     }
   ]
 }
+
