@@ -2,7 +2,7 @@
 
 An interactive five-star rating button component with smooth hover effects and click persistence. Perfect for collecting user feedback, product ratings, or any rating-based interactions.
 
-## ✨ Features
+## Features
 
 - **Interactive Rating System**: Click to set a permanent rating from 1 to 5 stars
 - **Hover Preview**: Stars light up on hover to preview the rating
@@ -13,7 +13,7 @@ An interactive five-star rating button component with smooth hover effects and c
 - **Accessible**: Includes proper ARIA labels for screen readers
 - **Callback Support**: Get notified when the rating changes
 
-## 🎯 Use Cases
+## Use Cases
 
 - Product ratings in e-commerce
 - User feedback collection
@@ -22,11 +22,11 @@ An interactive five-star rating button component with smooth hover effects and c
 - Satisfaction surveys
 - Content rating
 
-## 📦 Installation
+## Installation
 
-Simply copy the `five_star_button.jsx` file to your React project.
+Simply copy the `five-star-rating.jsx` file to your React project.
 
-## 🚀 Basic Usage
+## Basic Usage
 
 ```jsx
 import FiveStarButton from "./five_star_button"
@@ -36,7 +36,7 @@ function App() {
 }
 ```
 
-## 📋 Props
+## Props
 
 | Prop             | Type       | Default     | Description                                  |
 | ---------------- | ---------- | ----------- | -------------------------------------------- |
@@ -45,7 +45,7 @@ function App() {
 | `size`           | `string`   | `"md"`      | Size variant: `"sm"`, `"md"`, or `"lg"`      |
 | `className`      | `string`   | `""`        | Additional CSS classes for customization     |
 
-## 💡 Examples
+## Examples
 
 ### Basic Rating Button
 
@@ -124,7 +124,7 @@ function ProductReview() {
 }
 ```
 
-## 🎨 Styling
+## Styling
 
 The component uses Tailwind CSS classes and supports both light and dark themes:
 
@@ -141,14 +141,14 @@ You can override the default styling by passing custom classes:
 <FiveStarButton className="bg-blue-50 border-blue-200 hover:bg-blue-100" />
 ```
 
-## 🌟 Behavior
+## Behavior
 
 1. **Hover**: Stars light up from left to right as you hover
 2. **Click**: Sets the rating permanently at the clicked star
 3. **Visual Feedback**: Smooth animations and color transitions
 4. **Keyboard Accessible**: Can be focused and activated with keyboard
 
-## 🎭 Dark Mode
+## Dark Mode
 
 The component automatically adapts to your theme:
 
@@ -156,12 +156,12 @@ The component automatically adapts to your theme:
 - Stars change color appropriately
 - Background and borders adjust to theme
 
-## 🔧 Dependencies
+## Dependencies
 
 - React (with hooks)
 - Tailwind CSS
 
-## 📱 Responsive Design
+## Responsive Design
 
 The component works well on all screen sizes:
 
@@ -169,13 +169,13 @@ The component works well on all screen sizes:
 - Appropriate sizing for different viewports
 - Maintains hover effects on desktop
 
-## ⚡ Performance
+## Performance
 
 - Lightweight component with minimal re-renders
 - Efficient state management
 - Smooth 60fps animations
 
-## 🎪 Interactive Demo
+## Interactive Demo
 
 Try hovering over the stars and clicking to set a rating. The component maintains the selected rating while providing instant visual feedback on hover.
 
