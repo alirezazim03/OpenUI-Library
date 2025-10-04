@@ -1,14 +1,16 @@
 import Link from "next/link"
 import Head from "next/head"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import Navbar from "../components/Navbar"
 import type { ComponentMetadata } from "../types"
+import TagChip from "../components/TagChip"
 
 export default function Home() {
   const [components, setComponents] = useState<ComponentMetadata[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   useEffect(() => {
     fetch("/api/components")
@@ -35,20 +37,40 @@ export default function Home() {
     {}
   )
 
-  // Filter components based on search query and selected category
+  // Compute unique tag list (preserve original case but match in lowercase)
+  const allTags = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          components
+            .flatMap(c => c.tags || [])
+            .filter(Boolean)
+            .map(t => t.trim())
+        )
+      ).sort((a, b) => a.localeCompare(b)),
+    [components]
+  )
+
+  // Filter components based on search query, selected category, and selected tags
   const filteredComponents = components.filter(component => {
+    const loweredQuery = searchQuery.toLowerCase()
     const matchesSearch =
-      searchQuery === "" ||
-      component.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      component.tags?.some(tag =>
-        tag.toLowerCase().includes(searchQuery.toLowerCase())
-      ) ||
-      component.author?.toLowerCase().includes(searchQuery.toLowerCase())
+      loweredQuery === "" ||
+      component.name.toLowerCase().includes(loweredQuery) ||
+      component.tags?.some(tag => tag.toLowerCase().includes(loweredQuery)) ||
+      component.author?.toLowerCase().includes(loweredQuery)
 
     const matchesCategory =
       selectedCategory === null || component.category === selectedCategory
 
-    return matchesSearch && matchesCategory
+    // OR semantics: component included if it has ANY selected tag
+    const matchesTags =
+      selectedTags.length === 0 ||
+      (component.tags || []).some(tag =>
+        selectedTags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
+      )
+
+    return matchesSearch && matchesCategory && matchesTags
   })
 
   const filteredGroupedComponents = filteredComponents.reduce(
@@ -148,6 +170,41 @@ export default function Home() {
                   })}
                 </div>
               </div>
+              {/* Tags */}
+              {allTags.length > 0 && (
+                <div className="mt-8">
+                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">
+                    Tags
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {allTags.map(tag => (
+                      <TagChip
+                        key={tag}
+                        tag={tag}
+                        active={selectedTags.includes(tag)}
+                        onToggle={t =>
+                          setSelectedTags(prev =>
+                            prev.includes(t)
+                              ? prev.filter(x => x !== t)
+                              : [...prev, t]
+                          )
+                        }
+                      />
+                    ))}
+                  </div>
+                  {selectedTags.length > 0 && (
+                    <div className="mt-3">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedTags([])}
+                        className="text-xs text-gray-600 hover:text-gray-800"
+                      >
+                        Clear tags
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </aside>
 
@@ -170,6 +227,31 @@ export default function Home() {
                     : ""}{" "}
                   found
                 </p>
+                {selectedTags.length > 0 && (
+                  <div className="mt-3 flex items-center flex-wrap gap-2">
+                    <span className="text-xs uppercase tracking-wide text-gray-500 font-medium">
+                      Filtered by
+                    </span>
+                    {selectedTags.map(tag => (
+                      <button
+                        key={tag}
+                        onClick={() =>
+                          setSelectedTags(prev => prev.filter(t => t !== tag))
+                        }
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        {tag}
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => setSelectedTags([])}
+                      className="text-xs text-gray-600 hover:text-gray-800"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Content */}
