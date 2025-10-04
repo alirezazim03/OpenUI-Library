@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Prevent flash of wrong theme */
+html {
+  /* Use color-scheme to help with native browser elements */
+  color-scheme: light;
+  background-color: rgb(249 250 251); /* bg-gray-50 */
+  transition: background-color 0.2s ease;
+}
+
+html.dark {
+  color-scheme: dark;
+  background-color: rgb(17 24 39); /* bg-gray-900 */
+}
+
+/* Ensure body takes full height and inherits background */
+body {
+  background-color: inherit;
+  transition: background-color 0.2s ease;
+}
+
+/* Smooth theme transitions for all elements */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
