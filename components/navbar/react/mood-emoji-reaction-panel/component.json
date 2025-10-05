@@ -1,0 +1,26 @@
+{
+  "name": "mood-emoji-reaction-panel",
+  "category": "navbar",
+  "framework": "react",
+  "tags": ["responsive", "modern", "animated", "interactive", "emoji", "reactions"],
+  "author": "TejaswaniRai",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A React component that allows users to react to content using animated emoji buttons with counters and theme support",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "MoodEmojiReactionPanel.jsx",
+      "type": "registry:ui"
+    }
+  ],
+  "tailwind": {
+    "config": {
+      "content": [
+        "./MoodEmojiReactionPanel.jsx"
+      ]
+    }
+  }
+}
