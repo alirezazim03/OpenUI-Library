@@ -266,7 +266,7 @@ export default function Home() {
               {/* Tags */}
               {allTags.length > 0 && (
                 <div className="mt-8">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3 dark:text-gray-100">
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide mb-3">
                     Tags
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -290,7 +290,7 @@ export default function Home() {
                       <button
                         type="button"
                         onClick={() => setSelectedTags([])}
-                        className="text-xs text-gray-600 hover:text-gray-800"
+                        className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                       >
                         Clear tags
                       </button>
@@ -322,7 +322,7 @@ export default function Home() {
                 </p>
                 {selectedTags.length > 0 && (
                   <div className="mt-3 flex items-center flex-wrap gap-2">
-                    <span className="text-xs uppercase tracking-wide text-gray-500 font-medium">
+                    <span className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
                       Filtered by
                     </span>
                     {selectedTags.map(tag => (
@@ -331,7 +331,7 @@ export default function Home() {
                         onClick={() =>
                           setSelectedTags(prev => prev.filter(t => t !== tag))
                         }
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-medium hover:bg-blue-200 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         {tag}
                         <span aria-hidden="true">×</span>
@@ -339,7 +339,7 @@ export default function Home() {
                     ))}
                     <button
                       onClick={() => setSelectedTags([])}
-                      className="text-xs text-gray-600 hover:text-gray-800"
+                      className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                     >
                       Clear
                     </button>
@@ -421,7 +421,7 @@ export default function Home() {
                                       {component.name}
                                     </h4>
                                     <div className="flex items-center space-x-1">
-                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300">
                                         {component.framework}
                                       </span>
                                     </div>
