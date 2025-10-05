@@ -18,10 +18,10 @@ export function TagChip(props: TagChipProps) {
       type="button"
       aria-pressed={active}
       onClick={() => onToggle(tag)}
-      className={`px-2 py-1 rounded-full text-xs font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-blue-500 focus-visible:ring-offset-white ${
+      className={`px-2 py-1 rounded-full text-xs font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-blue-500 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800 ${
         active
-          ? "bg-blue-100 border-blue-200 text-blue-700"
-          : "bg-gray-100 border-gray-200 text-gray-700 hover:bg-gray-200"
+          ? "bg-blue-100 dark:bg-blue-900 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300"
+          : "bg-gray-100 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
       }`}
     >
       {tag}

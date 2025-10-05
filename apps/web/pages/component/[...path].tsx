@@ -50,9 +50,9 @@ export default function ComponentPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             Loading component...
           </h1>
         </div>
@@ -62,12 +62,15 @@ export default function ComponentPage() {
 
   if (error || !component) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             {error || "Component not found"}
           </h1>
-          <Link href="/" className="text-blue-600 hover:text-blue-800">
+          <Link
+            href="/"
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          >
             ← Back to home
           </Link>
         </div>
@@ -93,38 +96,40 @@ export default function ComponentPage() {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="min-h-screen bg-gray-50">
-        <header className="bg-white shadow">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <header className="bg-white dark:bg-gray-800 shadow">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <Link
               href="/"
-              className="text-blue-600 hover:text-blue-800 text-sm mb-2 inline-block"
+              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm mb-2 inline-block"
             >
               ← Back to components
             </Link>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
               {component.name}
             </h1>
             <div className="flex items-center space-x-4 mt-3">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
                 {component.framework}
               </span>
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-gray-600 dark:text-gray-400">
                 v{component.version}
               </span>
               {component.license && (
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
                   {component.license} License
                 </span>
               )}
               {component.author && (
                 <div className="flex items-center">
-                  <span className="text-sm text-gray-500 mr-2">by</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400 mr-2">
+                    by
+                  </span>
                   <a
                     href={`https://github.com/${component.author}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200"
+                    className="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
                   >
                     <svg
                       className="w-4 h-4 mr-1.5"
@@ -150,11 +155,11 @@ export default function ComponentPage() {
           <div className="px-4 py-6 sm:px-0">
             {/* Preview Section - Full Width */}
             <div className="mb-8">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
                 Preview
               </h2>
               {isHtmlTailwind && component.files["index.html"] ? (
-                <div className="bg-gray-50 border rounded-xl shadow-sm p-6 relative">
+                <div className="bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 rounded-xl shadow-sm p-6 relative">
                   {/* Subtle checkerboard pattern for better contrast */}
                   <div
                     className="absolute inset-6 opacity-30 rounded-lg"
@@ -252,15 +257,15 @@ export default function ComponentPage() {
                   />
                 </div>
               ) : isReact ? (
-                <div className="bg-white border rounded-xl shadow-sm">
+                <div className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-xl shadow-sm">
                   <ReactPreview
                     componentFiles={component.files}
                     componentName={component.name}
                   />
                 </div>
               ) : (
-                <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-12 text-center">
-                  <p className="text-gray-600 text-lg">
+                <div className="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
+                  <p className="text-gray-600 dark:text-gray-400 text-lg">
                     Preview not available for {component.framework} components
                   </p>
                 </div>
@@ -296,17 +301,17 @@ export default function ComponentPage() {
 
             {/* Code Section - Two Panel Layout */}
             <div className="mt-8">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
                 Documentation & Code
               </h2>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* README Panel */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                  <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                  <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center space-x-2">
                       <svg
-                        className="w-5 h-5 text-blue-600"
+                        className="w-5 h-5 text-blue-600 dark:text-blue-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -318,36 +323,36 @@ export default function ComponentPage() {
                           d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                         README.md
                       </h3>
                     </div>
                   </div>
                   <div className="p-6 max-h-96 overflow-y-auto">
                     <div className="prose prose-sm max-w-none">
-                      <h1 className="text-xl font-bold text-gray-900 mb-3">
+                      <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                         {component.name}
                       </h1>
-                      <p className="text-gray-600 mb-4">
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
                         A feature-rich {component.category} component designed
                         for {component.framework} applications.
                       </p>
-                      <p className="text-sm text-gray-500 mb-4">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                         <strong>Author:</strong>{" "}
                         <a
                           href={`https://github.com/${component.author}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800"
+                          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                         >
                           @{component.author}
                         </a>
                       </p>
 
-                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                         Features
                       </h2>
-                      <ul className="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                      <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4 space-y-1">
                         <li>Modern and responsive design</li>
                         <li>Easy to customize</li>
                         <li>
@@ -358,10 +363,10 @@ export default function ComponentPage() {
                         </li>
                       </ul>
 
-                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                         Installation
                       </h2>
-                      <ol className="list-decimal list-inside text-gray-600 mb-4 space-y-1">
+                      <ol className="list-decimal list-inside text-gray-600 dark:text-gray-300 mb-4 space-y-1">
                         <li>Copy the component code to your project</li>
                         <li>
                           Install required dependencies (
@@ -375,34 +380,37 @@ export default function ComponentPage() {
 
                       {component.props && component.props.length > 0 && (
                         <>
-                          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                             Props
                           </h2>
                           <div className="overflow-x-auto mb-4">
                             <table className="min-w-full text-sm">
                               <thead>
-                                <tr className="border-b">
-                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                <tr className="border-b dark:border-gray-600">
+                                  <th className="text-left py-2 text-gray-900 dark:text-white font-semibold">
                                     Prop
                                   </th>
-                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                  <th className="text-left py-2 text-gray-900 dark:text-white font-semibold">
                                     Type
                                   </th>
-                                  <th className="text-left py-2 text-gray-900 font-semibold">
+                                  <th className="text-left py-2 text-gray-900 dark:text-white font-semibold">
                                     Description
                                   </th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {component.props.map((prop, index) => (
-                                  <tr key={index} className="border-b">
-                                    <td className="py-2 font-mono text-blue-600">
+                                  <tr
+                                    key={index}
+                                    className="border-b dark:border-gray-600"
+                                  >
+                                    <td className="py-2 font-mono text-blue-600 dark:text-blue-400">
                                       {prop.name}
                                     </td>
-                                    <td className="py-2 text-gray-600">
+                                    <td className="py-2 text-gray-600 dark:text-gray-300">
                                       {prop.type}
                                     </td>
-                                    <td className="py-2 text-gray-600">
+                                    <td className="py-2 text-gray-600 dark:text-gray-300">
                                       {prop.description}
                                     </td>
                                   </tr>
@@ -413,10 +421,10 @@ export default function ComponentPage() {
                         </>
                       )}
 
-                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                         Customization
                       </h2>
-                      <ul className="list-disc list-inside text-gray-600 space-y-1">
+                      <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-1">
                         <li>
                           Modify Tailwind classes to match your design system
                         </li>
@@ -430,11 +438,11 @@ export default function ComponentPage() {
                 </div>
 
                 {/* Component Code Panel */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                  <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-200">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                  <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-700/50 dark:to-slate-700/50 border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center space-x-2">
                       <svg
-                        className="w-5 h-5 text-gray-600"
+                        className="w-5 h-5 text-gray-600 dark:text-gray-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -446,7 +454,7 @@ export default function ComponentPage() {
                           d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
                         />
                       </svg>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                         Component Code
                       </h3>
                     </div>
@@ -471,8 +479,8 @@ export default function ComponentPage() {
                       }}
                       className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
                         copiedStates.component
-                          ? "bg-green-100 text-green-700 border border-green-200"
-                          : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                          ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700"
+                          : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
                       }`}
                     >
                       {copiedStates.component ? (
@@ -525,19 +533,19 @@ export default function ComponentPage() {
                       })
                       .map(([filename, content]: [string, string], index) => (
                         <div key={filename}>
-                          <div className="px-6 py-3 bg-gray-800 text-gray-200">
+                          <div className="px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-600">
                             <span className="text-sm font-mono">
                               {filename}
                             </span>
                           </div>
-                          <div className="px-6 py-4 bg-gray-900">
-                            <pre className="text-sm text-gray-100 overflow-x-auto">
+                          <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                            <pre className="text-sm text-gray-800 dark:text-gray-100 overflow-x-auto">
                               <code>{content}</code>
                             </pre>
                           </div>
                           {index <
                             Object.entries(component.files).length - 1 && (
-                            <div className="border-t border-gray-700"></div>
+                            <div className="border-t border-gray-200 dark:border-gray-600"></div>
                           )}
                         </div>
                       ))}
