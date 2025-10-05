@@ -396,5 +396,5 @@ Contributions are welcome! Please feel free to submit issues and enhancement req
 ---
 
 **Version:** 1.0.0
-**Author:** Roo
+**Author:** Ashish-Pandey62
 **Framework:** React + Tailwind CSS
