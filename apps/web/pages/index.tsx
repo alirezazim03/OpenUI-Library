@@ -11,6 +11,9 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedFramework, setSelectedFramework] = useState<string | null>(
+    null
+  )
 
   useEffect(() => {
     fetch("/api/components")
@@ -83,6 +86,37 @@ export default function Home() {
     },
     {}
   )
+
+  // Compute unique frameworks (framework is a string on each component)
+  const allFrameworks = useMemo(() => {
+    return Array.from(
+      new Set(components.map(c => (c.framework || "").trim()).filter(Boolean))
+    ).sort((a, b) => a.localeCompare(b))
+  }, [components])
+
+  // If a framework is selected, narrow the already-filtered groups to that framework.
+  // We mutate the existing filteredGroupedComponents object (same reference) so the rest
+  // of the code (which uses filteredGroupedComponents) will reflect the framework filter.
+  if (selectedFramework) {
+    const sf = selectedFramework.toLowerCase()
+    const flat = Object.values(filteredGroupedComponents).flat()
+    const newGrouped: Record<string, ComponentMetadata[]> = {}
+
+    flat
+      .filter(c => (c.framework || "").toLowerCase() === sf)
+      .forEach(c => {
+        if (!newGrouped[c.category]) newGrouped[c.category] = []
+        newGrouped[c.category].push(c)
+      })
+
+    // Replace contents of filteredGroupedComponents
+    Object.keys(filteredGroupedComponents).forEach(
+      k => delete filteredGroupedComponents[k]
+    )
+    Object.keys(newGrouped).forEach(k => {
+      filteredGroupedComponents[k] = newGrouped[k]
+    })
+  }
 
   const categories = Object.keys(groupedComponents).sort()
 
@@ -172,10 +206,67 @@ export default function Home() {
                   })}
                 </div>
               </div>
+
+              {/* Frameworks */}
+              {allFrameworks.length > 0 && (
+                <div className="mt-8">
+                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3 dark:text-gray-100">
+                    Frameworks
+                  </h3>
+                  <div className="space-y-1">
+                    <button
+                      onClick={() => setSelectedFramework(null)}
+                      className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                        selectedFramework === null
+                          ? "bg-blue-100 text-blue-700 font-medium dark:bg-blue-900 dark:text-blue-300"
+                          : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                      }`}
+                    >
+                      All Frameworks ({components.length})
+                    </button>
+
+                    {allFrameworks.map(framework => {
+                      const fw = framework || ""
+                      const count = components.filter(
+                        c =>
+                          (c.framework || "").trim().toLowerCase() ===
+                          fw.trim().toLowerCase()
+                      ).length
+
+                      return (
+                        <button
+                          key={framework}
+                          onClick={() =>
+                            setSelectedFramework(prev =>
+                              prev &&
+                              prev.toLowerCase() === framework.toLowerCase()
+                                ? null
+                                : framework
+                            )
+                          }
+                          className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                            selectedFramework &&
+                            selectedFramework.toLowerCase() ===
+                              framework.toLowerCase()
+                              ? "bg-blue-100 text-blue-700 font-medium dark:bg-blue-900 dark:text-blue-300"
+                              : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                          }`}
+                        >
+                          <span className="capitalize">{framework}</span>
+                          <span className="text-gray-500 ml-2 dark:text-gray-400">
+                            ({count})
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
               {/* Tags */}
               {allTags.length > 0 && (
                 <div className="mt-8">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">
+                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3 dark:text-gray-100">
                     Tags
                   </h3>
                   <div className="flex flex-wrap gap-2">
