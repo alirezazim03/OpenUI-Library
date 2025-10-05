@@ -14,7 +14,8 @@
         "card",
         "hero",
         "section",
-        "input"
+        "input",
+        "progress"
       ]
     },
     "framework": {
