@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+const PROGRESS_INCREMENT = 5;
+const PROGRESS_CYCLE_LIMIT = 105;
+const PROGRESS_UPDATE_INTERVAL_MS = 1000;
+
 // Demo component to showcase different progress bar states
 const ProgressBarDemo = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setProgress(prev => (prev + 5) % 105);
-    }, 1000);
+      setProgress(prev => (prev + PROGRESS_INCREMENT) % PROGRESS_CYCLE_LIMIT);
+    }, PROGRESS_UPDATE_INTERVAL_MS);
     return () => clearInterval(interval);
   }, []);
 
