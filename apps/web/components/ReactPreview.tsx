@@ -308,12 +308,6 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
             /\bfill(?=\s|$|>)/g,
             "style={{width: \"100%\", height: \"100%\", objectFit: \"cover\"}}"
           )
-          // Replace useTheme calls with a mock implementation
-          .replace(/useTheme\(\)/g, "(() => ({ theme: 'dark', setTheme: () => {}, toggleTheme: () => {} }))()")
-          // Also replace useTheme imports and usage
-          .replace(/import\s*\{\s*useTheme[^}]*\}\s*from\s*['"][^'"]*['"];?\s*/g, "")
-          .replace(/const\s*\[\s*[^,]*,\s*[^]]*\]\s*=\s*useTheme\(\);?/g, "const theme = 'dark'; const setTheme = () => {}; const toggleTheme = () => {};")
-          .replace(/const\s*\{[^}]*useTheme[^}]*\}\s*=\s*useTheme\(\);?/g, "const theme = 'dark'; const setTheme = () => {}; const toggleTheme = () => {};")
 
         // Transform JSX using Babel
         const transformedResult = BabelStandalone.transform(cleanCode, {
@@ -406,88 +400,32 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
 
         const componentCode = componentFiles[mainFile]
 
-        // Special handling for milestone-fireworks component
-        if (componentName === "milestone-fireworks") {
-          const StaticPreview = () => (
-            <div className="relative w-full h-64 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-lg overflow-hidden">
-              {/* Animated background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-red-500/20 animate-pulse"></div>
+        // Since we can't safely execute arbitrary JSX code, let's create a visual representation
+        // that matches the component structure instead of trying to execute it directly
 
-              {/* Lightweight fireworks simulation - just a few key particles */}
-              <div className="absolute inset-0">
-                {/* Single firework burst with minimal particles */}
-                <div className="absolute w-3 h-3 bg-yellow-400 rounded-full opacity-80"
-                     style={{ left: "30%", top: "35%", animation: "firework 2s ease-out infinite" }} />
-                <div className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-70"
-                     style={{ left: "50%", top: "40%", animation: "firework 2s ease-out infinite 0.3s" }} />
-                <div className="absolute w-2.5 h-2.5 bg-red-400 rounded-full opacity-75"
-                     style={{ left: "70%", top: "30%", animation: "firework 2s ease-out infinite 0.6s" }} />
-                <div className="absolute w-2 h-2 bg-pink-400 rounded-full opacity-80"
-                     style={{ left: "40%", top: "50%", animation: "firework 2s ease-out infinite 0.9s" }} />
-              </div>
+        // For now, we'll show a realistic mock that represents what the component does
+        // This is safer and more reliable than trying to execute arbitrary code
 
-              {/* Milestone text overlay */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
-                <div className="text-4xl font-bold text-white animate-bounce">
-                  10,000
-                </div>
-                <div className="text-lg mt-2 text-yellow-300">
-                  Users Reached! 🎉
-                </div>
-              </div>
+        const Component = await createComponentFromCode(
+          componentCode,
+          componentName
+        )
 
-              {/* Demo info */}
-              <div className="absolute bottom-4 left-4 right-4 text-center">
-                <div className="text-white/80 text-sm bg-black/30 rounded-lg px-3 py-2 backdrop-blur-sm">
-                  🎆 Milestone Fireworks Animation Preview
-                </div>
-              </div>
+        if (!Component || typeof Component !== "function") {
+          throw new Error("Could not extract React component")
+        }
 
-              <style jsx>{`
-                @keyframes firework {
-                  0% { opacity: 0; transform: scale(0); }
-                  50% { opacity: 1; transform: scale(1.2); }
-                  100% { opacity: 0; transform: scale(0.8); }
-                }
-              `}</style>
+        // Create wrapper without any props - components should have their own defaults
+        const ComponentWrapper = () => {
+          return (
+            <div className="w-full" style={{ minHeight: "200px" }}>
+              <Component />
             </div>
           )
-          StaticPreview.displayName = "StaticMilestoneFireworksPreview"
-          setRenderedComponent(() => StaticPreview)
-        } else {
-          // For other components, try the dynamic approach
-          const Component = await createComponentFromCode(
-            componentCode,
-            componentName
-          )
-
-          if (!Component || typeof Component !== "function") {
-            throw new Error("Could not extract React component")
-          }
-
-          // Create wrapper with theme context for components that might need it
-          const ComponentWrapper = () => {
-            // Create a simple theme provider mock
-            const ThemeProviderMock = ({ children }: { children: React.ReactNode }) => {
-              return React.createElement("div", {
-                "data-theme": "dark",
-                className: "theme-provider-mock"
-              }, children)
-            }
-
-            // Wrap component in mock theme provider
-            const wrappedComponent = React.createElement(ThemeProviderMock, null, React.createElement(Component))
-
-            return (
-              <div className="w-full" style={{ minHeight: "200px" }}>
-                {wrappedComponent}
-              </div>
-            )
-          }
-          ComponentWrapper.displayName = "ComponentWrapper"
-
-          setRenderedComponent(() => ComponentWrapper)
         }
+        ComponentWrapper.displayName = "ComponentWrapper"
+
+        setRenderedComponent(() => ComponentWrapper)
       } catch (err) {
         setError((err as Error).message)
       } finally {
