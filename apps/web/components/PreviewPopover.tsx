@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react"
+import { useEffect, useId, useRef, useState, type ReactNode } from "react"
 import dynamic from "next/dynamic"
 import type { ComponentMetadata } from "../types"
 
@@ -14,7 +14,7 @@ const DynamicReactPreview = dynamic(() => import("./ReactPreview"), {
 interface PreviewPopoverProps {
 	component: ComponentMetadata
 	getFiles?: () => Promise<Record<string, string> | null>
-	children?: React.ReactNode
+	children?: ReactNode
 }
 
 export default function PreviewPopover({ component, getFiles, children }: PreviewPopoverProps) {
@@ -25,6 +25,9 @@ export default function PreviewPopover({ component, getFiles, children }: Previe
 	const [imageError, setImageError] = useState(false)
 	const triggerRef = useRef<HTMLDivElement | null>(null)
 	const popoverRef = useRef<HTMLDivElement | null>(null)
+	const containerRef = useRef<HTMLDivElement | null>(null)
+	const contentRef = useRef<HTMLDivElement | null>(null)
+	const [scale, setScale] = useState(1)
 	const id = useId()
 
 	// Small intent delays to avoid accidental opens/closes
@@ -107,6 +110,45 @@ export default function PreviewPopover({ component, getFiles, children }: Previe
 		}
 	}, [open])
 
+	// Auto-scale preview content to fit the fixed preview surface
+	useEffect(() => {
+		if (!open) return
+		const container = containerRef.current
+		const content = contentRef.current
+		if (!container || !content) return
+
+		let frameId: number | null = null
+		const computeScale = () => {
+			const contentWidth = Math.max(content.scrollWidth, content.offsetWidth)
+			const contentHeight = Math.max(content.scrollHeight, content.offsetHeight)
+			const containerWidth = container.clientWidth
+			const containerHeight = container.clientHeight
+			if (contentWidth === 0 || contentHeight === 0 || containerWidth === 0 || containerHeight === 0) {
+				setScale(1)
+				return
+			}
+			const nextScale = Math.min(containerWidth / contentWidth, containerHeight / contentHeight, 1)
+			setScale(nextScale)
+		}
+
+		const ro = new ResizeObserver(() => {
+			if (frameId) cancelAnimationFrame(frameId)
+			frameId = requestAnimationFrame(computeScale)
+		})
+		ro.observe(container)
+		ro.observe(content)
+
+		const onWin = () => computeScale()
+		window.addEventListener("resize", onWin)
+		frameId = requestAnimationFrame(computeScale)
+
+		return () => {
+			ro.disconnect()
+			window.removeEventListener("resize", onWin)
+			if (frameId) cancelAnimationFrame(frameId)
+		}
+	}, [open])
+
 	const openPreview = () => setOpen(true)
 	const closePreview = () => setOpen(false)
 
@@ -141,22 +183,22 @@ export default function PreviewPopover({ component, getFiles, children }: Previe
 						{/* Prefer code-based preview; fallback to image only if files unavailable */}
 						{files ? (
 							<div className="rounded-md overflow-hidden border bg-white">
-								{/* Fixed preview surface */}
-								<div className="w-80 h-44 bg-[repeating-conic-gradient(#f8f9fa_0%_25%,#e9ecef_25%_50%,#f8f9fa_50%_75%,#e9ecef_75%_100%)]" style={{backgroundSize:"20px 20px"}}>
-									<div className="w-full h-full overflow-hidden">
-								{component.framework === "react" ? (
-									<div className="w-full h-full pointer-events-none">
-										<DynamicReactPreview
-											componentFiles={files}
-											componentName={component.name}
-											compact
-										/>
-									</div>
-								) : files["index.html"] ? (
-										<iframe
-											style={{ width: "100%", height: "176px", pointerEvents: "none" }}
-										srcDoc={`<!DOCTYPE html><html><head><meta charset=\"utf-8\" />
-										  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
+						{/* Fixed preview surface with auto-scaling */}
+						<div ref={containerRef} className="relative w-80 h-44 overflow-hidden bg-[repeating-conic-gradient(#f8f9fa_0%_25%,#e9ecef_25%_50%,#f8f9fa_50%_75%,#e9ecef_75%_100%)]" style={{backgroundSize:"20px 20px"}}>
+							<div ref={contentRef} className="absolute top-0 left-0" style={{ transform: `scale(${scale})`, transformOrigin: "top left", pointerEvents: "none" }}>
+							{component.framework === "react" ? (
+								<div>
+									<DynamicReactPreview
+										componentFiles={files}
+										componentName={component.name}
+										compact
+									/>
+								</div>
+							) : files["index.html"] ? (
+									<iframe
+										style={{ width: "640px", height: "480px", border: 0, pointerEvents: "none" }}
+										srcDoc={`<!DOCTYPE html><html><head><meta charset="utf-8" />
+										  <meta name="viewport" content="width=device-width, initial-scale=1" />
 										  <style>html,body{margin:0;padding:0} a,button{pointer-events:none}</style>
 										</head><body>${files["index.html"]}
 										<script>document.addEventListener('DOMContentLoaded', function(){
@@ -165,15 +207,14 @@ export default function PreviewPopover({ component, getFiles, children }: Previe
 										});</script>
 										</body></html>`}
 										title={`${component.name} preview`}
-										className="w-full h-44 border-0"
 									/>
-								) : (
-									<div className="w-72 h-44 flex items-center justify-center text-gray-500 text-sm">
-										Preview not available
-									</div>
-								)}
+							) : (
+								<div className="w-72 h-44 flex items-center justify-center text-gray-500 text-sm">
+									Preview not available
 								</div>
-								</div>
+							)}
+							</div>
+						</div>
 							</div>
 						) : component.preview && !imageError ? (
 							<img

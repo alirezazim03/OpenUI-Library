@@ -187,7 +187,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [isClient, setIsClient] = useState(false)
-  const [compactScale, setCompactScale] = useState(1)
+  // Removed unused compactScale state
 
   useEffect(() => {
     setIsClient(true)
@@ -484,7 +484,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
     }
 
     loadComponent()
-  }, [componentFiles, componentName, isClient, createComponentFromCode])
+  }, [componentFiles, componentName, isClient, createComponentFromCode, compact])
 
   const extractComponentName = (code: string): string => {
     // Extract component name from various patterns
