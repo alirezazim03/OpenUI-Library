@@ -1,0 +1,30 @@
+{
+  "name": "accordion",
+  "category": "section",
+  "framework": "vue",
+  "tags": ["section", "accordion", "info", "information", "FAQ", "group"],
+  "author": "xMrAfonso",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A reusable accordion with multiple sections for displaying grouped information.",
+  "props": [
+    {
+      "name": "items",
+      "type": "Array",
+      "description": "Accordion items array with title and content properties",
+      "default": "[{ title: \"What is Vue.js?\", content: \"Vue.js is a progressive framework for building UIs.\" }, { title: \"What is TailwindCSS?\", content: \"TailwindCSS is a utility-first CSS framework.\" }, { title: \"Why use both?\", content: \"Because they're fast, flexible, and fun!\" }]"
+    },
+    {
+      "name": "multiple",
+      "type": "Boolean",
+      "description": "Whether multiple items can be open at once",
+      "default": "false"
+    },
+    {
+      "name": "defaultOpen",
+      "type": "Number | Array",
+      "description": "Index or indices of initially open items",
+      "default": "[]"
+    }
+  ]
+}
