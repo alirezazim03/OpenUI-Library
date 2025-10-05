@@ -14,6 +14,7 @@ export default function ComponentPage() {
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
     {}
   )
+  const [wordWrap, setWordWrap] = useState(false)
 
   const copyToClipboard = async (text: string, key: string) => {
     try {
@@ -458,67 +459,98 @@ export default function ComponentPage() {
                         Component Code
                       </h3>
                     </div>
-                    <button
-                      onClick={() => {
-                        const allCode = Object.entries(component.files)
-                          .filter(([filename]) => {
-                            // Only include actual component files, exclude documentation
-                            const lowerFilename = filename.toLowerCase()
-                            return (
-                              !lowerFilename.includes("readme") &&
-                              !lowerFilename.includes(".md") &&
-                              filename !== "component.json"
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => {
+                          const allCode = Object.entries(component.files)
+                            .filter(([filename]) => {
+                              // Only include actual component files, exclude documentation
+                              const lowerFilename = filename.toLowerCase()
+                              return (
+                                !lowerFilename.includes("readme") &&
+                                !lowerFilename.includes(".md") &&
+                                filename !== "component.json"
+                              )
+                            })
+                            .map(
+                              ([filename, content]) =>
+                                `// ${filename}\n${content}`
                             )
-                          })
-                          .map(
-                            ([filename, content]) =>
-                              `// ${filename}\n${content}`
-                          )
-                          .join("\n\n")
-                        copyToClipboard(allCode, "component")
-                      }}
-                      className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
-                        copiedStates.component
-                          ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700"
-                          : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
-                      }`}
-                    >
-                      {copiedStates.component ? (
-                        <>
-                          <svg
-                            className="w-4 h-4 mr-1.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          Copied!
-                        </>
-                      ) : (
-                        <>
-                          <svg
-                            className="w-4 h-4 mr-1.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                            />
-                          </svg>
-                          Copy All
-                        </>
-                      )}
-                    </button>
+                            .join("\n\n")
+                          copyToClipboard(allCode, "component")
+                        }}
+                        className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                          copiedStates.component
+                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700"
+                            : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                        }`}
+                      >
+                        {copiedStates.component ? (
+                          <>
+                            <svg
+                              className="w-4 h-4 mr-1.5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <svg
+                              className="w-4 h-4 mr-1.5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                              />
+                            </svg>
+                            Copy All
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => setWordWrap(!wordWrap)}
+                        className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                          wordWrap
+                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700"
+                            : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                        }`}
+                      >
+                        <svg
+                          className="w-4 h-4 mr-1.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 6h16M4 12h16M4 18h7"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M20 12l-4-4m4 4l-4 4"
+                          />
+                        </svg>
+                        {wordWrap ? "Wrapped" : "Wrap"}
+                      </button>
+                    </div>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {Object.entries(component.files)
@@ -539,7 +571,7 @@ export default function ComponentPage() {
                             </span>
                           </div>
                           <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            <pre className="text-sm text-gray-800 dark:text-gray-100 overflow-x-auto">
+                            <pre className={`text-sm text-gray-800 dark:text-gray-100 overflow-x-auto ${wordWrap ? 'whitespace-pre-wrap' : 'whitespace-pre'}`}>
                               <code>{content}</code>
                             </pre>
                           </div>
