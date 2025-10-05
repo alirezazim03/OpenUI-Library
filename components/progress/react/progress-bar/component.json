@@ -1,0 +1,42 @@
+{
+  "name": "progress-bar",
+  "category": "progress",
+  "framework": "react",
+  "tags": ["progress", "bar", "animated", "ui", "responsive"],
+  "author": "Ashish-Pandey62",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A stylish animated progress bar component with customizable colors, sizes, and smooth animations for modern web applications.",
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "description": "Progress value between 0 and 100 for determinate mode (default: 0)"
+    },
+    {
+      "name": "indeterminate",
+      "type": "boolean",
+      "description": "Whether to show indeterminate loading animation (default: false)"
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "Color of the progress bar (default: 'blue')"
+    },
+    {
+      "name": "size",
+      "type": "string",
+      "description": "Size of the progress bar: 'sm', 'md', 'lg' (default: 'md')"
+    },
+    {
+      "name": "showLabel",
+      "type": "boolean",
+      "description": "Whether to display the percentage label (default: false)"
+    },
+    {
+      "name": "animated",
+      "type": "boolean",
+      "description": "Whether to animate the progress fill (default: true)"
+    }
+  ]
+}
