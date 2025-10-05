@@ -1,15 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": [
-    "name",
-    "category",
-    "framework",
-    "tags",
-    "license",
-    "version",
-    "progress"
-  ],
+  "required": ["name", "category", "framework", "tags", "license", "version"],
   "properties": {
     "name": { "type": "string" },
     "category": {
@@ -22,7 +14,8 @@
         "card",
         "hero",
         "section",
-        "input"
+        "input",
+        "progress"
       ]
     },
     "framework": {
