@@ -1,7 +1,15 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["name", "category", "framework", "tags", "license", "version"],
+  "required": [
+    "name",
+    "category",
+    "framework",
+    "tags",
+    "license",
+    "version",
+    "progress"
+  ],
   "properties": {
     "name": { "type": "string" },
     "category": {
