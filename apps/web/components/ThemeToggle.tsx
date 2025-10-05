@@ -1,7 +1,33 @@
 import { useTheme } from "../contexts/ThemeContext"
+import { useState, useEffect } from "react"
 
 export default function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme()
+  const [localTheme, setLocalTheme] = useState<"light" | "dark">("light")
+
+  let theme: "light" | "dark" = "light"
+  let toggleTheme: () => void = () => {}
+
+  try {
+    const themeContext = useTheme()
+    theme = themeContext.theme
+    toggleTheme = themeContext.toggleTheme
+  } catch {
+    // Fallback to local state if no provider
+    theme = localTheme
+    toggleTheme = () => setLocalTheme(prev => prev === "light" ? "dark" : "light")
+  }
+
+  // For local theme, apply to document
+  useEffect(() => {
+    if (theme === localTheme) {
+      const root = document.documentElement
+      if (localTheme === "dark") {
+        root.classList.add("dark")
+      } else {
+        root.classList.remove("dark")
+      }
+    }
+  }, [localTheme, theme])
 
   return (
     <button
