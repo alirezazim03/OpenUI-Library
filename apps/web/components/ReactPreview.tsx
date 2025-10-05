@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback, useRef } from "react"
 import type { ReactPreviewProps } from "../types"
 
 // Type declaration for Babel standalone - removed unused declaration
@@ -325,14 +325,14 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
         const transformedCode = transformedResult.code || cleanCode
 
         const wrappedCode = `
-        (function(React, useState, useEffect, iconVariables) {
+        (function(React, useState, useEffect, useRef, iconVariables) {
           // Inject icon variables into the scope
           ${Object.keys(iconVariables)
             .map(iconName => `const ${iconName} = iconVariables.${iconName};`)
             .join("\n          ")}
-          
+
           ${transformedCode}
-          
+
           return ${extractComponentName(code)};
         })
       `
@@ -343,6 +343,7 @@ const ReactPreview: React.FC<ReactPreviewProps> = ({
           React,
           useState,
           useEffect,
+          useRef,
           iconVariables
         )
 
