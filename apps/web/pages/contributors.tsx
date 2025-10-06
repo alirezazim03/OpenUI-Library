@@ -5,7 +5,6 @@ import { BiGitMerge, BiTrophy } from "react-icons/bi"
 import { BsPeople } from "react-icons/bs"
 import { GoGitCommit } from "react-icons/go"
 import React, { useState } from "react"
-import Image from "next/image"
 const leaderBoardData = [
   { username: "alirezazim03", avatar: "https://github.com/alirezazim03.png", contributions: 4, role: "Contributor", github: "https://github.com/alirezazim03" },
   { username: "ankitpokhrel08", avatar: "https://github.com/ankitpokhrel08.png", contributions: 2, role: "Contributor", github: "https://github.com/ankitpokhrel08" },
@@ -59,9 +58,10 @@ const LeaderBoard = () => {
           key ={index}
           >
             <div className={`w-24 h-24 rounded-full overflow-hidden border-4 ${index === 0 ? "border-gray-300" : index === 1 ? "border-yellow-400" : "border-amber-800"}`}>
-              <Image
+              <img
                 src={contributor.avatar}
                 alt={contributor.username}
+                
                 className="w-full h-full object-cover" />
             </div>
             <div className="flex items-center gap-2">
@@ -147,7 +147,7 @@ const AllContributors = () => {
             <div className="flex items-center gap-6">
               <div className="relative w-16 h-16">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-violet-500">
-                  <Image
+                  <img
                     src={contributor.avatar}
                     alt={contributor.username}
                     className="w-full h-full object-cover"
