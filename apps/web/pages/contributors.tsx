@@ -1,33 +1,39 @@
-// import Link from "next/link"
 import Head from "next/head"
 import Navbar from "../components/Navbar"
 import { BiGitMerge, BiTrophy } from "react-icons/bi"
 import { BsPeople } from "react-icons/bs"
 import { GoGitCommit } from "react-icons/go"
-import React, { useState } from "react"
-const leaderBoardData = [
-  { username: "alirezazim03", avatar: "https://github.com/alirezazim03.png", contributions: 4, role: "Contributor", github: "https://github.com/alirezazim03" },
-  { username: "ankitpokhrel08", avatar: "https://github.com/ankitpokhrel08.png", contributions: 2, role: "Contributor", github: "https://github.com/ankitpokhrel08" },
-  { username: "TejaswaniRai", avatar: "https://github.com/TejaswaniRai.png", contributions: 2, role: "Contributor", github: "https://github.com/TejaswaniRai" },
-  { username: "jff2009", avatar: "https://github.com/jff2009.png", contributions: 2, role: "Contributor", github: "https://github.com/jff2009" },
-  { username: "Ashish-Pandey62", avatar: "https://github.com/Ashish-Pandey62.png", contributions: 2, role: "Contributor", github: "https://github.com/Ashish-Pandey62" },
-  { username: "beebadooo", avatar: "https://github.com/beebadooo.png", contributions: 1, role: "Contributor", github: "https://github.com/beebadooo" },
-  { username: "kananmmehta", avatar: "https://github.com/kananmmehta.png", contributions: 1, role: "Contributor", github: "https://github.com/kananmmehta" },
-  { username: "chatfly", avatar: "https://github.com/chatfly.png", contributions: 1, role: "Contributor", github: "https://github.com/chatfly" },
-  { username: "zxnb01", avatar: "https://github.com/zxnb01.png", contributions: 1, role: "Contributor", github: "https://github.com/zxnb01" },
-  { username: "Saikiran-Sugurthi", avatar: "https://github.com/Saikiran-Sugurthi.png", contributions: 1, role: "Contributor", github: "https://github.com/Saikiran-Sugurthi" },
-  { username: "komalsathvik", avatar: "https://github.com/komalsathvik.png", contributions: 1, role: "Contributor", github: "https://github.com/komalsathvik" },
-  { username: "abhijeet-singhh", avatar: "https://github.com/abhijeet-singhh.png", contributions: 1, role: "Contributor", github: "https://github.com/abhijeet-singhh" },
-  { username: "suryssss", avatar: "https://github.com/suryssss.png", contributions: 1, role: "Contributor", github: "https://github.com/suryssss" },
-  { username: "xMrAfonso", avatar: "https://github.com/xMrAfonso.png", contributions: 1, role: "Contributor", github: "https://github.com/xMrAfonso" },
-  { username: "sudoyasir", avatar: "https://github.com/sudoyasir.png", contributions: 1, role: "Contributor", github: "https://github.com/sudoyasir" }
-]
+import React, { useState, useEffect } from "react"
 
-const topContributors = [
-  { username: "ankitpokhrel08", avatar: "https://github.com/ankitpokhrel08.png", contributions: 2, role: "Contributor", github: "https://github.com/ankitpokhrel08" },
-  { username: "alirezazim03", avatar: "https://github.com/alirezazim03.png", contributions: 4, role: "Contributor", github: "https://github.com/alirezazim03" },
-  { username: "TejaswaniRai", avatar: "https://github.com/TejaswaniRai.png", contributions: 2, role: "Contributor", github: "https://github.com/TejaswaniRai" }
-]
+interface Component {
+  name: string;
+  path: string;
+}
+
+interface Contributor {
+  author: string;
+  avatar: string | null;
+  github: string | null;
+  components: Component[];
+}
+
+interface LeaderBoardProps {
+  topContributors: Array<{
+    author: string;
+    avatar: string | null;
+    github: string | null;
+    contributions: number;
+  }>;
+}
+
+interface AllContributorsProps {
+  leaderBoardData: Array<{
+    author: string;
+    avatar: string | null;
+    github: string | null;
+    contributions: number;
+  }>;
+}
 
 function GitHubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -48,33 +54,56 @@ function GitHubIcon(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-const LeaderBoard = () => {
+const LeaderBoard = ({ topContributors }: LeaderBoardProps) => {
   return (
     <div className="flex flex-col items-center">
       <div className="text-3xl font-bold">Top Contributors</div>
       <div className="relative flex gap-4 items-end mt-10 justify-center">
+        {/* Arrange contributors so first is centered */}
         {topContributors.map((contributor, index) => (
-          <div className="relative flex flex-col items-center"
-          key ={index}
+          <div
+            key={index}
+            className={`relative flex flex-col items-center ${
+              index === 0 ? "order-2" : index === 1 ? "order-1" : "order-3"
+            }`}
           >
-            <div className={`w-24 h-24 rounded-full overflow-hidden border-4 ${index === 0 ? "border-gray-300" : index === 1 ? "border-yellow-400" : "border-amber-800"}`}>
+            <div
+              className={`w-24 h-24 rounded-full overflow-hidden border-4 ${
+                index === 0
+                  ? "border-yellow-400"
+                  : index === 1
+                  ? "border-gray-300"
+                  : "border-amber-800"
+              }`}
+            >
               <img
-                src={contributor.avatar}
-                alt={contributor.username}
-                
-                className="w-full h-full object-cover" />
+                src={contributor.avatar || "/default-avatar.png"}
+                alt={contributor.author}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mt-2">
               <BiTrophy size={20} className="text-gray-500" />
-              <div className="text-gray-500"> {contributor.contributions} Contributions</div>
+              <div className="text-gray-500">
+                {contributor.contributions} Contributions
+              </div>
             </div>
-            <div className={` ${index === 0 ? "w-36 h-24" : index === 1 ? " w-36 h-32" : "w-36 h-16"} bg-slate-300 mt-2 rounded-lg`}></div>
+            <div
+              className={`${
+                index === 0
+                  ? "w-36 h-32"
+                  : index === 1
+                  ? "w-36 h-24"
+                  : "w-36 h-16"
+              } bg-slate-300 mt-2 rounded-lg`}
+            ></div>
           </div>
         ))}
       </div>
       <button
         onClick={() =>
-          window.location.href = "https://github.com/alirezazim03/OpenUI-Library"
+          (window.location.href =
+            "https://github.com/alirezazim03/OpenUI-Library")
         }
         className="flex items-center gap-2 px-4 py-2 mt-5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
       >
@@ -84,7 +113,14 @@ const LeaderBoard = () => {
     </div>
   )
 }
-const OverallStats = () => {
+
+const OverallStats = ({
+  totalContributors,
+  totalContributions,
+}: {
+  totalContributors: number;
+  totalContributions: number;
+}) => {
   return (
     <div className="flex gap-4">
       <div className="flex items-center gap-5">
@@ -92,35 +128,24 @@ const OverallStats = () => {
           <BsPeople size={40} className="text-blue-600" />
         </div>
         <div className="text-start">
-          <div className="text-2xl font-bold">
-            15
-          </div>
-          <div className="text-gray-400 text-md">
-            Active Contributors
-          </div>
+          <div className="text-2xl font-bold">{totalContributors}</div>
+          <div className="text-gray-400 text-md">Active Contributors</div>
         </div>
-
       </div>
       <div className="flex items-center gap-5">
         <div className="flex items-center justify-center w-16 h-16 bg-violet-200 rounded-lg">
           <GoGitCommit size={40} className="text-violet-600" />
         </div>
         <div className="text-start">
-          <div className="text-2xl font-bold">
-            23
-          </div>
-          <div className="text-gray-400 text-md">
-            Contributions
-          </div>
+          <div className="text-2xl font-bold">{totalContributions}</div>
+          <div className="text-gray-400 text-md">Contributions</div>
         </div>
-
       </div>
     </div>
-
   )
 }
 
-const AllContributors = () => {
+const AllContributors = ({ leaderBoardData }: AllContributorsProps) => {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 6
 
@@ -148,8 +173,8 @@ const AllContributors = () => {
               <div className="relative w-16 h-16">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-violet-500">
                   <img
-                    src={contributor.avatar}
-                    alt={contributor.username}
+                    src={contributor.avatar || "/default-avatar.png"}
+                    alt={contributor.author}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-1 right-0 bg-blue-600 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full translate-x-1 -translate-y-1">
@@ -158,19 +183,21 @@ const AllContributors = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-2 items-start">
-                <div className="text-xl font-bold">{contributor.username}</div>
+                <div className="text-xl font-bold">{contributor.author}</div>
                 <div className="flex items-center space-x-6">
                   <div className="text-gray-600 flex items-center gap-2">
                     <GoGitCommit size={20} className="text-purple-600" />
                     {contributor.contributions} contributions
                   </div>
-                  <button
-                    onClick={() => window.open(contributor.github, "_blank")}
-                    className="flex items-center gap-2 px-2 bg-white border border-gray-300 rounded-md text-gray-800 hover:bg-gray-50 hover:border-gray-400 transition"
-                  >
-                    <GitHubIcon className="w-4 h-4 text-gray-800" />
-                    <span className="font-small">Github</span>
-                  </button>
+                  {contributor.github && (
+                    <button
+                      onClick={() => window.open(contributor.github!, "_blank")}
+                      className="flex items-center gap-2 px-2 bg-white border border-gray-300 rounded-md text-gray-800 hover:bg-gray-50 hover:border-gray-400 transition"
+                    >
+                      <GitHubIcon className="w-4 h-4 text-gray-800" />
+                      <span className="font-small">Github</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -178,28 +205,91 @@ const AllContributors = () => {
         ))}
       </div>
 
-
-      <div className="flex justify-center items-center gap-4 mt-6">
-        <button
-          className="px-3 h-8 border border-gray-500 rounded disabled:opacity-50"
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          &lt;
-        </button>
-        <span className="px-4 py-2">{currentPage} / {totalPages}</span>
-        <button
-          className="px-3 h-8 border border-gray-500 rounded disabled:opacity-50"
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          &gt;
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <button
+            className="px-3 h-8 border border-gray-500 rounded disabled:opacity-50"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+          <span className="px-4 py-2">
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            className="px-3 h-8 border border-gray-500 rounded disabled:opacity-50"
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </button>
+        </div>
+      )}
     </div>
   )
 }
+
 export default function Contributors() {
+  const [leaderBoardData, setLeaderBoardData] = useState<Array<{
+    author: string;
+    avatar: string | null;
+    github: string | null;
+    contributions: number;
+  }>>([])
+  const [topContributors, setTopContributors] = useState<Array<{
+    author: string;
+    avatar: string | null;
+    github: string | null;
+    contributions: number;
+  }>>([])
+  const [totalContributors, setTotalContributors] = useState(0)
+  const [totalContributions, setTotalContributions] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchContributors = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch("/api/contributors")
+        
+        if (!response.ok) {
+          throw new Error("Failed to fetch contributors")
+        }
+
+        const data = await response.json()
+        const contributors: Contributor[] = data.contributors
+
+        // Transform API data
+        const transformedData = contributors
+          .filter(c => c.author !== "Unknown")
+          .map(c => ({
+            author: c.author,
+            avatar: c.avatar,
+            github: c.github,
+            contributions: c.components.length,
+          }))
+
+        setLeaderBoardData(transformedData)
+        setTopContributors(transformedData.slice(0, 3))
+        setTotalContributors(transformedData.length)
+        setTotalContributions(
+          transformedData.reduce((sum, c) => sum + c.contributions, 0)
+        )
+      } catch (err) {
+        console.error("Error fetching contributors:", err)
+        setError("Failed to load contributors")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchContributors()
+  }, [])
+
   return (
     <>
       <Head>
@@ -219,23 +309,45 @@ export default function Contributors() {
         <Navbar currentPage="contributors" />
 
         {/* Main Content */}
-        <main className="flex-1 flex  justify-center">
-          <div className="flex flex-col text-center mt-6">
-            <div className="text-4xl font-bold">
-              Our Amazing Contributors
-            </div>
+        <main className="flex-1 flex justify-center">
+          <div className="flex flex-col text-center mt-6 px-4">
+            <div className="text-4xl font-bold">Our Amazing Contributors</div>
             <div className="text-gray-500 mt-2">
               Celebrating the people who make our page amazing
             </div>
-            <div className="mt-10">
-              <LeaderBoard />
-            </div>
-            <div className="mt-10 flex justify-center">
-              <OverallStats />
-            </div>
-            <div className="mb-4">
-              <AllContributors />
-            </div>
+
+            {loading && (
+              <div className="mt-20 text-xl text-gray-600">
+                Loading contributors...
+              </div>
+            )}
+
+            {error && (
+              <div className="mt-20 text-xl text-red-600">
+                {error}
+              </div>
+            )}
+
+            {!loading && !error && (
+              <>
+                {topContributors.length > 0 && (
+                  <div className="mt-10">
+                    <LeaderBoard topContributors={topContributors} />
+                  </div>
+                )}
+                <div className="mt-10 flex justify-center">
+                  <OverallStats
+                    totalContributors={totalContributors}
+                    totalContributions={totalContributions}
+                  />
+                </div>
+                {leaderBoardData.length > 0 && (
+                  <div className="mb-4">
+                    <AllContributors leaderBoardData={leaderBoardData} />
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </main>
 

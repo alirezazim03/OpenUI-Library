@@ -23,7 +23,7 @@ export function getComponentsData(): ComponentMetadata[] {
   }
 
   const pattern = path.join(componentsDir, "**", "component.json")
-
+  // console.log(pattern, "pattern in components")
   try {
     const files = glob.sync(pattern)
     const components: ComponentMetadata[] = []
@@ -37,7 +37,7 @@ export function getComponentsData(): ComponentMetadata[] {
         const relativePath = path.relative(componentsDir, file)
         const pathParts = relativePath.split(path.sep)
         const componentPath = path.dirname(relativePath)
-
+        
         components.push({
           ...metadata,
           path: componentPath,
