@@ -1,6 +1,6 @@
 {
   "name": "three-dot-loader",
-  "category": "loaders",
+  "category": "feedback",
   "framework": "react",
   "tags": ["animation", "loading", "responsive"],
   "author": "Ashish-Pandey62",
