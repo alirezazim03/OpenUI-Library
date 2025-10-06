@@ -93,7 +93,7 @@ const OverallStats = () => {
         </div>
         <div className="text-start">
           <div className="text-2xl font-bold">
-            6
+            15
           </div>
           <div className="text-gray-400 text-md">
             Active Contributors
@@ -107,10 +107,10 @@ const OverallStats = () => {
         </div>
         <div className="text-start">
           <div className="text-2xl font-bold">
-            120
+            23
           </div>
           <div className="text-gray-400 text-md">
-            Total Commits
+            Contributions
           </div>
         </div>
 
