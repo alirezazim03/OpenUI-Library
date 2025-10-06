@@ -2,11 +2,7 @@
   <div
     class="w-full border border-gray-200 dark:border-gray-700 rounded-2xl divide-y divide-gray-200 dark:divide-gray-700"
   >
-    <div
-      v-for="(item, index) in items"
-      :key="index"
-      class="group"
-    >
+    <div v-for="(item, index) in items" :key="index" class="group">
       <!-- Header -->
       <button
         @click="toggle(index)"
@@ -16,13 +12,17 @@
         <svg
           :class="[
             'w-5 h-5 transform transition-transform duration-300',
-            openIndex === index ? 'rotate-180' : 'rotate-0'
+            openIndex === index ? 'rotate-180' : 'rotate-0',
           ]"
           stroke="currentColor"
           stroke-width="2"
           viewBox="0 0 24 24"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
@@ -40,7 +40,7 @@
           class="overflow-hidden px-5 pb-4 text-gray-600 dark:text-gray-300"
         >
           <!-- Slot or default content -->
-          <slot :name="`content-${index}`">{{ item.content }}</slot>
+          <slot :name="'content-' + index">{{ item.content }}</slot>
         </div>
       </transition>
     </div>
@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch } from "vue"
 
 const props = defineProps({
   /**
@@ -57,11 +57,19 @@ const props = defineProps({
    */
   items: {
     type: Array,
-    required: true,
     default: () => [
-      { title: "What is Vue.js?", content: "Vue.js is a progressive framework for building UIs." },
-      { title: "What is TailwindCSS?", content: "TailwindCSS is a utility-first CSS framework." },
-      { title: "Why use both?", content: "Because they're fast, flexible, and fun!" },
+      {
+        title: "What is Vue.js?",
+        content: "Vue.js is a progressive framework for building UIs.",
+      },
+      {
+        title: "What is TailwindCSS?",
+        content: "TailwindCSS is a utility-first CSS framework.",
+      },
+      {
+        title: "Why use both?",
+        content: "Because they're fast, flexible, and fun!",
+      },
     ],
   },
   /**
@@ -78,27 +86,38 @@ const props = defineProps({
     type: [Number, Array],
     default: () => [],
   },
-});
+})
 
-const openIndex = ref(null);
-const openIndexes = ref([]); // for multiple mode
+const openIndex = ref(null)
+const openIndexes = ref([]) // for multiple mode
 
 watch(
   () => props.defaultOpen,
-  (val) => {
-    if (props.multiple) openIndexes.value = Array.isArray(val) ? val : [val];
-    else openIndex.value = Array.isArray(val) ? val[0] : val;
+  val => {
+    if (props.multiple) openIndexes.value = Array.isArray(val) ? val : [val]
+    else openIndex.value = Array.isArray(val) ? val[0] : val
   },
   { immediate: true }
-);
+)
 
 function toggle(index) {
   if (props.multiple) {
     if (openIndexes.value.includes(index))
-      openIndexes.value = openIndexes.value.filter((i) => i !== index);
-    else openIndexes.value.push(index);
+      openIndexes.value = openIndexes.value.filter(i => i !== index)
+    else openIndexes.value.push(index)
   } else {
-    openIndex.value = openIndex.value === index ? null : index;
+    openIndex.value = openIndex.value === index ? null : index
   }
+}
+
+const Preview = {
+  props: ["items", "multiple", "defaultOpen"],
+  setup() {
+    return {
+      items: props.items,
+      multiple: props.multiple,
+      defaultOpen: props.defaultOpen,
+    }
+  },
 }
 </script>

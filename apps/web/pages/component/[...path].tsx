@@ -14,6 +14,7 @@ export default function ComponentPage() {
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
     {}
   )
+  const [wordWrap, setWordWrap] = useState(false)
 
   const copyToClipboard = async (text: string, key: string) => {
     try {
@@ -81,6 +82,7 @@ export default function ComponentPage() {
   const isHtmlTailwind =
     component.framework === "html" || component.framework === "tailwind"
   const isReact = component.framework === "react"
+  const isVue = component.framework === "vue"
 
   return (
     <>
@@ -262,6 +264,104 @@ export default function ComponentPage() {
                     componentFiles={component.files}
                     componentName={component.name}
                   />
+                </div>
+              ) : isVue ? (
+                <div className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-xl shadow-sm">
+                  {(() => {
+                    const files = component.files || {}
+                    const entries = Object.entries(files)
+
+                    const vueEntry =
+                      entries.find(
+                        ([fn]) =>
+                          fn.endsWith(".vue") &&
+                          fn
+                            .toLowerCase()
+                            .includes(component.name.toLowerCase())
+                      ) || entries.find(([fn]) => fn.endsWith(".vue"))
+
+                    const [filename, content] = vueEntry as [string, string]
+                    //If we found a .vue file try to extract template and styles and mount with the global Vue build
+                    if (filename.endsWith(".vue")) {
+                      const templateMatch = content.match(
+                        /<template[^>]*>([\s\S]*?)<\/template>/
+                      )
+                      const styleMatches = Array.from(
+                        content.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)
+                      )
+                      const template = templateMatch ? templateMatch[1] : ""
+                      const styles = styleMatches.map(m => m[1]).join("\n")
+
+                      // escape backticks inside template so we can interpolate safely in a template literal
+                      const templateEscaped = template.replace(/`/g, "\\`")
+                      const stylesEscaped = styles.replace(
+                        /<\/?script[^>]*>/g,
+                        ""
+                      )
+
+                      const srcDoc = `<!doctype html>
+                    <html>
+                      <head>
+                        <meta charset="utf-8" />
+                        <meta name="viewport" content="width=device-width,initial-scale=1" />
+                        <title>${component.name} preview</title>
+                        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+                        <style>html,body{height:100%;margin:0;padding:12px;box-sizing:border-box}#app{height:100%}</style>
+                        <style>${stylesEscaped}</style>
+                      </head>
+                      <body>
+                        <div id="app"></div>
+                        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                        <script>
+                          // We mount a small wrapper component that uses the extracted template
+                          // and provides local state (items, openIndex/openIndexes) so toggling works
+                          try {
+                            const template = ${JSON.stringify(templateEscaped)}
+                            const sampleItems = [
+                              { title: 'What is Vue.js?', content: 'Vue.js is a progressive framework for building UIs.' },
+                              { title: 'What is TailwindCSS?', content: 'TailwindCSS is a utility-first CSS framework.' },
+                              { title: 'Why use both?', content: "Because they're fast, flexible, and fun!" }
+                            ]
+
+                            const Preview = {
+                              template: template,
+                              data() {
+                                return {
+                                  items: sampleItems,
+                                  openIndex: null,
+                                  openIndexes: []
+                                }
+                              },
+                              methods: {
+                                toggle(index) {
+                                  // basic toggle logic supporting single/multiple isn't known from SFC props,
+                                  // we implement single-open behaviour similar to the SFC default
+                                  this.openIndex = this.openIndex === index ? null : index
+                                }
+                              }
+                            }
+
+                            const app = Vue.createApp({ template: '<preview-comp />' })
+                            app.component('preview-comp', Preview)
+                            app.mount('#app')
+                          } catch (e) {
+                            document.getElementById('app').innerText = 'Failed to mount component: ' + e.message
+                            console.error(e)
+                          }
+                        </script>
+                      </body>
+                    </html>`
+
+                      return (
+                        <iframe
+                          srcDoc={srcDoc}
+                          className="w-full h-64 border-0 relative z-10 rounded-lg"
+                          title={`${component.name} preview`}
+                          sandbox="allow-scripts"
+                        />
+                      )
+                    }
+                  })()}
                 </div>
               ) : (
                 <div className="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
@@ -458,67 +558,98 @@ export default function ComponentPage() {
                         Component Code
                       </h3>
                     </div>
-                    <button
-                      onClick={() => {
-                        const allCode = Object.entries(component.files)
-                          .filter(([filename]) => {
-                            // Only include actual component files, exclude documentation
-                            const lowerFilename = filename.toLowerCase()
-                            return (
-                              !lowerFilename.includes("readme") &&
-                              !lowerFilename.includes(".md") &&
-                              filename !== "component.json"
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => {
+                          const allCode = Object.entries(component.files)
+                            .filter(([filename]) => {
+                              // Only include actual component files, exclude documentation
+                              const lowerFilename = filename.toLowerCase()
+                              return (
+                                !lowerFilename.includes("readme") &&
+                                !lowerFilename.includes(".md") &&
+                                filename !== "component.json"
+                              )
+                            })
+                            .map(
+                              ([filename, content]) =>
+                                `// ${filename}\n${content}`
                             )
-                          })
-                          .map(
-                            ([filename, content]) =>
-                              `// ${filename}\n${content}`
-                          )
-                          .join("\n\n")
-                        copyToClipboard(allCode, "component")
-                      }}
-                      className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
-                        copiedStates.component
-                          ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700"
-                          : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
-                      }`}
-                    >
-                      {copiedStates.component ? (
-                        <>
-                          <svg
-                            className="w-4 h-4 mr-1.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          Copied!
-                        </>
-                      ) : (
-                        <>
-                          <svg
-                            className="w-4 h-4 mr-1.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                            />
-                          </svg>
-                          Copy All
-                        </>
-                      )}
-                    </button>
+                            .join("\n\n")
+                          copyToClipboard(allCode, "component")
+                        }}
+                        className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                          copiedStates.component
+                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700"
+                            : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                        }`}
+                      >
+                        {copiedStates.component ? (
+                          <>
+                            <svg
+                              className="w-4 h-4 mr-1.5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <svg
+                              className="w-4 h-4 mr-1.5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                              />
+                            </svg>
+                            Copy All
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => setWordWrap(!wordWrap)}
+                        className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                          wordWrap
+                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700"
+                            : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                        }`}
+                      >
+                        <svg
+                          className="w-4 h-4 mr-1.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 6h16M4 12h16M4 18h7"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M20 12l-4-4m4 4l-4 4"
+                          />
+                        </svg>
+                        {wordWrap ? "Wrapped" : "Wrap"}
+                      </button>
+                    </div>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {Object.entries(component.files)
@@ -539,9 +670,10 @@ export default function ComponentPage() {
                             </span>
                           </div>
                           <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            <pre className="text-sm text-gray-800 dark:text-gray-100 overflow-x-auto">
-                              <code>{content}</code>
-                            </pre>
+<pre className={`text-sm text-gray-800 dark:text-gray-100 overflow-x-auto ${wordWrap ? "whitespace-pre-wrap" : "whitespace-pre"}`}>
+  <code>{content}</code>
+</pre>
+
                           </div>
                           {index <
                             Object.entries(component.files).length - 1 && (
