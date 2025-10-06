@@ -571,9 +571,10 @@ export default function ComponentPage() {
                             </span>
                           </div>
                           <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            <pre className={`text-sm text-gray-800 dark:text-gray-100 overflow-x-auto ${wordWrap ? 'whitespace-pre-wrap' : 'whitespace-pre'}`}>
-                              <code>{content}</code>
-                            </pre>
+<pre className={`text-sm text-gray-800 dark:text-gray-100 overflow-x-auto ${wordWrap ? "whitespace-pre-wrap" : "whitespace-pre"}`}>
+  <code>{content}</code>
+</pre>
+
                           </div>
                           {index <
                             Object.entries(component.files).length - 1 && (
