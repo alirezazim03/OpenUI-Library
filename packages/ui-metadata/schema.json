@@ -15,7 +15,8 @@
         "hero",
         "section",
         "input",
-        "progress"
+        "progress",
+        "slider"
       ]
     },
     "framework": {

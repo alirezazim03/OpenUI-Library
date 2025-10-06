@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
-import fs from "fs"
-import path from "path"
 import * as glob from "glob"
 import Ajv from "ajv"
 import { schema } from "../../ui-metadata/index"
+import * as fs from "node:fs"
+import * as path from "node:path"
 
 const ajv = new Ajv()
 const validate = ajv.compile(schema)
 
 function validateMetadata(): boolean {
   const componentsDir = path.join(process.cwd(), "components")
+  // Use forward slashes for glob pattern to ensure cross-platform compatibility
+  const pattern = componentsDir.replace(/\\/g, "/") + "/**/component.json"
 
   try {
     // Use fs.readdirSync recursively to find all component.json files
