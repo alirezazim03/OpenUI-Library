@@ -1,10 +1,11 @@
 // import Link from "next/link"
 import Head from "next/head"
 import Navbar from "../components/Navbar"
-import { BiTrophy } from "react-icons/bi";
-import { BsPeople } from "react-icons/bs";
-import { GoGitCommit } from "react-icons/go";
-import { useState } from "react";
+import { BiGitMerge, BiTrophy } from "react-icons/bi"
+import { BsPeople } from "react-icons/bs"
+import { GoGitCommit } from "react-icons/go"
+import React, { useState } from "react"
+import Image from "next/image"
 const leaderBoardData = [
   { username: "alirezazim03", avatar: "https://github.com/alirezazim03.png", contributions: 4, role: "Contributor", github: "https://github.com/alirezazim03" },
   { username: "ankitpokhrel08", avatar: "https://github.com/ankitpokhrel08.png", contributions: 2, role: "Contributor", github: "https://github.com/ankitpokhrel08" },
@@ -21,7 +22,7 @@ const leaderBoardData = [
   { username: "suryssss", avatar: "https://github.com/suryssss.png", contributions: 1, role: "Contributor", github: "https://github.com/suryssss" },
   { username: "xMrAfonso", avatar: "https://github.com/xMrAfonso.png", contributions: 1, role: "Contributor", github: "https://github.com/xMrAfonso" },
   { username: "sudoyasir", avatar: "https://github.com/sudoyasir.png", contributions: 1, role: "Contributor", github: "https://github.com/sudoyasir" }
-];
+]
 
 const topContributors = [
   { username: "ankitpokhrel08", avatar: "https://github.com/ankitpokhrel08.png", contributions: 2, role: "Contributor", github: "https://github.com/ankitpokhrel08" },
@@ -45,20 +46,20 @@ function GitHubIcon(props: React.SVGProps<SVGSVGElement>) {
         clipRule="evenodd"
       />
     </svg>
-  );
+  )
 }
 
 const LeaderBoard = () => {
-
-
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <div className="text-3xl font-bold">Top Contributors</div>
       <div className="relative flex gap-4 items-end mt-10 justify-center">
         {topContributors.map((contributor, index) => (
-          <div className="relative flex flex-col items-center">
+          <div className="relative flex flex-col items-center"
+          key ={index}
+          >
             <div className={`w-24 h-24 rounded-full overflow-hidden border-4 ${index === 0 ? "border-gray-300" : index === 1 ? "border-yellow-400" : "border-amber-800"}`}>
-              <img
+              <Image
                 src={contributor.avatar}
                 alt={contributor.username}
                 className="w-full h-full object-cover" />
@@ -67,10 +68,19 @@ const LeaderBoard = () => {
               <BiTrophy size={20} className="text-gray-500" />
               <div className="text-gray-500"> {contributor.contributions} Contributions</div>
             </div>
-            <div className={` ${index === 0 ? 'w-36 h-24' : index === 1 ? ' w-36 h-32' : 'w-36 h-16'} bg-slate-300 mt-2 rounded-lg`}></div>
+            <div className={` ${index === 0 ? "w-36 h-24" : index === 1 ? " w-36 h-32" : "w-36 h-16"} bg-slate-300 mt-2 rounded-lg`}></div>
           </div>
         ))}
       </div>
+      <button
+        onClick={() =>
+          window.location.href = "https://github.com/alirezazim03/OpenUI-Library"
+        }
+        className="flex items-center gap-2 px-4 py-2 mt-5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+      >
+        <BiGitMerge size={20} />
+        <span>Start Contributing</span>
+      </button>
     </div>
   )
 }
@@ -111,18 +121,18 @@ const OverallStats = () => {
 }
 
 const AllContributors = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; // how many contributors per page
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 6
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = leaderBoardData.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = leaderBoardData.slice(indexOfFirstItem, indexOfLastItem)
 
-  const totalPages = Math.ceil(leaderBoardData.length / itemsPerPage);
+  const totalPages = Math.ceil(leaderBoardData.length / itemsPerPage)
 
   return (
     <div className="w-full">
-      <div className="text-3xl font-bold mt-10">Leaderboard</div>
+      <div className="text-3xl font-bold mt-10">All Contributors</div>
       <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-6 mt-10">
         {currentItems.map((contributor, index) => (
           <div
@@ -137,7 +147,7 @@ const AllContributors = () => {
             <div className="flex items-center gap-6">
               <div className="relative w-16 h-16">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-violet-500">
-                  <img
+                  <Image
                     src={contributor.avatar}
                     alt={contributor.username}
                     className="w-full h-full object-cover"
@@ -187,7 +197,7 @@ const AllContributors = () => {
         </button>
       </div>
     </div>
-  );
+  )
 }
 export default function Contributors() {
   return (
