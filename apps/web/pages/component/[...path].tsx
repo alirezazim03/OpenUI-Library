@@ -81,6 +81,7 @@ export default function ComponentPage() {
   const isHtmlTailwind =
     component.framework === "html" || component.framework === "tailwind"
   const isReact = component.framework === "react"
+  const isVue = component.framework === "vue"
 
   return (
     <>
@@ -262,6 +263,104 @@ export default function ComponentPage() {
                     componentFiles={component.files}
                     componentName={component.name}
                   />
+                </div>
+              ) : isVue ? (
+                <div className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-xl shadow-sm">
+                  {(() => {
+                    const files = component.files || {}
+                    const entries = Object.entries(files)
+
+                    const vueEntry =
+                      entries.find(
+                        ([fn]) =>
+                          fn.endsWith(".vue") &&
+                          fn
+                            .toLowerCase()
+                            .includes(component.name.toLowerCase())
+                      ) || entries.find(([fn]) => fn.endsWith(".vue"))
+
+                    const [filename, content] = vueEntry as [string, string]
+                    //If we found a .vue file try to extract template and styles and mount with the global Vue build
+                    if (filename.endsWith(".vue")) {
+                      const templateMatch = content.match(
+                        /<template[^>]*>([\s\S]*?)<\/template>/
+                      )
+                      const styleMatches = Array.from(
+                        content.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)
+                      )
+                      const template = templateMatch ? templateMatch[1] : ""
+                      const styles = styleMatches.map(m => m[1]).join("\n")
+
+                      // escape backticks inside template so we can interpolate safely in a template literal
+                      const templateEscaped = template.replace(/`/g, "\\`")
+                      const stylesEscaped = styles.replace(
+                        /<\/?script[^>]*>/g,
+                        ""
+                      )
+
+                      const srcDoc = `<!doctype html>
+                    <html>
+                      <head>
+                        <meta charset="utf-8" />
+                        <meta name="viewport" content="width=device-width,initial-scale=1" />
+                        <title>${component.name} preview</title>
+                        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+                        <style>html,body{height:100%;margin:0;padding:12px;box-sizing:border-box}#app{height:100%}</style>
+                        <style>${stylesEscaped}</style>
+                      </head>
+                      <body>
+                        <div id="app"></div>
+                        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                        <script>
+                          // We mount a small wrapper component that uses the extracted template
+                          // and provides local state (items, openIndex/openIndexes) so toggling works
+                          try {
+                            const template = ${JSON.stringify(templateEscaped)}
+                            const sampleItems = [
+                              { title: 'What is Vue.js?', content: 'Vue.js is a progressive framework for building UIs.' },
+                              { title: 'What is TailwindCSS?', content: 'TailwindCSS is a utility-first CSS framework.' },
+                              { title: 'Why use both?', content: "Because they're fast, flexible, and fun!" }
+                            ]
+
+                            const Preview = {
+                              template: template,
+                              data() {
+                                return {
+                                  items: sampleItems,
+                                  openIndex: null,
+                                  openIndexes: []
+                                }
+                              },
+                              methods: {
+                                toggle(index) {
+                                  // basic toggle logic supporting single/multiple isn't known from SFC props,
+                                  // we implement single-open behaviour similar to the SFC default
+                                  this.openIndex = this.openIndex === index ? null : index
+                                }
+                              }
+                            }
+
+                            const app = Vue.createApp({ template: '<preview-comp />' })
+                            app.component('preview-comp', Preview)
+                            app.mount('#app')
+                          } catch (e) {
+                            document.getElementById('app').innerText = 'Failed to mount component: ' + e.message
+                            console.error(e)
+                          }
+                        </script>
+                      </body>
+                    </html>`
+
+                      return (
+                        <iframe
+                          srcDoc={srcDoc}
+                          className="w-full h-64 border-0 relative z-10 rounded-lg"
+                          title={`${component.name} preview`}
+                          sandbox="allow-scripts"
+                        />
+                      )
+                    }
+                  })()}
                 </div>
               ) : (
                 <div className="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
