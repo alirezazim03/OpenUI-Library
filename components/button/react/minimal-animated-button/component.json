@@ -1,0 +1,17 @@
+{
+  "name": "minimal-animated-button",
+  "category": "button",
+  "framework": "react",
+  "tags": ["button", "ui", "minimal"],
+  "author": "chatfly",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A minimal monochrome animated button.",
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Defines the button value"
+    }
+  ]
+}
