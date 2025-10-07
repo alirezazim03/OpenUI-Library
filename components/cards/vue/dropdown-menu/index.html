@@ -1,5 +1,29 @@
-<template>
-  <div class="relative inline-block text-left" ref="dropdownRef">
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DropdownMenu</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+      // Force light mode for consistent preview
+      tailwind.config = {
+        darkMode: 'class'
+      }
+    </script>
+  </head>
+  <body class="bg-white">
+    <div id="app">
+      <dropdown-menu></dropdown-menu>
+    </div>
+
+    <script>
+      const { createApp } = Vue
+
+      const DropdownMenu = {
+        template: `<div class="relative inline-block text-left" ref="dropdownRef">
     <!-- Trigger -->
     <button
       @click="toggle"
@@ -49,11 +73,8 @@
         </div>
       </div>
     </transition>
-  </div>
-</template>
-
-<script>
-export default {
+  </div>`,
+        
   props: {
     label: { type: String, default: "Actions" },
     items: {
@@ -106,5 +127,14 @@ export default {
   beforeUnmount() {
     document.removeEventListener("click", this.handleClickOutside)
   },
-}
-</script>
+
+      }
+
+      createApp({
+        components: {
+          DropdownMenu,
+        },
+      }).mount("#app")
+    </script>
+  </body>
+</html>

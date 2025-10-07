@@ -1,5 +1,29 @@
-<template>
-  <div
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accordion</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+      // Force light mode for consistent preview
+      tailwind.config = {
+        darkMode: 'class'
+      }
+    </script>
+  </head>
+  <body class="bg-white">
+    <div id="app">
+      <accordion></accordion>
+    </div>
+
+    <script>
+      const { createApp } = Vue
+
+      const Accordion = {
+        template: `<div
     class="w-full border border-gray-200 dark:border-gray-700 rounded-2xl divide-y divide-gray-200 dark:divide-gray-700"
   >
     <div v-for="(item, index) in items" :key="index" class="group">
@@ -44,11 +68,8 @@
         </div>
       </transition>
     </div>
-  </div>
-</template>
-
-<script>
-export default {
+  </div>`,
+        
   props: {
     /**
      * Accordion items, e.g.
@@ -117,5 +138,14 @@ export default {
       }
     },
   },
-}
-</script>
+
+      }
+
+      createApp({
+        components: {
+          Accordion,
+        },
+      }).mount("#app")
+    </script>
+  </body>
+</html>
