@@ -1,0 +1,22 @@
+{
+  "name": "popover",
+  "category": "overlay",
+  "framework": "react",
+  "tags": ["popover", "overlay", "menu", "dialog", "click", "interactive"],
+  "author": "Saikiran-Sugurthi",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "An interactive component that displays a block of content when an element is clicked.",
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "The trigger element that the user clicks to open the popover."
+    },
+    {
+      "name": "content",
+      "type": "ReactNode",
+      "description": "The JSX content to display inside the popover when it is open."
+    }
+  ]
+}
