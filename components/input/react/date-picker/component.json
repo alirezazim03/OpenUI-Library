@@ -1,0 +1,62 @@
+{
+  "name": "date-picker",
+  "category": "input",
+  "framework": "react",
+  "tags": ["date", "picker", "calendar", "interactive", "animated", "responsive", "modern"],
+  "author": "Ashish-Pandey62",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A highly interactive date picker component featuring smooth animations, hover effects, drag-to-select ranges, keyboard navigation, and mobile-friendly touch interactions.",
+  "demoUrl": "",
+  "props": [
+    {
+      "name": "mode",
+      "type": "string",
+      "description": "Selection mode: 'single', 'range', or 'multi'",
+      "default": "single"
+    },
+    {
+      "name": "selectedDates",
+      "type": "Date | Array<Date>",
+      "description": "Currently selected date(s)"
+    },
+    {
+      "name": "onDateSelect",
+      "type": "function",
+      "description": "Callback when dates are selected"
+    },
+    {
+      "name": "minDate",
+      "type": "Date",
+      "description": "Minimum selectable date"
+    },
+    {
+      "name": "maxDate",
+      "type": "Date",
+      "description": "Maximum selectable date"
+    },
+    {
+      "name": "holidays",
+      "type": "Array<{date: Date, label: string}>",
+      "description": "Array of holiday dates with labels"
+    },
+    {
+      "name": "theme",
+      "type": "string",
+      "description": "Theme: 'light' or 'dark'",
+      "default": "light"
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Locale for date formatting",
+      "default": "en-US"
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Input field placeholder",
+      "default": "Select date"
+    }
+  ]
+}

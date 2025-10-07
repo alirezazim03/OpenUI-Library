@@ -1,0 +1,59 @@
+{
+  "name": "youtube-app-card",
+  "category": "card",
+  "framework": "react",
+  "tags": ["app", "youtube", "store", "download", "media", "ui"],
+  "author": "zxnb01",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A modern app store card component featuring YouTube app with logo, metrics, and decorative elements",
+  "props": [
+    {
+      "name": "appName",
+      "type": "string",
+      "description": "The name of the app to display",
+      "default": "YouTube"
+    },
+    {
+      "name": "category",
+      "type": "string",
+      "description": "App category label",
+      "default": "Videos"
+    },
+    {
+      "name": "isFree",
+      "type": "boolean",
+      "description": "Whether to show the 'Free' badge",
+      "default": true
+    },
+    {
+      "name": "rating",
+      "type": "number",
+      "description": "App rating score",
+      "default": 5.0
+    },
+    {
+      "name": "size",
+      "type": "string",
+      "description": "App size in readable format",
+      "default": "98.5 mb"
+    },
+    {
+      "name": "downloads",
+      "type": "string",
+      "description": "Number of downloads in readable format",
+      "default": "8.5m"
+    },
+    {
+      "name": "isPaused",
+      "type": "boolean",
+      "description": "Whether the download/install is paused (affects button icon)",
+      "default": true
+    },
+    {
+      "name": "onActionClick",
+      "type": "function",
+      "description": "Callback function when the action button is clicked"
+    }
+  ]
+}

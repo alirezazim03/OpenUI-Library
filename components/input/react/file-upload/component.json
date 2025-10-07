@@ -1,0 +1,19 @@
+{
+  "name": "file-upload",
+  "category": "input",
+  "framework": "react",
+  "tags": ["file", "upload", "drag-drop", "progress", "ui", "responsive"],
+  "author": "Ashish-Pandey62",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A drag-and-drop or click-to-upload file input component with progress tracking, error handling, and multiple file support for React apps.",
+  "props": [
+    { "name": "multiple", "type": "boolean", "description": "Allow multiple files (default false)" },
+    { "name": "maxSize", "type": "number", "description": "Maximum file size in MB (optional)" },
+    { "name": "acceptedTypes", "type": "array", "description": "Allowed MIME types" },
+    { "name": "onUploadStart", "type": "function", "description": "Callback when upload starts" },
+    { "name": "onUploadProgress", "type": "function", "description": "Callback for upload progress updates" },
+    { "name": "onUploadComplete", "type": "function", "description": "Callback on successful upload" },
+    { "name": "onError", "type": "function", "description": "Callback for errors during upload" }
+  ]
+}

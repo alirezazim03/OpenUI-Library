@@ -1,0 +1,36 @@
+{
+  "name": "five-star-rating",
+  "category": "button",
+  "framework": "react",
+  "tags": ["button", "rating", "interactive", "stars", "feedback"],
+  "author": "ankitpokhrel08",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "An interactive five-star rating button component with hover effects and click persistence",
+  "props": [
+    {
+      "name": "onRatingChange",
+      "type": "function",
+      "description": "Callback function called when rating changes",
+      "default": "() => {}"
+    },
+    {
+      "name": "initialRating",
+      "type": "number",
+      "description": "Initial rating value (0-5)",
+      "default": 0
+    },
+    {
+      "name": "size",
+      "type": "string",
+      "description": "Size variant of the button",
+      "default": "md"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes",
+      "default": ""
+    }
+  ]
+}
