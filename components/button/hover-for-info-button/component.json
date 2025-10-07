@@ -1,0 +1,19 @@
+{
+  "name": "hover-for-info-button",
+  "category": "button",
+  "framework": "react",
+  "tags": [
+    "tooltip",
+    "hover",
+    "info",
+    "tailwind",
+    "ui",
+    "button"
+  ],
+  "author": "beebadooo",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A gradient button that reveals a styled tooltip on hover"
+}
+
+
