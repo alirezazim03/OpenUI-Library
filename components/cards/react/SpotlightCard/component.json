@@ -1,0 +1,34 @@
+{
+  "name": "spotlight-card",
+  "category": "card",
+  "framework": "react",
+  "tags": [
+    "spotlight",
+    "hover",
+    "card",
+    "glow",
+    "interactive"
+  ],
+  "author": "Harshchill",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A card component that reveals a spotlight effect on mouse hover, following the cursor's position.",
+  "demoUrl": "",
+  "props": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "description": "The content to be rendered inside the card."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes to apply to the main card container."
+    },
+    {
+      "name": "spotlightColor",
+      "type": "string",
+      "description": "The color of the radial gradient spotlight effect. Defaults to 'rgba(255, 255, 255, 0.25)'."
+    }
+  ]
+}
