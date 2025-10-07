@@ -1,18 +1,35 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["name","category","framework","tags","license","version"],
+  "required": ["name", "category", "framework", "tags", "license", "version"],
   "properties": {
-    "name": {"type":"string"},
-    "category": {"type":"string", "enum":["navbar","footer","button","form","card","hero","section"]},
-    "framework": {"type":"string", "enum":["react","vue","tailwind","html","svelte"]},
-    "tags": {"type":"array","items":{"type":"string"}},
-    "author": {"type":"string"},
-    "license": {"type":"string","enum":["MIT"]},
-    "version": {"type":"string"},
-    "preview": {"type":"string"},
-    "demoUrl": {"type":"string"},
-    "props": {"type":"array","items":{"type":"object"}}
+    "name": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": [
+        "navbar",
+        "footer",
+        "button",
+        "form",
+        "card",
+        "hero",
+        "section",
+        "input",
+        "progress",
+        "slider"
+      ]
+    },
+    "framework": {
+      "type": "string",
+      "enum": ["react", "vue", "tailwind", "html", "svelte"]
+    },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "author": { "type": "string" },
+    "license": { "type": "string", "enum": ["MIT"] },
+    "version": { "type": "string" },
+    "preview": { "type": "string" },
+    "demoUrl": { "type": "string" },
+    "props": { "type": "array", "items": { "type": "object" } }
   },
   "additionalProperties": true
 }

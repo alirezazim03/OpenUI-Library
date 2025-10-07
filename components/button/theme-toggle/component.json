@@ -1,0 +1,10 @@
+{
+  "name": "theme-toggle",
+  "category": "button",
+  "framework": "react",
+  "tags": ["responsive", "modern", "theme", "dark-mode", "toggle"],
+  "author": "beebadooo",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A simple theme toggle button that switches between light and dark modes with visual background changes"
+}

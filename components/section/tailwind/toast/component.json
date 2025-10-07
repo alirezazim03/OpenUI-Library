@@ -1,0 +1,10 @@
+{
+  "name": "toast",
+  "category": "section",
+  "framework": "tailwind",
+  "tags": ["notification", "toast", "alert", "feedback", "animated", "responsive", "auto-dismiss", "icons"],
+  "author": "sudoyasir",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "Elegant toast notifications with multiple variants (success, error, info, warning), professional SVG icons, smooth animations, auto-dismiss, and responsive design"
+}

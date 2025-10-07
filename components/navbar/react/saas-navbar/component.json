@@ -1,0 +1,30 @@
+{
+  "name": "saas-navbar",
+  "category": "navbar",
+  "framework": "react",
+  "tags": [
+    "navbar",
+    "responsive",
+    "saas",
+    "login",
+    "get-started",
+    "menu",
+    "mobile"
+  ],
+  "author": "abhijeet-singhh",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A responsive SaaS navbar with logo, navigation links, login, get started button, and a collapsible mobile menu.",
+  "props": [
+    {
+      "name": "onGetStarted",
+      "type": "function",
+      "description": "Callback function triggered when the Get Started button is clicked"
+    },
+    {
+      "name": "onLogin",
+      "type": "function",
+      "description": "Callback function triggered when the Login link is clicked"
+    }
+  ]
+}

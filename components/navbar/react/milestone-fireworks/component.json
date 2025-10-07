@@ -1,0 +1,66 @@
+{
+  "name": "milestone-fireworks",
+  "category": "navbar",
+  "framework": "react",
+  "tags": ["navbar", "fireworks", "animation", "milestone", "map", "dark-mode", "light-mode", "sound-effects", "interactive"],
+  "author": "TejaswaniRai",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A fun and interactive component that displays animated fireworks on the Helixque user map whenever global user milestones are reached (like 10k, 50k, 100k users). Works in dark and light mode. Animation is non-blocking and highlights regions contributing most to the milestone. Optional toggleable sound effects. Fully responsive.",
+  "props": [
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "description": "Whether the fireworks animation is currently active",
+      "default": false
+    },
+    {
+      "name": "milestone",
+      "type": "number",
+      "description": "The milestone number being celebrated (e.g., 10000, 50000, 100000)",
+      "default": 10000
+    },
+    {
+      "name": "regions",
+      "type": "Array<{x: number, y: number, intensity: number}>",
+      "description": "Array of regions with coordinates and intensity for fireworks placement",
+      "default": "[]"
+    },
+    {
+      "name": "duration",
+      "type": "number",
+      "description": "Duration of the fireworks animation in milliseconds",
+      "default": 5000
+    },
+    {
+      "name": "onComplete",
+      "type": "function",
+      "description": "Callback function called when animation completes",
+      "default": "() => {}"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes to apply to the container",
+      "default": ""
+    },
+    {
+      "name": "theme",
+      "type": "'light' | 'dark'",
+      "description": "Theme for the fireworks colors",
+      "default": "dark"
+    },
+    {
+      "name": "soundEnabled",
+      "type": "boolean",
+      "description": "Whether to enable optional sound effects during the celebration",
+      "default": false
+    },
+    {
+      "name": "autoTrigger",
+      "type": "boolean",
+      "description": "Whether to automatically trigger fireworks at milestone thresholds",
+      "default": true
+    }
+  ]
+}

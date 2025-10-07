@@ -1,0 +1,47 @@
+{
+  "name": "flip-card",
+  "category": "card",
+  "framework": "react",
+  "tags": ["flip", "card", "animation", "interactive", "ui"],
+  "author": "TejaswaniRai",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "An interactive flip card component with smooth 3D animations, supporting hover and click flips, customizable content, and responsive design.",
+  "props": [
+    {
+      "name": "frontImage",
+      "type": "string",
+      "description": "URL of the image to display on the front side"
+    },
+    {
+      "name": "frontTitle",
+      "type": "string",
+      "description": "Title text to display on the front side"
+    },
+    {
+      "name": "backContent",
+      "type": "string|JSX.Element",
+      "description": "Content to display on the back side (can be text or JSX)"
+    },
+    {
+      "name": "buttons",
+      "type": "array",
+      "description": "Array of button objects with 'text' and 'onClick' properties"
+    },
+    {
+      "name": "iconLinks",
+      "type": "array",
+      "description": "Array of icon link objects with 'icon' and 'url' properties"
+    },
+    {
+      "name": "flipDirection",
+      "type": "string",
+      "description": "Direction of flip animation: 'horizontal' or 'vertical' (default: 'horizontal')"
+    },
+    {
+      "name": "gradient",
+      "type": "boolean",
+      "description": "Whether to apply a gradient background to the front side (default: false)"
+    }
+  ]
+}

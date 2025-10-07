@@ -1,0 +1,23 @@
+{
+  "name": "three-dot-loader",
+  "category": "progress",
+  "framework": "react",
+  "tags": ["animation", "loading", "responsive"],
+  "author": "Ashish-Pandey62",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A minimalistic three-dot bouncing loader component for loading states",
+  "demoUrl": "",
+  "props": [
+    {
+      "name": "color",
+      "type": "string",
+      "description": "The color of the dots"
+    },
+    {
+      "name": "size",
+      "type": "string",
+      "description": "The size of each dot (e.g., '10px')"
+    }
+  ]
+}

@@ -39,7 +39,7 @@ Visit the [live preview site](https://www.openuilibrary.com/) to browse all avai
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_HANDLE/open-ui-library.git
+git clone https://github.com/alirezazim03/OpenUI-Library.git
 cd open-ui-library
 ```
 

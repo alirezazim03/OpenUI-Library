@@ -1,0 +1,30 @@
+{
+  "name": "dropdown-menu",
+  "category": "card",
+  "framework": "vue",
+  "tags": ["dropdown", "menu", "navigation", "select", "popover", "actions"],
+  "author": "xMrAfonso",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A reusable dropdown menu component with customizable items and button variants.",
+  "props": [
+    {
+      "name": "label",
+      "type": "String",
+      "description": "The text displayed on the dropdown trigger button",
+      "default": "Menu"
+    },
+    {
+      "name": "items",
+      "type": "Array",
+      "description": "Array of menu items with label and action properties. Each item should have a 'label' (String) and optional 'action' (Function) callback",
+      "default": "[{ label: 'Profile', action: () => console.log('Profile clicked') }, { label: 'Settings', action: () => console.log('Settings clicked') }, { label: 'Logout', action: () => console.log('Logout clicked') }]"
+    },
+    {
+      "name": "variant",
+      "type": "String",
+      "description": "Button style variant. Options: 'primary' (blue), 'secondary' (gray), 'outline' (bordered)",
+      "default": "primary"
+    }
+  ]
+}

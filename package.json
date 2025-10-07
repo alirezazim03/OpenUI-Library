@@ -13,18 +13,21 @@
     "lint": "eslint .",
     "type-check": "pnpm -C apps/web type-check",
     "validate:metadata": "tsx packages/tooling/scripts/validate-metadata.ts",
-    "validate": "pnpm lint && pnpm type-check && pnpm validate:metadata && pnpm -C apps/web build"
+    "validate": "pnpm lint && pnpm type-check && pnpm validate:metadata && pnpm generate:vue-html && pnpm -C apps/web build",
+    "generate:vue-html": "node scripts/generate-vue-html.js",
+    "watch:vue-html": "node scripts/generate-vue-html.js watch"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.0.0",
     "prettier": "^3.0.0",
-    "tsx": "^4.0.0"
+    "tsx": "^4.0.0",
+    "next": "^14.0.0"
   },
   "packageManager": "pnpm@9.15.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_HANDLE/open-ui-library.git"
+    "url": "https://github.com/alirezazim03/OpenUI-Library.git"
   },
   "license": "MIT",
   "keywords": [
@@ -33,5 +36,9 @@
     "tailwind",
     "open-source",
     "design-system"
-  ]
+  ],
+  "dependencies": {
+    "react-icons": "^5.5.0",
+    "react-swipeable": "^7.0.2"
+  }
 }

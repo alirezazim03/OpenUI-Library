@@ -1,0 +1,48 @@
+{
+  "name": "interactive-3d-card",
+  "category": "card",
+  "framework": "react",
+  "tags": ["interactive", "3d", "tilt", "modern"],
+  "author": "Ashish-Pandey62",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "An interactive 3D card component with tilt effects on hover",
+  "demoUrl": "",
+  "props": [
+    {
+      "name": "width",
+      "type": "string",
+      "description": "Width of the card (default: '300px')"
+    },
+    {
+      "name": "height",
+      "type": "string",
+      "description": "Height of the card (default: '400px')"
+    },
+    {
+      "name": "image",
+      "type": "string",
+      "description": "Image URL for the top visual section"
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Title text for the card"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Description text for the card"
+    },
+    {
+      "name": "tags",
+      "type": "string[]",
+      "description": "Array of tag strings"
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Action elements like buttons"
+    }
+  ]
+}
