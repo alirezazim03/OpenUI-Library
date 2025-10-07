@@ -1,6 +1,6 @@
 {
   "name": "dropdown-menu",
-  "category": "cards",
+  "category": "card",
   "framework": "vue",
   "tags": ["dropdown", "menu", "navigation", "select", "popover", "actions"],
   "author": "xMrAfonso",
