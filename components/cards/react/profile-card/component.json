@@ -1,0 +1,37 @@
+{
+  "name": "profile-card",
+  "category": "card",
+  "framework": "react",
+  "tags": ["profile", "card", "portfolio", "social", "avatar", "uiux"],
+  "author": "abhijeet-singhh",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A stylish profile card with avatar, name, bio, social media links, and a View Portfolio button.",
+  "props": [
+    {
+      "name": "avatarUrl",
+      "type": "string",
+      "description": "URL of the profile avatar image"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the person displayed on the card"
+    },
+    {
+      "name": "bio",
+      "type": "string",
+      "description": "Short biography or description"
+    },
+    {
+      "name": "socialLinks",
+      "type": "object",
+      "description": "Object containing URLs for social media profiles (e.g. twitter, github, linkedin)"
+    },
+    {
+      "name": "onViewPortfolio",
+      "type": "function",
+      "description": "Callback function triggered when the View Portfolio button is clicked"
+    }
+  ]
+}
