@@ -271,96 +271,41 @@ export default function ComponentPage() {
                     const files = component.files || {}
                     const entries = Object.entries(files)
 
-                    const vueEntry =
-                      entries.find(
-                        ([fn]) =>
-                          fn.endsWith(".vue") &&
-                          fn
-                            .toLowerCase()
-                            .includes(component.name.toLowerCase())
-                      ) || entries.find(([fn]) => fn.endsWith(".vue"))
+                    // Check if there's an index.html file (browser-compatible Vue component)
+                    const htmlEntry = entries.find(
+                      ([fn]) => fn === "index.html"
+                    )
 
-                    const [filename, content] = vueEntry as [string, string]
-                    //If we found a .vue file try to extract template and styles and mount with the global Vue build
-                    if (filename.endsWith(".vue")) {
-                      const templateMatch = content.match(
-                        /<template[^>]*>([\s\S]*?)<\/template>/
-                      )
-                      const styleMatches = Array.from(
-                        content.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)
-                      )
-                      const template = templateMatch ? templateMatch[1] : ""
-                      const styles = styleMatches.map(m => m[1]).join("\n")
-
-                      // escape backticks inside template so we can interpolate safely in a template literal
-                      const templateEscaped = template.replace(/`/g, "\\`")
-                      const stylesEscaped = styles.replace(
-                        /<\/?script[^>]*>/g,
-                        ""
-                      )
-
-                      const srcDoc = `<!doctype html>
-                    <html>
-                      <head>
-                        <meta charset="utf-8" />
-                        <meta name="viewport" content="width=device-width,initial-scale=1" />
-                        <title>${component.name} preview</title>
-                        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-                        <style>html,body{height:100%;margin:0;padding:12px;box-sizing:border-box}#app{height:100%}</style>
-                        <style>${stylesEscaped}</style>
-                      </head>
-                      <body>
-                        <div id="app"></div>
-                        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-                        <script>
-                          // We mount a small wrapper component that uses the extracted template
-                          // and provides local state (items, openIndex/openIndexes) so toggling works
-                          try {
-                            const template = ${JSON.stringify(templateEscaped)}
-                            const sampleItems = [
-                              { title: 'What is Vue.js?', content: 'Vue.js is a progressive framework for building UIs.' },
-                              { title: 'What is TailwindCSS?', content: 'TailwindCSS is a utility-first CSS framework.' },
-                              { title: 'Why use both?', content: "Because they're fast, flexible, and fun!" }
-                            ]
-
-                            const Preview = {
-                              template: template,
-                              data() {
-                                return {
-                                  items: sampleItems,
-                                  openIndex: null,
-                                  openIndexes: []
-                                }
-                              },
-                              methods: {
-                                toggle(index) {
-                                  // basic toggle logic supporting single/multiple isn't known from SFC props,
-                                  // we implement single-open behaviour similar to the SFC default
-                                  this.openIndex = this.openIndex === index ? null : index
-                                }
-                              }
-                            }
-
-                            const app = Vue.createApp({ template: '<preview-comp />' })
-                            app.component('preview-comp', Preview)
-                            app.mount('#app')
-                          } catch (e) {
-                            document.getElementById('app').innerText = 'Failed to mount component: ' + e.message
-                            console.error(e)
-                          }
-                        </script>
-                      </body>
-                    </html>`
-
+                    if (htmlEntry) {
+                      const [, htmlContent] = htmlEntry
                       return (
                         <iframe
-                          srcDoc={srcDoc}
+                          srcDoc={htmlContent}
                           className="w-full h-64 border-0 relative z-10 rounded-lg"
                           title={`${component.name} preview`}
                           sandbox="allow-scripts"
                         />
                       )
                     }
+
+                    // Fallback: Show message that Vue SFC needs compilation
+                    return (
+                      <div className="w-full h-64 flex items-center justify-center bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg">
+                        <div className="text-center p-6">
+                          <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                            Vue Component Preview
+                          </h3>
+                          <p className="text-gray-600 mb-2">
+                            This Vue component uses SFC syntax that requires
+                            compilation.
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            The component code is available in the Code section
+                            below.
+                          </p>
+                        </div>
+                      </div>
+                    )
                   })()}
                 </div>
               ) : (
@@ -670,10 +615,11 @@ export default function ComponentPage() {
                             </span>
                           </div>
                           <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-<pre className={`text-sm text-gray-800 dark:text-gray-100 overflow-x-auto ${wordWrap ? "whitespace-pre-wrap" : "whitespace-pre"}`}>
-  <code>{content}</code>
-</pre>
-
+                            <pre
+                              className={`text-sm text-gray-800 dark:text-gray-100 overflow-x-auto ${wordWrap ? "whitespace-pre-wrap" : "whitespace-pre"}`}
+                            >
+                              <code>{content}</code>
+                            </pre>
                           </div>
                           {index <
                             Object.entries(component.files).length - 1 && (
