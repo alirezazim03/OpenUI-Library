@@ -10,4 +10,4 @@ node_modules
 .env.production
 .DS_Store
 .env.local
-.tsbuildinfo
+*.tsbuildinfo
