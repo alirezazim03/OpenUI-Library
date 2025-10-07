@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glassmorphism Stats Dashboard Widget</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 min-h-screen flex items-center justify-center">
+
+  <!-- Glassmorphism Stats Widget -->
+  <div class="backdrop-blur-lg bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 w-full max-w-3xl">
+    <h2 class="text-white text-3xl font-bold mb-8 text-center">📊 Dashboard Stats</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+
+      <!-- Card 1 -->
+      <div class="p-6 rounded-2xl bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md border border-white/30 shadow-lg hover:scale-105 transition-transform duration-300">
+        <div class="text-5xl mb-3 animate-pulse">👤</div>
+        <div class="text-2xl font-bold text-white">1,245</div>
+        <div class="text-sm text-gray-200">Active Users</div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="p-6 rounded-2xl bg-gradient-to-br from-purple-400/30 to-pink-400/20 backdrop-blur-md border border-white/30 shadow-lg hover:scale-105 transition-transform duration-300">
+        <div class="text-5xl mb-3 animate-bounce">💰</div>
+        <div class="text-2xl font-bold text-white">₹32.5K</div>
+        <div class="text-sm text-gray-200">Revenue</div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="p-6 rounded-2xl bg-gradient-to-br from-green-400/30 to-blue-400/20 backdrop-blur-md border border-white/30 shadow-lg hover:scale-105 transition-transform duration-300">
+        <div class="text-5xl mb-3 animate-pulse">📈</div>
+        <div class="text-2xl font-bold text-white">+12.8%</div>
+        <div class="text-sm text-gray-200">Growth</div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
