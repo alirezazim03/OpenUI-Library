@@ -17,6 +17,7 @@
         "input",
         "progress",
         "slider",
+        "overlay",
         "dashboard"
       ]
     },
