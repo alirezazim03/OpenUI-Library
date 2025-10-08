@@ -1,9 +1,16 @@
 {
   "name": "glass-stats-widget",
+  "author": "EppaHarsha",
   "category": "dashboard",
   "framework": "tailwind",
-  "tags": ["responsive", "modern", "glassmorphism", "stats", "dashboard", "analytics"],
-  "author": "your-github-username",
+  "tags": [
+    "responsive",
+    "modern",
+    "glassmorphism",
+    "stats",
+    "dashboard",
+    "analytics"
+  ],
   "license": "MIT",
   "version": "1.0.0",
   "preview": "A modern glassmorphism-style statistics widget for dashboards, with animated responsive cards."
