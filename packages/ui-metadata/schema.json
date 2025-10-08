@@ -18,6 +18,7 @@
         "progress",
         "slider",
         "overlay"
+        "dashboard"
       ]
     },
     "framework": {
