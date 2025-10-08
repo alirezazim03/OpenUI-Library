@@ -1,0 +1,17 @@
+{
+  "name": "action-button",
+  "category": "button",
+  "framework": "react",
+  "tags": [
+    "action",
+    "loading",
+    "redirect",
+    "tailwind",
+    "ui",
+    "button"
+  ],
+  "author": "harshitrwt",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A responsive action button with loading and redirect states"
+}
