@@ -16,7 +16,8 @@
         "section",
         "input",
         "progress",
-        "slider"
+        "slider",
+        "dashboard"
       ]
     },
     "framework": {
