@@ -1,0 +1,24 @@
+{
+  "name": "feedback-form",
+  "category": "form",
+  "framework": "react",
+  "tags": ["form", "feedback", "validation", "rating", "responsive"],
+  "author": "Stitipragyanbarik",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "Feedback Form with Rating and Validation",
+  "props": [
+    {
+      "name": "onSubmit",
+      "type": "function",
+      "description": "Callback function called when the form is submitted with valid data",
+      "default": "() => {}"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes for custom styling",
+      "default": ""
+    }
+  ]
+}
