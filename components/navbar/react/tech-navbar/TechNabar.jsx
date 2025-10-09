@@ -2,17 +2,16 @@ import React from "react"
 import { FaSpaceShuttle } from "react-icons/fa"
 
 const defaultProps = {
-  logo: <FaSpaceShuttle />,
   navItems: ["Work", "About", "Playground", "Resource"],
   email: "ihyaet@gmail.com",
 }
 
-export default function TechNavbar({ logo, navItems, email }) {
+export default function TechNavbar({ navItems = defaultProps.navItems, email = defaultProps.email }) {
   return (
-    <nav className="bg-gray-900 rounded-full px-8 py-4 flex items-center justify-between shadow-xl max-w-4xl mx-auto mt-8">
+    <nav className="flex items-center justify-between px-8 py-4 mx-auto mt-8 max-w-4xl bg-gray-900 rounded-full shadow-xl">
       {/* Logo */}
       <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full">
-        <span className="text-2xl">{logo}</span>
+        <FaSpaceShuttle className="text-2xl text-gray-900" />
       </div>
 
       {/* Navigation Items */}
@@ -21,7 +20,7 @@ export default function TechNavbar({ logo, navItems, email }) {
           <a
             key={index}
             href={`#${item.toLowerCase()}`}
-            className="text-white text-lg font-medium hover:text-gray-300 transition-colors"
+            className="text-white text-lg font-medium transition-colors hover:text-gray-300"
           >
             {item}
           </a>
@@ -29,7 +28,7 @@ export default function TechNavbar({ logo, navItems, email }) {
       </div>
 
       {/* Email */}
-      <div className="bg-white rounded-full px-6 py-2">
+      <div className="px-6 py-2 bg-white rounded-full">
         <span className="text-gray-900 text-lg font-medium">{email}</span>
       </div>
     </nav>
