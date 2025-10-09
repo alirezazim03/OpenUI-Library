@@ -1,0 +1,42 @@
+{
+  "name": "login-form",
+  "category": "form",
+  "framework": "react",
+  "tags": ["form", "login", "authentication", "google", "validation", "responsive"],
+  "author": "Stitipragyanbarik",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "Modern Login Form with Validation and Google Sign-In",
+  "props": [
+    {
+      "name": "onSubmit",
+      "type": "function",
+      "description": "Callback function called when the form is submitted with valid data",
+      "default": "() => {}"
+    },
+    {
+      "name": "onGoogleSignIn",
+      "type": "function",
+      "description": "Callback function called when Google Sign-In button is clicked",
+      "default": "() => {}"
+    },
+    {
+      "name": "onForgotPassword",
+      "type": "function",
+      "description": "Callback function called when Forgot Password link is clicked",
+      "default": "() => {}"
+    },
+    {
+      "name": "onSignUp",
+      "type": "function",
+      "description": "Callback function called when Sign Up link is clicked",
+      "default": "() => {}"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes for custom styling",
+      "default": ""
+    }
+  ]
+}

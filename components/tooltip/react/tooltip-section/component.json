@@ -1,0 +1,23 @@
+{
+  "name": "tooltip",
+  "category": "overlay",
+  "framework": "react",
+  "tags": ["tooltip", "hover", "overlay", "hint", "label"],
+  "author": "Saikiran-Sugurthi",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A simple tooltip component that displays a text label on hover.",
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "The trigger element that the tooltip is attached to."
+    },
+    {
+      "name": "text",
+      "type": "string",
+      "description": "The text content to display inside the tooltip.",
+      "default": "Tooltip text"
+    }
+  ]
+}

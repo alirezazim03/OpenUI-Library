@@ -1,0 +1,17 @@
+{
+  "name": "simple-navbar",
+  "category": "navbar",
+  "framework": "react",
+  "tags": ["navbar", "navigation", "ui", "minimal"],
+  "author": "chatfly",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A simple and responsive navigation bar with a title and basic links",
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Defines the brand or title text"
+    }
+  ]
+}

@@ -16,7 +16,9 @@
         "section",
         "input",
         "progress",
-        "slider"
+        "slider",
+        "overlay",
+        "dashboard"
       ]
     },
     "framework": {
