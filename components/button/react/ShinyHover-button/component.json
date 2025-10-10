@@ -1,0 +1,28 @@
+{
+    "name": "shiny-hover-button",
+    "category": "button",
+    "framework": "react",
+    "tags": ["button", "hover", "animation", "tailwindcss", "shine", "ui"],
+    "author": "harshchill",
+    "license": "MIT",
+    "version": "1.0.0",
+    "preview": "Button with a shiny sweep effect that glides across on hover.",
+    "demoUrl": "",
+    "props": [
+      {
+        "name": "text",
+        "type": "string",
+        "required": false,
+        "default": "Hover me",
+        "description": "Visible label inside the button."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "default": "",
+        "description": "Additional Tailwind CSS classes to customize the button."
+      }
+    ],
+    "dependencies": ["react", "tailwindcss"]
+  }
