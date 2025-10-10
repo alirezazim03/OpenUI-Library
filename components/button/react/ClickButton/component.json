@@ -1,0 +1,28 @@
+{
+  "name": "click-button",
+  "category": "button",
+  "framework": "react",
+  "tags": ["button", "click", "animation", "tailwindcss", "cta", "ui"],
+  "author": "harshchill",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "CTA button with playful active press scaling and custom easing.",
+  "demoUrl": "",
+  "props": [
+    {
+      "name": "text",
+      "type": "string",
+      "required": false,
+      "default": "Click me",
+      "description": "Visible label inside the button."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "description": "Additional Tailwind CSS classes to customize the button."
+    }
+  ],
+  "dependencies": ["react", "tailwindcss"]
+}
