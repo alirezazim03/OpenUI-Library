@@ -1,0 +1,42 @@
+{
+  "name": "otp-verification-form",
+  "category": "form",
+  "framework": "react",
+  "tags": ["form", "otp", "verification", "timer", "animation", "responsive"],
+  "author": "Stitipragyanbarik",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "Animated OTP Verification Form with Timer",
+  "props": [
+    {
+      "name": "length",
+      "type": "number",
+      "description": "Number of OTP digits (4 or 6)",
+      "default": "6"
+    },
+    {
+      "name": "onSubmit",
+      "type": "function",
+      "description": "Callback function called when OTP is fully entered",
+      "default": "() => {}"
+    },
+    {
+      "name": "onResend",
+      "type": "function",
+      "description": "Callback function called when Resend OTP is clicked",
+      "default": "() => {}"
+    },
+    {
+      "name": "timerDuration",
+      "type": "number",
+      "description": "Duration of the resend timer in seconds",
+      "default": "60"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes for custom styling",
+      "default": "\"\""
+    }
+  ]
+}
