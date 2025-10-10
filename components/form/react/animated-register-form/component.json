@@ -1,0 +1,40 @@
+{
+  "name": "animated-register-form",
+  "category": "form",
+  "framework": "react",
+  "tags": [
+    "form",
+    "section",
+    "register"
+  ],
+  "author": "komalsathvik",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A reusable form section component with title, description, and grouped inputs",
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "The title of the form section",
+      "default": "Section Title"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Optional description text displayed under the title",
+      "default": ""
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Form fields or content to be grouped inside the section",
+      "default": null
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes to style the section",
+      "default": ""
+    }
+  ]
+}
