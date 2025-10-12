@@ -1,0 +1,37 @@
+{
+  "name": "otp-authentication",
+  "category": "input",
+  "framework": "react",
+  "tags": ["otp", "authentication", "input", "security", "ui", "responsive"],
+  "author": "shahnawaz2003",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A customizable OTP input component for secure authentication flows with auto-focus, paste support, and validation feedback for React apps.",
+  "props": [
+    { 
+      "name": "length", 
+      "type": "number", 
+      "description": "Number of OTP digits (default 6)" 
+    },
+    { 
+      "name": "onChange", 
+      "type": "function", 
+      "description": "Callback function for OTP value changes" 
+    },
+    { 
+      "name": "disabled", 
+      "type": "boolean", 
+      "description": "Disables the OTP input fields (default false)" 
+    },
+    { 
+      "name": "autoFocus", 
+      "type": "boolean", 
+      "description": "Automatically focuses on the first OTP input field (default true)" 
+    },
+    { 
+      "name": "onSubmit", 
+      "type": "function", 
+      "description": "Callback when OTP is successfully submitted" 
+    }
+  ]
+}
