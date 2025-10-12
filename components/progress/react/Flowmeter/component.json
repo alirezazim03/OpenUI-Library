@@ -1,0 +1,15 @@
+{
+  "name": "Flowmeter",
+  "category": "progress",
+  "framework": "react",
+  "tags": [
+  "animation", 
+  "loading", 
+  "responsive", 
+  "progress"
+  ],
+  "author": "harshitrwt",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A sleek blue gradient progress bar with bouncing dots for loading states"
+}
