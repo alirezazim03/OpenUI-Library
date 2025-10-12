@@ -1,0 +1,19 @@
+{
+    "name": "login-card",
+    "category": "section",
+    "framework": "react",
+    "tags": [
+      "login",
+      "auth",
+      "social",
+      "oauth",
+      "signup",
+      "card"
+    ],
+    "author": "harshchill",
+    "license": "MIT",
+    "version": "1.0.0",
+    "preview": "A clean social login card with provider buttons (Google, GitHub, Facebook, Email) and loading feedback.",
+    "demoUrl": "",
+    "props": []
+  }

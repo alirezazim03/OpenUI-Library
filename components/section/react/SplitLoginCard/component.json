@@ -1,0 +1,15 @@
+{
+    "name": "SplitLoginCard",
+    "category": "section",
+    "framework": "react",
+    "tags": ["login", "signup", "responsive", "split-screen", "oauth"],
+    "author": "Harshchill",
+    "license": "MIT",
+    "version": "1.0.0",
+    "preview": "A modern, responsive split-screen login/signup card featuring a visual branding area on the left and form/social login options on the right.",
+    "demoUrl": "",
+    "props": [
+        
+    ]
+  }
+  
