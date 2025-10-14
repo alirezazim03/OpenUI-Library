@@ -1,0 +1,24 @@
+{
+  "name": "password-reset-form",
+  "category": "form",
+  "framework": "react",
+  "tags": ["form", "password", "reset", "strength", "validation", "responsive"],
+  "author": "Stitipragyanbarik",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "Password Reset Form with Strength Meter",
+  "props": [
+    {
+      "name": "onSubmit",
+      "type": "function",
+      "description": "Callback function called when the form is submitted with valid data",
+      "default": "() => {}"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes for custom styling",
+      "default": ""
+    }
+  ]
+}
