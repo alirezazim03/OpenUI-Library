@@ -170,7 +170,6 @@ export default function Home() {
             {allTags.length > 0 && (
               <SidebarTags
                 tags={allTags}
-                components={components}
                 selectedTags={selectedTags}
                 setSelectedTags={setSelectedTags}
               />
