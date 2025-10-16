@@ -1,5 +1,7 @@
+import React from "react"
+
 interface SidebarSearchbarProps {
-  setSearchQuery: (query: string) => void
+  setSearchQuery: (_query: string) => void
   searchQuery: string
 }
 

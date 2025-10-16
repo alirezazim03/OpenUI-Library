@@ -5,7 +5,7 @@ interface SidebarCategoriesProps {
   groupedComponents: Record<string, ComponentMetadata[]>
   components: ComponentMetadata[]
   selectedCategory: string | null
-  setSelectedCategory: (category: string | null) => void
+  setSelectedCategory: (_category: string | null) => void
 }
 
 /** Sidebar component for filtering by categories.

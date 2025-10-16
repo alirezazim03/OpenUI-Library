@@ -5,7 +5,7 @@ interface SidebarFrameworksProps {
   frameworks: string[]
   components: ComponentMetadata[]
   selectedFramework: string | null
-  setSelectedFramework: (framework: string | null) => void
+  setSelectedFramework: (_framework: string | null) => void
 }
 
 /** Sidebar component for filtering by front-end frameworks.

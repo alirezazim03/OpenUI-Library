@@ -9,7 +9,7 @@ import SidebarSearchbar from "@/components/Sidebar/search/SidebarSearch"
 import SidebarComponentLinks from "@/components/Sidebar/search/SidebarComponentLinks"
 
 // Simple debounce so that the array filtering doesn't happen on every keystroke
-const debounce = (callback: (...args: any[]) => void, wait: number) => {
+const debounce = (callback: (..._args: any[]) => void, wait: number) => {
   let timeoutId: number | undefined = undefined
   return (...args: any[]) => {
     window.clearTimeout(timeoutId)
