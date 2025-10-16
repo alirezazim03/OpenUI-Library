@@ -8,6 +8,17 @@ import Sidebar from "@/components/Sidebar/Sidebar"
 import SidebarSearchbar from "@/components/Sidebar/seachComponents/SidebarSearch"
 import SidebarComponentLinks from "@/components/Sidebar/seachComponents/SidebarComponentLinks"
 
+// Simple debounce so that the array filtering doesn't happen on every keystroke
+const debounce = (callback: (...args: any[]) => void, wait: number) => {
+  let timeoutId: number | undefined = undefined
+  return (...args: any[]) => {
+    window.clearTimeout(timeoutId)
+    timeoutId = window.setTimeout(() => {
+      callback(...args)
+    }, wait)
+  }
+}
+
 export default function ComponentPage() {
   const router = useRouter()
   const { path } = router.query
@@ -20,12 +31,40 @@ export default function ComponentPage() {
   const [wordWrap, setWordWrap] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [components, setComponents] = useState<ComponentMetadata[]>([])
+  const [filteredComponents, setFilteredComponents] = useState<
+    ComponentMetadata[]
+  >([])
+
+  function filterComponentsByQuery(query: string) {
+    if (!query) {
+      setFilteredComponents(components)
+      return
+    }
+
+    const filtered = components.filter(comp =>
+      comp.name.toLowerCase().includes(query.toLowerCase())
+    )
+    setFilteredComponents(filtered)
+  }
+
+  const onSearchChange = (query: string) => {
+    setSearchQuery(query)
+    debounce(filterComponentsByQuery, 600)(query)
+  }
 
   useEffect(() => {
     fetch("/api/components")
       .then(res => res.json())
       .then(data => {
-        setComponents(data.components || [])
+        //Sort components alphabetically for easier browsing
+        const sortedComponents = data.components.sort(
+          (a: ComponentMetadata, b: ComponentMetadata) =>
+            a.name.localeCompare(b.name)
+        )
+
+        //Have to create a copy of the components to have both original and filtered lists
+        setComponents(sortedComponents || [])
+        setFilteredComponents(sortedComponents || [])
         setLoading(false)
       })
       .catch(err => {
@@ -176,12 +215,12 @@ export default function ComponentPage() {
           <Sidebar>
             {/* Search Bar */}
             <SidebarSearchbar
-              setSearchQuery={setSearchQuery}
+              setSearchQuery={onSearchChange}
               searchQuery={searchQuery}
             />
             {/* Component Links */}
             <SidebarComponentLinks
-              components={components}
+              components={filteredComponents}
               currentComponent={component.name}
             />
           </Sidebar>
