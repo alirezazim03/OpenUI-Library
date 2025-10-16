@@ -1,0 +1,70 @@
+{
+  "name": "cookie-consent-banner",
+  "category": "overlay",
+  "framework": "react",
+  "tags": ["gdpr", "privacy", "cookies", "consent", "compliance", "modal"],
+  "author": "Glen Fonceca",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A fully GDPR-compliant cookie consent banner with customizable text, accept/reject buttons, and granular preference management. Features include persistent storage, accessibility support, and framework-agnostic design.",
+  "dependencies": [
+    "react",
+    "tailwindcss"
+  ],
+  "props": [
+    {
+      "name": "position",
+      "type": "string",
+      "default": "bottom",
+      "description": "Position of the banner: 'bottom' or 'top'"
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "default": "We Value Your Privacy",
+      "description": "Main title text of the banner"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "default": "We use cookies to enhance your browsing experience...",
+      "description": "Description text explaining cookie usage"
+    },
+    {
+      "name": "onAccept",
+      "type": "function",
+      "default": "null",
+      "description": "Callback function when user accepts cookies"
+    },
+    {
+      "name": "onReject",
+      "type": "function",
+      "default": "null",
+      "description": "Callback function when user rejects cookies"
+    },
+    {
+      "name": "onPreferencesSave",
+      "type": "function",
+      "default": "null",
+      "description": "Callback function when user saves custom preferences"
+    },
+    {
+      "name": "cookieName",
+      "type": "string",
+      "default": "user_cookie_consent",
+      "description": "Name of the cookie to store consent"
+    },
+    {
+      "name": "expiryDays",
+      "type": "number",
+      "default": "365",
+      "description": "Number of days before consent expires"
+    },
+    {
+      "name": "showSettingsButton",
+      "type": "boolean",
+      "default": "true",
+      "description": "Show the manage preferences button"
+    }
+  ]
+}
