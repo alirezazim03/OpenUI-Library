@@ -1,0 +1,23 @@
+{
+  "name": "badge",
+  "category": "badge",
+  "framework": "react",
+  "tags": ["badge", "status", "indicator", "label"],
+  "author": "Saikiran-Sugurthi",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A simple, non-interactive component for displaying status or labels.",
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "The content displayed inside the badge."
+    },
+    {
+      "name": "colorScheme",
+      "type": "string",
+      "description": "The color scheme of the badge. Options: default, danger, success, warning, info, purple.",
+      "default": "default"
+    }
+  ]
+}
