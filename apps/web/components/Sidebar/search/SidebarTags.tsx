@@ -1,5 +1,4 @@
 import TagChip from "@/components/TagChip"
-import { ComponentMetadata } from "@/types"
 import { Dispatch, SetStateAction } from "react"
 
 interface SidebarTagsProps {

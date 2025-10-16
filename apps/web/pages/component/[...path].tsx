@@ -5,8 +5,8 @@ import { useEffect, useState } from "react"
 import ReactPreview from "../../components/ReactPreview"
 import type { ComponentMetadata, ComponentWithFiles } from "../../types"
 import Sidebar from "@/components/Sidebar/Sidebar"
-import SidebarSearchbar from "@/components/Sidebar/seachComponents/SidebarSearch"
-import SidebarComponentLinks from "@/components/Sidebar/seachComponents/SidebarComponentLinks"
+import SidebarSearchbar from "@/components/Sidebar/search/SidebarSearch"
+import SidebarComponentLinks from "@/components/Sidebar/search/SidebarComponentLinks"
 
 // Simple debounce so that the array filtering doesn't happen on every keystroke
 const debounce = (callback: (...args: any[]) => void, wait: number) => {

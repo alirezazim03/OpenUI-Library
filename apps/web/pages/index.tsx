@@ -3,12 +3,11 @@ import Head from "next/head"
 import { useEffect, useState, useMemo } from "react"
 import Navbar from "../components/Navbar"
 import type { ComponentMetadata } from "../types"
-import TagChip from "../components/TagChip"
 import Sidebar from "@/components/Sidebar/Sidebar"
-import SidebarSearchbar from "@/components/Sidebar/seachComponents/SidebarSearch"
-import SidebarTags from "@/components/Sidebar/seachComponents/SidebarTags"
-import SidebarCategories from "@/components/Sidebar/seachComponents/SidebarCategories"
-import SidebarFrameworks from "@/components/Sidebar/seachComponents/SidebarFrameworks"
+import SidebarSearchbar from "@/components/Sidebar/search/SidebarSearch"
+import SidebarTags from "@/components/Sidebar/search/SidebarTags"
+import SidebarCategories from "@/components/Sidebar/search/SidebarCategories"
+import SidebarFrameworks from "@/components/Sidebar/search/SidebarFrameworks"
 
 export default function Home() {
   const [components, setComponents] = useState<ComponentMetadata[]>([])
