@@ -4,6 +4,11 @@ import { useEffect, useState, useMemo } from "react"
 import Navbar from "../components/Navbar"
 import type { ComponentMetadata } from "../types"
 import TagChip from "../components/TagChip"
+import Sidebar from "@/components/Sidebar/Sidebar"
+import SidebarSearchbar from "@/components/Sidebar/seachComponents/SidebarSearch"
+import SidebarTags from "@/components/Sidebar/seachComponents/SidebarTags"
+import SidebarCategories from "@/components/Sidebar/seachComponents/SidebarCategories"
+import SidebarFrameworks from "@/components/Sidebar/seachComponents/SidebarFrameworks"
 
 export default function Home() {
   const [components, setComponents] = useState<ComponentMetadata[]>([])
@@ -136,170 +141,41 @@ export default function Home() {
       </Head>
       <div className="min-h-screen bg-gray-50 flex flex-col dark:bg-gray-900">
         <Navbar currentPage="home" />
-
         <div className="flex flex-1">
           {/* Sidebar - Hidden below 590px */}
-          <aside className="hidden min-[590px]:block w-64 bg-white shadow-sm border-r overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-            <div className="p-6">
-              {/* Search Bar */}
-              <div className="mb-6">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search components..."
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
-                  />
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg
-                      className="h-5 w-5 text-gray-400 dark:text-gray-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              {/* Categories */}
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3 dark:text-gray-100">
-                  Categories
-                </h3>
-                <div className="space-y-1">
-                  <button
-                    onClick={() => setSelectedCategory(null)}
-                    className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                      selectedCategory === null
-                        ? "bg-blue-100 text-blue-700 font-medium dark:bg-blue-900 dark:text-blue-300"
-                        : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                    }`}
-                  >
-                    All Components ({components.length})
-                  </button>
-                  {categories.map(category => {
-                    const count = groupedComponents[category]?.length || 0
-                    return (
-                      <button
-                        key={category}
-                        onClick={() => setSelectedCategory(category)}
-                        className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                          selectedCategory === category
-                            ? "bg-blue-100 text-blue-700 font-medium dark:bg-blue-900 dark:text-blue-300"
-                            : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                        }`}
-                      >
-                        <span className="capitalize">{category}</span>
-                        <span className="text-gray-500 ml-2 dark:text-gray-400">
-                          ({count})
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-
-              {/* Frameworks */}
-              {allFrameworks.length > 0 && (
-                <div className="mt-8">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3 dark:text-gray-100">
-                    Frameworks
-                  </h3>
-                  <div className="space-y-1">
-                    <button
-                      onClick={() => setSelectedFramework(null)}
-                      className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                        selectedFramework === null
-                          ? "bg-blue-100 text-blue-700 font-medium dark:bg-blue-900 dark:text-blue-300"
-                          : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                      }`}
-                    >
-                      All Frameworks ({components.length})
-                    </button>
-
-                    {allFrameworks.map(framework => {
-                      const fw = framework || ""
-                      const count = components.filter(
-                        c =>
-                          (c.framework || "").trim().toLowerCase() ===
-                          fw.trim().toLowerCase()
-                      ).length
-
-                      return (
-                        <button
-                          key={framework}
-                          onClick={() =>
-                            setSelectedFramework(prev =>
-                              prev &&
-                              prev.toLowerCase() === framework.toLowerCase()
-                                ? null
-                                : framework
-                            )
-                          }
-                          className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                            selectedFramework &&
-                            selectedFramework.toLowerCase() ===
-                              framework.toLowerCase()
-                              ? "bg-blue-100 text-blue-700 font-medium dark:bg-blue-900 dark:text-blue-300"
-                              : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                          }`}
-                        >
-                          <span className="capitalize">{framework}</span>
-                          <span className="text-gray-500 ml-2 dark:text-gray-400">
-                            ({count})
-                          </span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Tags */}
-              {allTags.length > 0 && (
-                <div className="mt-8">
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide mb-3">
-                    Tags
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {allTags.map(tag => (
-                      <TagChip
-                        key={tag}
-                        tag={tag}
-                        active={selectedTags.includes(tag)}
-                        onToggle={t =>
-                          setSelectedTags(prev =>
-                            prev.includes(t)
-                              ? prev.filter(x => x !== t)
-                              : [...prev, t]
-                          )
-                        }
-                      />
-                    ))}
-                  </div>
-                  {selectedTags.length > 0 && (
-                    <div className="mt-3">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedTags([])}
-                        className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-                      >
-                        Clear tags
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </aside>
+          <Sidebar>
+            {/* Search Bar */}
+            <SidebarSearchbar
+              setSearchQuery={setSearchQuery}
+              searchQuery={searchQuery}
+            />
+            {/* Categories */}
+            <SidebarCategories
+              categories={categories}
+              groupedComponents={groupedComponents}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              components={components}
+            />
+            {/* Frameworks */}
+            {allFrameworks.length > 0 && (
+              <SidebarFrameworks
+                frameworks={allFrameworks}
+                selectedFramework={selectedFramework}
+                setSelectedFramework={setSelectedFramework}
+                components={components}
+              />
+            )}
+            {/* Tags */}
+            {allTags.length > 0 && (
+              <SidebarTags
+                tags={allTags}
+                components={components}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+              />
+            )}
+          </Sidebar>
 
           {/* Main Content */}
           <main className="flex-1 overflow-y-auto">

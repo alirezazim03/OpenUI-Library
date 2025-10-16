@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import ReactPreview from "../../components/ReactPreview"
 import type { ComponentWithFiles } from "../../types"
+import Sidebar from "@/components/Sidebar/Sidebar"
 
 export default function ComponentPage() {
   const router = useRouter()
@@ -152,7 +153,7 @@ export default function ComponentPage() {
             </div>
           </div>
         </header>
-
+        <Sidebar />
         <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
             {/* Preview Section - Full Width */}
