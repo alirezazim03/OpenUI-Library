@@ -1,0 +1,62 @@
+{
+  "name": "avatar",
+  "category": "card",
+  "framework": "react",
+  "tags": ["avatar", "profile", "user", "image", "initials", "responsive", "accessible"],
+  "author": "Glen Fonceca",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "Customizable avatar component with three display types: image, placeholder icon, and user initials. Supports multiple sizes, shapes, and colors with automatic fallback handling.",
+  "props": [
+    {
+      "name": "type",
+      "type": "string",
+      "description": "Avatar display type: 'image', 'placeholder', or 'initials'. Defaults to 'placeholder'"
+    },
+    {
+      "name": "src",
+      "type": "string",
+      "description": "Image source URL for 'image' type avatars. Automatically falls back to initials if image fails to load"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "User name for generating initials and accessibility. Defaults to 'User'"
+    },
+    {
+      "name": "size",
+      "type": "string",
+      "description": "Avatar size: 'xs', 'sm', 'md', 'lg', 'xl', or '2xl'. Defaults to 'md'"
+    },
+    {
+      "name": "alt",
+      "type": "string",
+      "description": "Alternative text for accessibility. Falls back to name if not provided"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional CSS classes for custom styling"
+    },
+    {
+      "name": "bgColor",
+      "type": "string",
+      "description": "Background color in hex format. Defaults to '#6366f1' (indigo)"
+    },
+    {
+      "name": "textColor",
+      "type": "string",
+      "description": "Text/icon color in hex format. Defaults to '#ffffff' (white)"
+    },
+    {
+      "name": "shape",
+      "type": "string",
+      "description": "Avatar shape: 'circle', 'square', or 'rounded'. Defaults to 'circle'"
+    },
+    {
+      "name": "onError",
+      "type": "function",
+      "description": "Callback function triggered when image fails to load"
+    }
+  ]
+}
