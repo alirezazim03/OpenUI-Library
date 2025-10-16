@@ -1,6 +1,6 @@
 {
   "name": "badge",
-  "category": "display",
+  "category": "badge",
   "framework": "react",
   "tags": ["badge", "status", "indicator", "label"],
   "author": "Saikiran-Sugurthi",

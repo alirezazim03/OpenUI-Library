@@ -18,7 +18,8 @@
         "progress",
         "slider",
         "overlay",
-        "dashboard"
+        "dashboard",
+        "badge"
       ]
     },
     "framework": {
