@@ -1,0 +1,22 @@
+{
+  "name": "Skeleton",
+  "category": "progress",
+  "framework": "react",
+  "tags": ["Loading", "animation", "content-loading", "ui", "cards"],
+  "author": "Jainam-not-a-robot",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A skeleton loader component that visually indicates content is loading, providing a smoother user experience by displaying placeholder shapes before actual content is rendered.",
+  "props": [
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Additional Tailwind CSS classes to customize the skeleton appearance."
+    },
+    {
+      "name": "style",
+      "type": "React.CSSProperties",
+      "description": "Optional inline styles for the skeleton container."
+    }
+  ]
+}
