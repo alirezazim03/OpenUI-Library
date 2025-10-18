@@ -1,0 +1,113 @@
+{
+  "name": "modal",
+  "category": "overlay",
+  "framework": "react",
+  "tags": ["modal", "dialog", "confirm", "overlay", "popup"],
+  "author": "Mahmud1087",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A reusable modal/dialog component for displaying forms, confirmation boxes, and alerts. Should include accessibility features, animations, and flexible content placement.",
+  "demoUrl": "",
+  "dependencies": ["react", "tailwindcss"],
+  "props": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "required": true,
+      "description": "Controls the visibility of the modal"
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "required": true,
+      "description": "Callback function triggered when the modal should close"
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "required": true,
+      "description": "Modal content - typically Modal.Header, Modal.Body, and Modal.Footer components"
+    },
+    {
+      "name": "size",
+      "type": "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+      "required": false,
+      "default": "md",
+      "description": "Sets the maximum width of the modal"
+    },
+    {
+      "name": "closeOnOverlay",
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "Whether clicking the overlay/backdrop closes the modal"
+    },
+    {
+      "name": "closeOnEsc",
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "Whether pressing the ESC key closes the modal"
+    },
+    {
+      "name": "showCloseButton",
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "Whether to display the X close button in the top-right corner"
+    }
+  ],
+  "subComponents": [
+    {
+      "name": "Modal.Header",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "description": "Header content - typically the modal title"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes to apply to the header"
+        }
+      ]
+    },
+    {
+      "name": "Modal.Body",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "description": "Main modal content"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes to apply to the body"
+        }
+      ]
+    },
+    {
+      "name": "Modal.Footer",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": true,
+          "description": "Footer content - typically action buttons"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "description": "Additional CSS classes to apply to the footer"
+        }
+      ]
+    }
+  ]
+}
