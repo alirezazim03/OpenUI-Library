@@ -1,0 +1,23 @@
+{
+  "name": "avatar-group-label",
+  "category": "badge",
+  "framework": "react",
+  "tags": ["avatar", "profile", "group", "trust", "label"],
+  "author": "shridmishra",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "An avatar group with overlapping profile pictures and a trust label.",
+  "props": [
+    {
+      "name": "avatars",
+      "type": "string[]",
+      "description": "Array of image URLs to display as avatars."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Text displayed next to the avatar group.",
+      "default": "Trusted by 10,000+ people"
+    }
+  ]
+}
