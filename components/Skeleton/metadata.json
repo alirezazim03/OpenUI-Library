@@ -1,0 +1,11 @@
+{
+  "name": "Skeleton",
+  "description": "A loading placeholder component with shimmer animation.",
+  "props": {
+    "width": "string (default: 100%)",
+    "height": "string (default: 20px)",
+    "borderRadius": "string (default: 8px)"
+  },
+  "category": "Feedback",
+  "framework": "React"
+}
