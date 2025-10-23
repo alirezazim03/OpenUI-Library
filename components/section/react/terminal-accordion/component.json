@@ -1,0 +1,14 @@
+{
+    "name": "Terminal-Accordion",
+    "category": "section",
+    "framework": "react",
+    "tags": [ "responsive"],
+    "author": "Akhilnair1306",
+    "license": "MIT",
+    "version": "1.0.0",
+    "preview": "A cyberpunk-inspired, terminal-themed accordion component built with React. Features command-line aesthetics, smooth animations, and a retro hacker vibe perfect for displaying expandable content with style.",
+    "demoUrl": "",
+    "props": [
+        
+    ]
+  }
