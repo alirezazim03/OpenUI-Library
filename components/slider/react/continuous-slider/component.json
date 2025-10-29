@@ -1,0 +1,36 @@
+{
+  "name": "continuous-slider",
+  "category": "slider",
+  "framework": "react",
+  "tags": ["slider", "continuous", "range", "smooth", "ui component", "react", "tailwind", "responsive"],
+  "author": "Sachin K.C.",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "A responsive, Tailwind CSS-based continuous range slider component for React.",
+  "props": [
+    {
+      "name": "min",
+      "type": "number",
+      "description": "The minimum selectable value of the slider.",
+      "default": 0
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "The maximum selectable value of the slider.",
+      "default": 100
+    },
+    {
+      "name": "defaultValue",
+      "type": "number",
+      "description": "The default value displayed when the slider is initialized.",
+      "default": 40
+    },
+    {
+      "name": "onChange",
+      "type": "(value: number) => void",
+      "description": "Callback triggered when the slider value changes.",
+      "default": null
+    }
+  ]
+}
