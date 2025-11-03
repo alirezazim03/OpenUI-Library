@@ -1,0 +1,17 @@
+{
+  "name": "password-strength-meter",
+  "framework": "react",
+  "category": "input",
+  "tags": ["password", "input", "strength", "validation", "security"],
+  "author": "Sachin K.C.",
+  "license": "MIT",
+  "version": "1.0.0",
+  "preview": "Password strength meter component with requirement checklist, and show/hide toggle for secure password creation.",
+  "props": [
+    {
+      "name": "onChange",
+      "type": "function",
+      "description": "Callback function that receives password value and strength label (Weak, Fair, Good, Strong)"
+    }
+  ]
+}
